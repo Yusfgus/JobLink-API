@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\JobLink.Domain\JobLink.Domain.csproj" />
+  </ItemGroup>
+</Project>

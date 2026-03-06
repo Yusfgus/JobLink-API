@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/JobLink.Api/JobLink.Api.csproj" />
+    <Project Path="src/JobLink.Application/JobLink.Application.csproj" />
+    <Project Path="src/JobLink.Domain/JobLink.Domain.csproj" />
+    <Project Path="src/JobLink.Infrastructure/JobLink.Infrastructure.csproj" />
+  </Folder>
+</Solution>
