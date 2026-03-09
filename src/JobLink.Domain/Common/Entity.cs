@@ -4,7 +4,10 @@ public abstract class Entity
 {
     public Guid Id { get; }
 
-    protected Entity() {}
+    protected Entity()
+    {
+        Id = Guid.NewGuid();
+    }
 
     protected Entity(Guid id)
     {

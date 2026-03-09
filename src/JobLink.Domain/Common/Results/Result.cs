@@ -36,7 +36,7 @@ public class Result<T> : Result
         Value = default;
     }
 
-    private Result(T value) : base()
+    private Result(T value)
     {
         Value = value ?? throw new ArgumentNullException(nameof(value));
     }

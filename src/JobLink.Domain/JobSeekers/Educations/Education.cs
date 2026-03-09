@@ -1,6 +1,105 @@
+using JobLink.Domain.Common;
+using JobLink.Domain.Common.Results;
+using JobLink.Domain.Enums;
+
 namespace JobLink.Domain.JobSeekers.Educations;
 
-public class Education
+public sealed class Education : Entity
 {
-    
+    public Guid JobSeekerProfileId { get; }
+    public string Institution { get; } = default!;
+    public string Degree { get; } = default!;
+    public string FieldOfStudy { get; } = default!;
+    public string Country { get; } = default!;
+    public AcademicGrade Grade { get; }
+    public DateOnly StartDate { get; }
+    public DateOnly EndDate { get; }
+
+    public JobSeekerProfile? JobSeekerProfile { get; }
+
+    private Education() { }
+
+    private Education(Guid jobSeekerProfileId, string institution, string degree, string fieldOfStudy, string country, DateOnly startDate, DateOnly endDate)
+    {
+        JobSeekerProfileId = jobSeekerProfileId;
+        Institution = institution;
+        Degree = degree;
+        FieldOfStudy = fieldOfStudy;
+        Country = country;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
+
+    public static Result<Education> Create(Guid jobSeekerProfileId, string institution, string degree, string fieldOfStudy, string country, DateOnly startDate, DateOnly endDate)
+    {
+        List<Error> errors = [];
+
+        if (jobSeekerProfileId == Guid.Empty)
+        {
+            errors.Add(EducationError.JobSeekerProfileIdRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(institution))
+        {
+            errors.Add(EducationError.InstitutionRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(degree))
+        {
+            errors.Add(EducationError.DegreeRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(fieldOfStudy))
+        {
+            errors.Add(EducationError.FieldOfStudyRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(country))
+        {
+            errors.Add(EducationError.CountryRequired);
+        }
+
+        if (startDate == default)
+        {
+            errors.Add(EducationError.StartDateRequired);
+        }
+        else if(startDate > DateOnly.FromDateTime(DateTime.Now))
+        {
+            errors.Add(EducationError.StartDateMustBeInPast);
+        }
+
+        if (endDate == default)
+        {
+            errors.Add(EducationError.EndDateRequired);
+        }
+        else if (endDate < startDate)
+        {
+            errors.Add(EducationError.EndDateMustBeAfterStartDate);
+        }
+        else if (endDate > DateOnly.FromDateTime(DateTime.Now))
+        {
+            errors.Add(EducationError.EndDateMustBeInPast);
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
+        return new Education(jobSeekerProfileId, institution, degree, fieldOfStudy, country, startDate, endDate);
+    }
+}
+
+public static class EducationError
+{
+    public static Error JobSeekerProfileIdRequired => Error.Validation("Education_JobSeekerProfileId_Required", "JobSeekerProfileId is required");
+    public static Error InstitutionRequired => Error.Validation("Education_Institution_Required", "Institution is required");
+    public static Error DegreeRequired => Error.Validation("Education_Degree_Required", "Degree is required");
+    public static Error FieldOfStudyRequired => Error.Validation("Education_FieldOfStudy_Required", "FieldOfStudy is required");
+    public static Error CountryRequired => Error.Validation("Education_Country_Required", "Country is required");
+    public static Error StartDateRequired => Error.Validation("Education_StartDate_Required", "StartDate is required");
+    public static Error EndDateRequired => Error.Validation("Education_EndDate_Required", "EndDate is required");
+    public static Error StartDateMustBeInPast => Error.Validation("Education_StartDate_MustBeInPast", "StartDate must be in past");
+    public static Error EndDateMustBeInPast => Error.Validation("Education_EndDate_MustBeInPast", "EndDate must be in past");
+    public static Error EndDateMustBeAfterStartDate => Error.Validation("Education_EndDate_MustBeAfterStartDate", "EndDate must be after StartDate");
 }

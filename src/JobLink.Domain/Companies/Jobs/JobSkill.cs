@@ -1,6 +1,52 @@
+using JobLink.Domain.Common;
+using JobLink.Domain.Common.Results;
+using JobLink.Domain.Skills;
+
 namespace JobLink.Domain.Companies.Jobs;
 
-public class JobSkill
+public sealed class JobSkill : Entity
 {
-    
+    public Guid JobId { get; } = default!;
+    public Guid SkillId { get; } = default!;
+    public bool IsRequired { get; }
+
+    public Job? Job { get; }
+    public Skill? Skill { get; }
+
+    private JobSkill() { }
+
+    private JobSkill(Guid jobId, Guid skillId, bool isRequired)
+    {
+        JobId = jobId;
+        SkillId = skillId;
+        IsRequired = isRequired;
+    }
+
+    public static Result<JobSkill> Create(Guid jobId, Guid skillId, bool isRequired)
+    {
+        List<Error> errors = [];
+
+        if (jobId == Guid.Empty)
+        {
+            errors.Add(JobSkillError.JobIdRequired);
+        }
+
+        if (skillId == Guid.Empty)
+        {
+            errors.Add(JobSkillError.SkillIdRequired);
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
+        return new JobSkill(jobId, skillId, isRequired);
+    }
+}
+
+public static class JobSkillError
+{
+    public static Error JobIdRequired => Error.Validation("JobSkill_JobId_Required", "JobId is required");
+    public static Error SkillIdRequired => Error.Validation("JobSkill_SkillId_Required", "SkillId is required");
 }
