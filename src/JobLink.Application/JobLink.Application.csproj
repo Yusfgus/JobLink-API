@@ -2,4 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\JobLink.Domain\JobLink.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+  </ItemGroup>
 </Project>
