@@ -1,6 +1,6 @@
 using JobLink.Domain.Common.Results;
 
-namespace JobLink.Domain.ValueObjects;
+namespace JobLink.Domain.Common.ValueObjects;
 
 public record FullName
 {
@@ -8,7 +8,7 @@ public record FullName
     public string? MiddleName { get; }
     public string LastName { get; } = default!;
 
-    private FullName() {}
+    private FullName() { }
     private FullName(string firstName, string? middleName, string lastName)
     {
         FirstName = firstName;

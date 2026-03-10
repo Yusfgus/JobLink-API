@@ -1,13 +1,13 @@
 using JobLink.Domain.Common.Results;
 
-namespace JobLink.Domain.ValueObjects;
+namespace JobLink.Domain.Common.ValueObjects;
 
 public record SalaryRange
 {
     public decimal Min { get; }
     public decimal Max { get; }
 
-    private SalaryRange() {}
+    private SalaryRange() { }
 
     private SalaryRange(decimal min, decimal max)
     {

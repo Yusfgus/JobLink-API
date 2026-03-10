@@ -1,5 +1,5 @@
 using JobLink.Domain.Users;
-using JobLink.Domain.Enums;
+using JobLink.Domain.Common.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 

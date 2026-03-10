@@ -1,14 +1,11 @@
 using JobLink.Domain.Users;
 using JobLink.Domain.JobSeekers;
-using JobLink.Domain.JobSeekers.Educations;
-using JobLink.Domain.JobSeekers.Experiences;
 using JobLink.Domain.Companies;
 using JobLink.Domain.Companies.Jobs;
-using JobLink.Domain.JobApplications;
 using JobLink.Domain.Skills;
-using JobLink.Domain.SavedJobs;
 using Microsoft.EntityFrameworkCore;
-using JobLink.Domain.JobSeekers.Resumes;
+using JobLink.Domain.JobApplications;
+using JobLink.Domain.SavedJobs;
 
 namespace JobLink.Application.Common.Interfaces;
 

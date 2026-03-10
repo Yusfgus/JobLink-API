@@ -1,14 +1,11 @@
 using System.Text.RegularExpressions;
-using JobLink.Domain.JobApplications;
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.Enums;
-using JobLink.Domain.JobSeekers.Educations;
-using JobLink.Domain.JobSeekers.Experiences;
-using JobLink.Domain.JobSeekers.Resumes;
-using JobLink.Domain.SavedJobs;
+using JobLink.Domain.Common.Enums;
 using JobLink.Domain.Users;
-using JobLink.Domain.ValueObjects;
+using JobLink.Domain.Common.ValueObjects;
+using JobLink.Domain.JobApplications;
+using JobLink.Domain.SavedJobs;
 
 namespace JobLink.Domain.JobSeekers;
 

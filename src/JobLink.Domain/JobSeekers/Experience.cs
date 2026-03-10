@@ -1,7 +1,7 @@
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
 
-namespace JobLink.Domain.JobSeekers.Experiences;
+namespace JobLink.Domain.JobSeekers;
 
 public sealed class Experience : Entity
 {

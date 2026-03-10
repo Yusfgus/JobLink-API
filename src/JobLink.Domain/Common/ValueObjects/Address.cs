@@ -1,6 +1,6 @@
 using JobLink.Domain.Common.Results;
 
-namespace JobLink.Domain.ValueObjects;
+namespace JobLink.Domain.Common.ValueObjects;
 
 public record Address
 {

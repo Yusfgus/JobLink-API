@@ -1,7 +1,7 @@
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
 
-namespace JobLink.Domain.JobSeekers.Resumes;
+namespace JobLink.Domain.JobSeekers;
 
 public sealed class Resume : Entity
 {

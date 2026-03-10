@@ -1,6 +1,6 @@
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.ValueObjects;
+using JobLink.Domain.Common.ValueObjects;
 
 namespace JobLink.Domain.Companies;
 

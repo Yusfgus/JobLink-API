@@ -1,8 +1,8 @@
-using JobLink.Domain.JobApplications;
 using JobLink.Domain.Common;
-using JobLink.Domain.Enums;
-using JobLink.Domain.ValueObjects;
+using JobLink.Domain.Common.Enums;
+using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.Common.Results;
+using JobLink.Domain.JobApplications;
 
 namespace JobLink.Domain.Companies.Jobs;
 

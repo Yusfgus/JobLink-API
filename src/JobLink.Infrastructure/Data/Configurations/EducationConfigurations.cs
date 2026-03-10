@@ -1,4 +1,4 @@
-using JobLink.Domain.JobSeekers.Educations;
+using JobLink.Domain.JobSeekers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

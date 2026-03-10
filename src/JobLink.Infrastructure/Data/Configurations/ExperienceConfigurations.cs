@@ -1,4 +1,4 @@
-using JobLink.Domain.JobSeekers.Experiences;
+using JobLink.Domain.JobSeekers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

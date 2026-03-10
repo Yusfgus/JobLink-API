@@ -1,6 +1,6 @@
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.Enums;
+using JobLink.Domain.Common.Enums;
 using JobLink.Domain.Skills;
 
 namespace JobLink.Domain.JobSeekers;

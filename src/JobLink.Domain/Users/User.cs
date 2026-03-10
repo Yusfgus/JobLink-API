@@ -1,7 +1,7 @@
 using System.Net.Mail;
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.Enums;
+using JobLink.Domain.Common.Enums;
 
 namespace JobLink.Domain.Users;
 

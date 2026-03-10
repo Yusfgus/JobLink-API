@@ -1,4 +1,4 @@
-namespace JobLink.Domain.Enums;
+namespace JobLink.Domain.Common.Enums;
 
 public enum MaritalStatus
 {
