@@ -25,5 +25,8 @@ public class JobApplicationConfiguration : EntityConfiguration<JobApplication>
             .WithMany(x => x.Applications)
             .HasForeignKey(x => x.JobId)
             .IsRequired();
+
+        builder.HasIndex(x => new { x.JobSeekerProfileId, x.JobId })
+            .IsUnique();
     }
 }

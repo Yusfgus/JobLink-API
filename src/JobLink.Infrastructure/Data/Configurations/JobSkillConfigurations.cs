@@ -21,5 +21,8 @@ public class JobSkillConfiguration : EntityConfiguration<JobSkill>
             .WithMany()
             .HasForeignKey(x => x.SkillId)
             .IsRequired();
+
+        builder.HasIndex(x => new { x.JobId, x.SkillId })
+            .IsUnique();
     }
 }
