@@ -7,11 +7,11 @@ namespace JobLink.Domain.Users;
 
 public sealed class User : Entity
 {
-    public string Email { get; } = default!;
-    public string PasswordHash { get; } = default!;
-    public string? ProfilePictureUrl { get; }
-    public UserRole Role { get; }
-    public string? Summary { get; }
+    public string Email { get; private set; } = default!;
+    public string PasswordHash { get; private set; } = default!;
+    public string? ProfilePictureUrl { get; private set; }
+    public UserRole Role { get; private set; }
+    public string? Summary { get; private set; }
 
     private User() { }
 

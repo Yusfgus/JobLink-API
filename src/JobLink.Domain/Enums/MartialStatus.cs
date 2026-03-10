@@ -1,6 +1,6 @@
 namespace JobLink.Domain.Enums;
 
-public enum MartialStatus
+public enum MaritalStatus
 {
     Single,
     Married,

@@ -7,12 +7,12 @@ namespace JobLink.Domain.JobSeekers;
 
 public sealed class JobSeekerSkill : Entity
 {
-    public Guid JobSeekerProfileId { get; }
-    public Guid SkillId { get; }
-    public SkillLevel SkillLevel { get; }
+    public Guid JobSeekerProfileId { get; private set; }
+    public Guid SkillId { get; private set; }
+    public SkillLevel SkillLevel { get; private set; }
 
-    public JobSeekerProfile? JobSeekerProfile { get; }
-    public Skill? Skill { get; }
+    public JobSeekerProfile? JobSeekerProfile { get; private set; }
+    public Skill? Skill { get; private set; }
 
     private JobSeekerSkill() { }
 

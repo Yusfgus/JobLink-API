@@ -5,7 +5,7 @@ namespace JobLink.Domain.Skills;
 
 public sealed class Skill : Entity
 {
-    public string Name { get; } = default!;
+    public string Name { get; private set; } = default!;
 
     private Skill() { }
 

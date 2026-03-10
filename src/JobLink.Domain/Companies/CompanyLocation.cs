@@ -6,10 +6,10 @@ namespace JobLink.Domain.Companies;
 
 public sealed class CompanyLocation : Entity
 {
-    public Guid CompanyProfileId { get; } = default!;
-    public Address Address { get; } = default!;
+    public Guid CompanyProfileId { get; private set; }
+    public Address Address { get; private set; } = default!;
 
-    public CompanyProfile? CompanyProfile { get; }
+    public CompanyProfile? CompanyProfile { get; private set; }
 
     private CompanyLocation() { }
 

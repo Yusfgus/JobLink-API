@@ -2,8 +2,8 @@ namespace JobLink.Domain.Common.Results;
 
 public class Result
 {
-    public List<Error> Errors { get; } = default!;
-    public bool IsSuccess { get; }
+    public List<Error> Errors { get; private set; } = default!;
+    public bool IsSuccess { get; private set; }
     public bool IsFailure => !IsSuccess;
 
     protected Result()
@@ -29,7 +29,7 @@ public class Result
 
 public class Result<T> : Result
 {
-    public T? Value { get; }
+    public T? Value { get; private set; }
 
     private Result(List<Error> errors) : base(errors)
     {

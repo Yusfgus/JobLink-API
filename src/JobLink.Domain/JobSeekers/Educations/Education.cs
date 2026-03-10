@@ -6,16 +6,16 @@ namespace JobLink.Domain.JobSeekers.Educations;
 
 public sealed class Education : Entity
 {
-    public Guid JobSeekerProfileId { get; }
-    public string Institution { get; } = default!;
-    public string Degree { get; } = default!;
-    public string FieldOfStudy { get; } = default!;
-    public string Country { get; } = default!;
-    public AcademicGrade Grade { get; }
-    public DateOnly StartDate { get; }
-    public DateOnly EndDate { get; }
+    public Guid JobSeekerProfileId { get; private set; }
+    public string Institution { get; private set; } = default!;
+    public string Degree { get; private set; } = default!;
+    public string FieldOfStudy { get; private set; } = default!;
+    public string Country { get; private set; } = default!;
+    public AcademicGrade Grade { get; private set; }
+    public DateOnly StartDate { get; private set; }
+    public DateOnly EndDate { get; private set; }
 
-    public JobSeekerProfile? JobSeekerProfile { get; }
+    public JobSeekerProfile? JobSeekerProfile { get; private set; }
 
     private Education() { }
 
@@ -63,7 +63,7 @@ public sealed class Education : Entity
         {
             errors.Add(EducationError.StartDateRequired);
         }
-        else if(startDate > DateOnly.FromDateTime(DateTime.Now))
+        else if (startDate > DateOnly.FromDateTime(DateTime.Now))
         {
             errors.Add(EducationError.StartDateMustBeInPast);
         }

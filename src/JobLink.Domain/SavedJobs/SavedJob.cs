@@ -7,29 +7,29 @@ namespace JobLink.Domain.SavedJobs;
 
 public sealed class SavedJob : Entity
 {
-    public Guid JobSeekerId { get; } = default!;
-    public Guid JobId { get; } = default!;
-    public DateTime SavedAtUtc { get; } = default!;
+    public Guid JobSeekerProfileId { get; private set; } = default!;
+    public Guid JobId { get; private set; } = default!;
+    public DateTime SavedAtUtc { get; private set; } = default!;
 
-    public JobSeekerProfile? JobSeekerProfile { get; }
-    public Job? Job { get; }
+    public JobSeekerProfile? JobSeekerProfile { get; private set; }
+    public Job? Job { get; private set; }
 
     private SavedJob() { }
 
-    private SavedJob(Guid jobSeekerId, Guid jobId, DateTime savedAtUtc)
+    private SavedJob(Guid jobSeekerProfileId, Guid jobId, DateTime savedAtUtc)
     {
-        JobSeekerId = jobSeekerId;
+        JobSeekerProfileId = jobSeekerProfileId;
         JobId = jobId;
         SavedAtUtc = savedAtUtc;
     }
 
-    public static Result<SavedJob> Create(Guid jobSeekerId, Guid jobId)
+    public static Result<SavedJob> Create(Guid jobSeekerProfileId, Guid jobId)
     {
         List<Error> errors = [];
 
-        if (jobSeekerId == Guid.Empty)
+        if (jobSeekerProfileId == Guid.Empty)
         {
-            errors.Add(SavedJobError.JobSeekerIdRequired);
+            errors.Add(SavedJobError.JobSeekerProfileIdRequired);
         }
 
         if (jobId == Guid.Empty)
@@ -42,12 +42,12 @@ public sealed class SavedJob : Entity
             return errors;
         }
 
-        return new SavedJob(jobSeekerId, jobId, DateTime.UtcNow);
+        return new SavedJob(jobSeekerProfileId, jobId, DateTime.UtcNow);
     }
 }
 
 public static class SavedJobError
 {
-    public static Error JobSeekerIdRequired => Error.Validation("SavedJob_JobSeekerId_Required", "JobSeekerId is required");
+    public static Error JobSeekerProfileIdRequired => Error.Validation("SavedJob_JobSeekerProfileId_Required", "JobSeekerProfileId is required");
     public static Error JobIdRequired => Error.Validation("SavedJob_JobId_Required", "JobId is required");
 }

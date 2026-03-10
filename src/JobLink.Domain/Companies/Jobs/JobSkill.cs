@@ -6,12 +6,12 @@ namespace JobLink.Domain.Companies.Jobs;
 
 public sealed class JobSkill : Entity
 {
-    public Guid JobId { get; } = default!;
-    public Guid SkillId { get; } = default!;
-    public bool IsRequired { get; }
+    public Guid JobId { get; private set; } = default!;
+    public Guid SkillId { get; private set; } = default!;
+    public bool IsRequired { get; private set; }
 
-    public Job? Job { get; }
-    public Skill? Skill { get; }
+    public Job? Job { get; private set; }
+    public Skill? Skill { get; private set; }
 
     private JobSkill() { }
 

@@ -5,16 +5,16 @@ namespace JobLink.Domain.JobSeekers.Experiences;
 
 public sealed class Experience : Entity
 {
-    public Guid JobSeekerProfileId { get; }
-    public string Company { get; } = default!;
-    public string Position { get; } = default!;
-    public string Country { get; } = default!;
-    public string? Description { get; }
-    public decimal Salary { get; }
-    public DateOnly StartDate { get; }
-    public DateOnly EndDate { get; }
+    public Guid JobSeekerProfileId { get; private set; }
+    public string Company { get; private set; } = default!;
+    public string Position { get; private set; } = default!;
+    public string Country { get; private set; } = default!;
+    public string? Description { get; private set; }
+    public decimal Salary { get; private set; }
+    public DateOnly StartDate { get; private set; }
+    public DateOnly EndDate { get; private set; }
 
-    public JobSeekerProfile? JobSeekerProfile { get; }
+    public JobSeekerProfile? JobSeekerProfile { get; private set; }
 
     private Experience() { }
 

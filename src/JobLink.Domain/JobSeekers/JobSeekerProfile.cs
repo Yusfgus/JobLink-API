@@ -14,23 +14,23 @@ namespace JobLink.Domain.JobSeekers;
 
 public sealed partial class JobSeekerProfile : Entity
 {
-    public Guid UserId { get; }
-    public FullName Name { get; } = default!;
-    public string? MobileNumber { get; }
-    public DateOnly? BirthDate { get; }
-    public Address? Address { get; }
-    public Gender Gender { get; }
-    public string? Nationality { get; }
-    public MilitaryStatus? MilitaryStatus { get; }
-    public MartialStatus? MaritalStatus { get; }
+    public Guid UserId { get; private set; }
+    public FullName Name { get; private set; } = default!;
+    public string? MobileNumber { get; private set; }
+    public DateOnly? BirthDate { get; private set; }
+    public Address? Address { get; private set; }
+    public Gender Gender { get; private set; }
+    public string? Nationality { get; private set; }
+    public MilitaryStatus? MilitaryStatus { get; private set; }
+    public MaritalStatus? MaritalStatus { get; private set; }
 
-    public User? User { get; }
-    public Resume? Resume { get; }
-    public IEnumerable<Education> Educations { get; } = [];
-    public IEnumerable<Experience> Experiences { get; } = [];
-    public IEnumerable<JobSeekerSkill> Skills { get; } = [];
-    public IEnumerable<JobApplication> Applications { get; } = [];
-    public IEnumerable<SavedJob> SavedJobs { get; } = [];
+    public User? User { get; private set; }
+    public Resume? Resume { get; private set; }
+    public IEnumerable<Education> Educations { get; private set; } = [];
+    public IEnumerable<Experience> Experiences { get; private set; } = [];
+    public IEnumerable<JobSeekerSkill> Skills { get; private set; } = [];
+    public IEnumerable<JobApplication> Applications { get; private set; } = [];
+    public IEnumerable<SavedJob> SavedJobs { get; private set; } = [];
 
     public string FullName => $"{Name.FirstName} {Name.MiddleName ?? ""} {Name.LastName}";
 
@@ -38,7 +38,7 @@ public sealed partial class JobSeekerProfile : Entity
     private static partial Regex MobileNumberRegex();
 
     private JobSeekerProfile() { }
-    private JobSeekerProfile(Guid userId, FullName name, string? mobileNumber, DateOnly? birthDate, Address? address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MartialStatus? maritalStatus)
+    private JobSeekerProfile(Guid userId, FullName name, string? mobileNumber, DateOnly? birthDate, Address? address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
     {
         UserId = userId;
         Name = name;
@@ -50,7 +50,7 @@ public sealed partial class JobSeekerProfile : Entity
         MilitaryStatus = militaryStatus;
         MaritalStatus = maritalStatus;
     }
-    public static Result<JobSeekerProfile> Create(Guid userId, FullName fullName, string? mobileNumber, DateOnly? birthDate, Address? address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MartialStatus? maritalStatus)
+    public static Result<JobSeekerProfile> Create(Guid userId, FullName fullName, string? mobileNumber, DateOnly? birthDate, Address? address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
     {
         List<Error> errors = [];
 

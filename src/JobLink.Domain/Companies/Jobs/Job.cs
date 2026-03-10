@@ -8,30 +8,32 @@ namespace JobLink.Domain.Companies.Jobs;
 
 public sealed class Job : Entity
 {
-    public Guid CompanyProfileId { get; }
-    public string Title { get; } = default!;
-    public string Description { get; } = default!;
-    public JobType JobType { get; }
-    public JobLocationType LocationType { get; }
-    public Address Location { get; } = default!;
-    public SalaryRange SalaryRange { get; } = default!;
-    public ExperienceLevel ExperienceLevel { get; } = default!;
-    public DateTime PostedAtUtc { get; }
-    public DateTime? ClosedAtUtc { get; }
-    public DateTime ExpirationDateUtc { get; }
-    public JobStatus Status { get; }
+    public Guid CompanyProfileId { get; private set; }
+    public string Title { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
+    public string? Requirements { get; private set; }
+    public JobType JobType { get; private set; }
+    public JobLocationType LocationType { get; private set; }
+    public Address Location { get; private set; } = default!;
+    public SalaryRange SalaryRange { get; private set; } = default!;
+    public ExperienceLevel ExperienceLevel { get; private set; } = default!;
+    public DateTime PostedAtUtc { get; private set; }
+    public DateTime? ClosedAtUtc { get; private set; }
+    public DateTime ExpirationDateUtc { get; private set; }
+    public JobStatus Status { get; private set; }
 
-    public CompanyProfile? CompanyProfile { get; }
-    public IEnumerable<JobApplication> Applications { get; } = [];
-    public IEnumerable<JobSkill> Skills { get; } = [];
+    public CompanyProfile? CompanyProfile { get; private set; }
+    public IEnumerable<JobApplication> Applications { get; private set; } = [];
+    public IEnumerable<JobSkill> Skills { get; private set; } = [];
 
     private Job() { }
 
-    private Job(Guid companyProfileId, string title, string description, JobType jobType, JobLocationType locationType, Address location, SalaryRange salaryRange, ExperienceLevel experienceLevel, DateTime postedAtUtc, DateTime? closedAtUtc, DateTime expirationDateUtc, JobStatus status)
+    private Job(Guid companyProfileId, string title, string description, string? requirements, JobType jobType, JobLocationType locationType, Address location, SalaryRange salaryRange, ExperienceLevel experienceLevel, DateTime postedAtUtc, DateTime? closedAtUtc, DateTime expirationDateUtc, JobStatus status)
     {
         CompanyProfileId = companyProfileId;
         Title = title;
         Description = description;
+        Requirements = requirements;
         JobType = jobType;
         LocationType = locationType;
         Location = location;
@@ -43,7 +45,7 @@ public sealed class Job : Entity
         Status = status;
     }
 
-    public static Result<Job> Create(Guid companyProfileId, string title, string description, JobType jobType, JobLocationType locationType, Address location, SalaryRange salaryRange, ExperienceLevel experienceLevel, DateTime postedAtUtc, DateTime? closedAtUtc, DateTime expirationDateUtc, JobStatus status)
+    public static Result<Job> Create(Guid companyProfileId, string title, string description, string? requirements, JobType jobType, JobLocationType locationType, Address location, SalaryRange salaryRange, ExperienceLevel experienceLevel, DateTime postedAtUtc, DateTime? closedAtUtc, DateTime expirationDateUtc, JobStatus status)
     {
         List<Error> errors = [];
 
@@ -82,7 +84,7 @@ public sealed class Job : Entity
             return errors;
         }
 
-        return new Job(companyProfileId, title, description, jobType, locationType, location!, salaryRange!, experienceLevel, postedAtUtc, closedAtUtc, expirationDateUtc, status);
+        return new Job(companyProfileId, title, description, requirements, jobType, locationType, location!, salaryRange!, experienceLevel, postedAtUtc, closedAtUtc, expirationDateUtc, status);
     }
 }
 

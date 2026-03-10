@@ -8,31 +8,31 @@ namespace JobLink.Domain.JobApplications;
 
 public sealed class JobApplication : Entity
 {
-    public Guid JobSeekerId { get; }
-    public Guid JobId { get; }
-    public ApplicationStatus Status { get; }
-    public DateTime AppliedAtUtc { get; }
+    public Guid JobSeekerProfileId { get; private set; }
+    public Guid JobId { get; private set; }
+    public ApplicationStatus Status { get; private set; }
+    public DateTime AppliedAtUtc { get; private set; }
 
-    public JobSeekerProfile? JobSeekerProfile { get; }
-    public Job? Job { get; }
+    public JobSeekerProfile? JobSeekerProfile { get; private set; }
+    public Job? Job { get; private set; }
 
     private JobApplication() { }
 
-    private JobApplication(Guid jobSeekerId, Guid jobId, ApplicationStatus status, DateTime appliedAtUtc)
+    private JobApplication(Guid jobSeekerProfileId, Guid jobId, ApplicationStatus status, DateTime appliedAtUtc)
     {
-        JobSeekerId = jobSeekerId;
+        JobSeekerProfileId = jobSeekerProfileId;
         JobId = jobId;
         Status = status;
         AppliedAtUtc = appliedAtUtc;
     }
 
-    public static Result<JobApplication> Create(Guid jobSeekerId, Guid jobId, ApplicationStatus status)
+    public static Result<JobApplication> Create(Guid jobSeekerProfileId, Guid jobId, ApplicationStatus status)
     {
         List<Error> errors = [];
 
-        if (jobSeekerId == Guid.Empty)
+        if (jobSeekerProfileId == Guid.Empty)
         {
-            errors.Add(JobApplicationError.JobSeekerIdRequired);
+            errors.Add(JobApplicationError.JobSeekerProfileIdRequired);
         }
 
         if (jobId == Guid.Empty)
@@ -45,12 +45,12 @@ public sealed class JobApplication : Entity
             return errors;
         }
 
-        return new JobApplication(jobSeekerId, jobId, status, DateTime.UtcNow);
+        return new JobApplication(jobSeekerProfileId, jobId, status, DateTime.UtcNow);
     }
 }
 
 public static class JobApplicationError
 {
-    public static Error JobSeekerIdRequired => Error.Validation("JobApplication_JobSeekerId_Required", "JobSeekerId is required");
+    public static Error JobSeekerProfileIdRequired => Error.Validation("JobApplication_JobSeekerProfileId_Required", "JobSeekerProfileId is required");
     public static Error JobIdRequired => Error.Validation("JobApplication_JobId_Required", "JobId is required");
 }

@@ -7,14 +7,14 @@ namespace JobLink.Domain.Companies;
 
 public sealed class CompanyProfile : Entity
 {
-    public Guid UserId { get; }
-    public string Name { get; } = default!;
-    public string Industry { get; } = default!;
-    public string? Website { get; }
+    public Guid UserId { get; private set; }
+    public string Name { get; private set; } = default!;
+    public string Industry { get; private set; } = default!;
+    public string? Website { get; private set; }
 
-    public User? User { get; }
-    public IEnumerable<CompanyLocation> Locations { get; } = [];
-    public IEnumerable<Job> Jobs { get; } = [];
+    public User? User { get; private set; }
+    public IEnumerable<CompanyLocation> CompanyLocations { get; private set; } = [];
+    public IEnumerable<Job> Jobs { get; private set; } = [];
 
     private CompanyProfile() { }
 
