@@ -1,6 +1,7 @@
 using JobLink.Domain.JobSeekers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -13,19 +14,19 @@ public class EducationConfiguration : EntityConfiguration<Education>
         builder.ToTable("Educations");
 
         builder.Property(x => x.Institution)
-            .HasMaxLength(150)
+            .HasMaxLength(EducationConstraints.InstitutionMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Degree)
-            .HasMaxLength(100)
+            .HasMaxLength(EducationConstraints.DegreeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.FieldOfStudy)
-            .HasMaxLength(100)
+            .HasMaxLength(EducationConstraints.FieldOfStudyMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Country)
-            .HasMaxLength(100)
+            .HasMaxLength(EducationConstraints.CountryMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Grade)

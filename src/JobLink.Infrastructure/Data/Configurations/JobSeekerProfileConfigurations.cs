@@ -1,6 +1,7 @@
 using JobLink.Domain.JobSeekers;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -15,33 +16,33 @@ public class JobSeekerProfileConfiguration : EntityConfiguration<JobSeekerProfil
         builder.OwnsOne(x => x.Name, nameBuilder =>
         {
             nameBuilder.Property(x => x.FirstName)
-                .HasMaxLength(100)
+                .HasMaxLength(JobSeekerProfileConstraints.FirstNameMaxLength)
                 .IsRequired();
 
             nameBuilder.Property(x => x.MiddleName)
-                .HasMaxLength(100);
+                .HasMaxLength(JobSeekerProfileConstraints.MiddleNameMaxLength);
 
             nameBuilder.Property(x => x.LastName)
-                .HasMaxLength(100)
+                .HasMaxLength(JobSeekerProfileConstraints.LastNameMaxLength)
                 .IsRequired();
         });
 
         builder.OwnsOne(x => x.Address, addressBuilder =>
         {
             addressBuilder.Property(x => x.City)
-                .HasMaxLength(100)
+                .HasMaxLength(AddressConstraints.CityMaxLength)
                 .IsRequired();
 
             addressBuilder.Property(x => x.Country)
-                .HasMaxLength(100)
+                .HasMaxLength(AddressConstraints.CountryMaxLength)
                 .IsRequired();
         });
 
         builder.Property(x => x.MobileNumber)
-            .HasMaxLength(15);
+            .HasMaxLength(JobSeekerProfileConstraints.MobileNumberMaxLength);
 
         builder.Property(x => x.Nationality)
-            .HasMaxLength(100);
+            .HasMaxLength(JobSeekerProfileConstraints.NationalityMaxLength);
 
         builder.Property(x => x.Gender)
             .HasConversion<string>()

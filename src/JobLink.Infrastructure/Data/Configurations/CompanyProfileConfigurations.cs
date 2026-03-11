@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using JobLink.Domain.Companies;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -13,15 +14,15 @@ public class CompanyProfileConfiguration : EntityConfiguration<CompanyProfile>
         builder.ToTable("CompanyProfiles");
 
         builder.Property(x => x.Name)
-            .HasMaxLength(100)
+            .HasMaxLength(CompanyProfileConstraints.NameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Industry)
-            .HasMaxLength(100)
+            .HasMaxLength(CompanyProfileConstraints.IndustryMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Website)
-            .HasMaxLength(100);
+            .HasMaxLength(CompanyProfileConstraints.WebsiteMaxLength);
 
         builder.HasOne(x => x.User)
             .WithOne()

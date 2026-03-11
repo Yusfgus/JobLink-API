@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using JobLink.Domain.Companies.Jobs;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -13,15 +14,15 @@ public class JobConfiguration : EntityConfiguration<Job>
         builder.ToTable("Jobs");
 
         builder.Property(x => x.Title)
-            .HasMaxLength(100)
+            .HasMaxLength(JobConstraints.TitleMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Description)
-            .HasMaxLength(100)
+            .HasMaxLength(JobConstraints.DescriptionMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Requirements)
-            .HasMaxLength(100);
+            .HasMaxLength(JobConstraints.RequirementsMaxLength);
 
         builder.Property(x => x.JobType)
             .HasConversion<string>()
@@ -33,9 +34,17 @@ public class JobConfiguration : EntityConfiguration<Job>
 
         builder.OwnsOne(x => x.Location, locationBuilder =>
         {
-            locationBuilder.Property(a => a.Country).IsRequired();
-            locationBuilder.Property(a => a.City).IsRequired();
-            locationBuilder.Property(a => a.Area).IsRequired();
+            locationBuilder.Property(a => a.Country)
+                .HasMaxLength(AddressConstraints.CountryMaxLength)
+                .IsRequired();
+                
+            locationBuilder.Property(a => a.City)
+                .HasMaxLength(AddressConstraints.CityMaxLength)
+                .IsRequired();
+                
+            locationBuilder.Property(a => a.Area)
+                .HasMaxLength(AddressConstraints.AreaMaxLength)
+                .IsRequired();
         });
 
         builder.OwnsOne(x => x.SalaryRange, salaryRangeBuilder =>

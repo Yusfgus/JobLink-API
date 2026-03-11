@@ -1,6 +1,7 @@
 using JobLink.Domain.JobSeekers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -13,7 +14,7 @@ public class ResumeConfiguration : EntityConfiguration<Resume>
         builder.ToTable("Resumes");
 
         builder.Property(x => x.FileUrl)
-            .HasMaxLength(2000)
+            .HasMaxLength(ResumeConstraints.FileUrlMaxLength)
             .IsRequired();
 
         builder.HasOne(x => x.JobSeekerProfile)

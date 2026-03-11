@@ -1,6 +1,7 @@
 using JobLink.Domain.Skills;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -13,7 +14,7 @@ public class SkillConfiguration : EntityConfiguration<Skill>
         builder.ToTable("Skills");
 
         builder.Property(x => x.Name)
-            .HasMaxLength(100)
+            .HasMaxLength(SkillConstraints.NameMaxLength)
             .IsRequired();
 
         builder.HasIndex(x => x.Name)

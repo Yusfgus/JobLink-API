@@ -1,6 +1,7 @@
 using JobLink.Domain.JobSeekers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using JobLink.Domain.Common.Constants;
 
 namespace JobLink.Infrastructure.Data.Configurations;
 
@@ -13,19 +14,19 @@ public class ExperienceConfiguration : EntityConfiguration<Experience>
         builder.ToTable("Experiences");
 
         builder.Property(x => x.Company)
-            .HasMaxLength(150)
+            .HasMaxLength(ExperienceConstraints.CompanyMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Position)
-            .HasMaxLength(100)
+            .HasMaxLength(ExperienceConstraints.PositionMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Country)
-            .HasMaxLength(100)
+            .HasMaxLength(ExperienceConstraints.CountryMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Description)
-            .HasMaxLength(2000);
+            .HasMaxLength(ExperienceConstraints.DescriptionMaxLength);
 
         builder.Property(x => x.Salary)
             .HasColumnType("decimal(18,2)");
