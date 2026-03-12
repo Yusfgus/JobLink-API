@@ -61,4 +61,9 @@ public class ApiController : ControllerBase
     {
         return Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
+
+    protected string GetUserRole()
+    {
+        return User.FindFirstValue(ClaimTypes.Role)!;
+    }
 }

@@ -1,6 +1,9 @@
 @baseUrl = https://localhost:7236/api/companies
 
-@id = 5d6e4ad0-264b-464d-9da0-c9f6672d2c8a
+@id = 9C6B4302-361C-496C-9D9B-C6BD83E1C241
+
+###
+GET {{baseUrl}}/{{id}}
 
 ###
 POST {{baseUrl}}

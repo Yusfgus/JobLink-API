@@ -2,6 +2,7 @@ using JobLink.API.Contracts.Companies;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using JobLink.API.Mappings;
+using JobLink.Application.Features.Companies.Queries.GetCompanyById;
 
 namespace JobLink.API.Controllers;
 
@@ -10,7 +11,7 @@ namespace JobLink.API.Controllers;
 public class CompanyController(ISender sender) : ApiController
 {
     [HttpPost]
-    public async Task<IActionResult> RegisterCompany([FromBody] RegisterCompanyRequest request, CancellationToken ct)
+    public async Task<IActionResult> Register([FromBody] RegisterCompanyRequest request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(), ct);
 
@@ -21,8 +22,13 @@ public class CompanyController(ISender sender) : ApiController
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetCompany(Guid id, CancellationToken ct)
+    public async Task<IActionResult> GetCompany(Guid id, CancellationToken ct)
     {
-        return Ok();
+        var result = await sender.Send(new GetCompanyByIdQuery(id), ct);
+
+        return result.Match(
+            company => Ok(company),
+            errors => Problem(errors)
+        );
     }
 }

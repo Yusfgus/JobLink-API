@@ -16,7 +16,7 @@ public static class DependencyInjection
 
         services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
-        services.AddScoped<SqlConnectionFactory>();
+        services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
         return services;
     }

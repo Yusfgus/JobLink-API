@@ -1,6 +1,9 @@
 @baseUrl = https://localhost:7236/api/job-seekers
 
-@id = 7ff07b79-3124-4ad9-8187-f1d6a17c0bb5
+@id = a83f0a27-72aa-4d1c-b1ab-fc1567a38f4d
+
+###
+GET {{baseUrl}}/{{id}}
 
 ###
 POST {{baseUrl}}
@@ -19,29 +22,3 @@ Content-Type: application/json
   "gender": "Male",
   "nationality": "Egyptian"
 }
-
-# {
-#   "user": {
-#     "email": "johndoe@example.com",
-#     "password": "StrongPassword123!",
-#     "profilePictureUrl": "https://example.com/profile.jpg",
-#     "role": "JobSeeker",
-#     "summary": "A brief summary of the user profile."
-#   },
-#   "name": {
-#     "firstName": "John",
-#     "middleName": "William",
-#     "lastName": "Doe"
-#   },
-#   "mobileNumber": "+1234567890",
-#   "birthDate": "1990-01-01",
-#   "address": {
-#     "country": "United States",
-#     "city": "New York",
-#     "area": "Manhattan"
-#   },
-#   "gender": "Male",
-#   "nationality": "American",
-#   "militaryStatus": "Exempted",
-#   "maritalStatus": "Single"
-# }

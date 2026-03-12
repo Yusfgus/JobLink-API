@@ -2,6 +2,7 @@ using JobLink.API.Contracts.JobSeekers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using JobLink.API.Mappings;
+using JobLink.Application.Features.JobSeekers.Queries.GetJobSeekerById;
 
 namespace JobLink.API.Controllers;
 
@@ -10,7 +11,7 @@ namespace JobLink.API.Controllers;
 public class JobSeekerController(ISender sender) : ApiController
 {
     [HttpPost]
-    public async Task<IActionResult> RegisterJobSeeker([FromBody] RegisterJobSeekerRequest request, CancellationToken ct)
+    public async Task<IActionResult> Register([FromBody] RegisterJobSeekerRequest request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(), ct);
 
@@ -21,8 +22,13 @@ public class JobSeekerController(ISender sender) : ApiController
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetJobSeeker(Guid id, CancellationToken ct)
+    public async Task<IActionResult> GetJobSeeker(Guid id, CancellationToken ct)
     {
-        return Ok();
+        var result = await sender.Send(new GetJobSeekerByIdQuery(id), ct);
+
+        return result.Match(
+            jobSeeker => Ok(jobSeeker),
+            errors => Problem(errors)
+        );
     }
 }
