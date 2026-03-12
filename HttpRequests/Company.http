@@ -1,0 +1,29 @@
+@baseUrl = https://localhost:7236/api/companies
+
+@id = 5d6e4ad0-264b-464d-9da0-c9f6672d2c8a
+
+###
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "email": "manga@example.com",
+  "password": "StrongPassword123!",
+  "profilePictureUrl": "https://example.com/profile.jpg",
+  "summary": "A brief summary of the user profile.",
+  "name": "Manga",
+  "industry": "IT",
+  "website": "https://www.google.com",
+  "locations": [
+    {
+      "country": "United States",
+      "city": "Mountain View",
+      "area": "California"
+    },
+    {
+      "country": "Egypt",
+      "city": "Cairo",
+      "area": "Nasr City"
+    }
+  ]
+}

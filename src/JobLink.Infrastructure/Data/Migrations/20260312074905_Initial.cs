@@ -96,9 +96,9 @@ namespace JobLink.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     CompanyProfileId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Address_Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Address_City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Address_Area = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true)
+                    Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Area = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {

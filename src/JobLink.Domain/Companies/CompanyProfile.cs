@@ -1,5 +1,6 @@
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
+using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.Companies.Jobs;
 using JobLink.Domain.Users;
 
@@ -13,8 +14,10 @@ public sealed class CompanyProfile : Entity
     public string? Website { get; private set; }
 
     public User? User { get; private set; }
-    public IEnumerable<CompanyLocation> CompanyLocations { get; private set; } = [];
-    public IEnumerable<Job> Jobs { get; private set; } = [];
+    private readonly List<CompanyLocation> _companyLocations = [];
+    public IReadOnlyCollection<CompanyLocation> CompanyLocations => _companyLocations;
+    private readonly List<Job> _jobs = [];
+    public IReadOnlyCollection<Job> Jobs => _jobs;
 
     private CompanyProfile() { }
 
@@ -46,6 +49,34 @@ public sealed class CompanyProfile : Entity
         }
 
         return new CompanyProfile(userId, name, industry, website);
+    }
+
+    public Result AddLocation(Address location)
+    {
+        var companyLocationResult = CompanyLocation.Create(Id, location);
+
+        if (companyLocationResult.IsFailure)
+        {
+            return companyLocationResult.Errors;
+        }
+
+        _companyLocations.Add(companyLocationResult.Value!);
+
+        return Result.Success();
+    }
+
+    public Result AddLocations(List<Address> locations)
+    {
+        var companyLocationsResults = locations.Select(location => CompanyLocation.Create(Id, location));
+
+        if (companyLocationsResults.Any(x => x.IsFailure))
+        {
+            return companyLocationsResults.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
+        }
+
+        _companyLocations.AddRange(companyLocationsResults.Select(x => x.Value!));
+
+        return Result.Success();
     }
 }
 

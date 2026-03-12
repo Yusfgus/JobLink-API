@@ -17,20 +17,24 @@ public class CompanyLocationConfiguration : EntityConfiguration<CompanyLocation>
         {
             addressBuilder.Property(a => a.Country)
                 .HasMaxLength(AddressConstraints.CountryMaxLength)
+                .HasColumnName("Country")
                 .IsRequired();
-                
+
             addressBuilder.Property(a => a.City)
                 .HasMaxLength(AddressConstraints.CityMaxLength)
+                .HasColumnName("City")
                 .IsRequired();
-                
+
             addressBuilder.Property(a => a.Area)
                 .HasMaxLength(AddressConstraints.AreaMaxLength)
+                .HasColumnName("Area")
                 .IsRequired(false);
         });
 
         builder.HasOne(x => x.CompanyProfile)
             .WithMany(x => x.CompanyLocations)
             .HasForeignKey(x => x.CompanyProfileId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
 }

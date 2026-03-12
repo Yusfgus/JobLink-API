@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobLink.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260312063437_Initial")]
+    [Migration("20260312074905_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -448,17 +448,20 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.Property<string>("Area")
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Area");
 
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("City");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Country");
 
                             b1.HasKey("CompanyLocationId");
 

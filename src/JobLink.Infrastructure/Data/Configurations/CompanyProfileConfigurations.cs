@@ -27,6 +27,7 @@ public class CompanyProfileConfiguration : EntityConfiguration<CompanyProfile>
         builder.HasOne(x => x.User)
             .WithOne()
             .HasForeignKey<CompanyProfile>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
 }

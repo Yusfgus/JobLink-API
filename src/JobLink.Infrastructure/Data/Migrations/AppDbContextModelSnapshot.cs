@@ -445,21 +445,24 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.Property<string>("Area")
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Area");
 
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("City");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Country");
 
                             b1.HasKey("CompanyLocationId");
 
-                            b1.ToTable("CompanyLocations");
+                            b1.ToTable("CompanyLocations", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CompanyLocationId");
@@ -490,25 +493,6 @@ namespace JobLink.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("JobLink.Domain.Common.ValueObjects.SalaryRange", "SalaryRange", b1 =>
-                        {
-                            b1.Property<Guid>("JobId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<decimal>("Max")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<decimal>("Min")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.HasKey("JobId");
-
-                            b1.ToTable("Jobs");
-
-                            b1.WithOwner()
-                                .HasForeignKey("JobId");
-                        });
-
                     b.OwnsOne("JobLink.Domain.Common.ValueObjects.Address", "Location", b1 =>
                         {
                             b1.Property<Guid>("JobId")
@@ -531,7 +515,26 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.HasKey("JobId");
 
-                            b1.ToTable("Jobs");
+                            b1.ToTable("Jobs", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("JobId");
+                        });
+
+                    b.OwnsOne("JobLink.Domain.Common.ValueObjects.SalaryRange", "SalaryRange", b1 =>
+                        {
+                            b1.Property<Guid>("JobId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("Max")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<decimal>("Min")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.HasKey("JobId");
+
+                            b1.ToTable("Jobs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("JobId");
@@ -636,7 +639,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.HasKey("JobSeekerProfileId");
 
-                            b1.ToTable("JobSeekerProfiles");
+                            b1.ToTable("JobSeekerProfiles", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("JobSeekerProfileId");

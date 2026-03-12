@@ -58,6 +58,7 @@ public class JobSeekerProfileConfiguration : EntityConfiguration<JobSeekerProfil
         builder.HasOne(x => x.User)
             .WithOne()
             .HasForeignKey<JobSeekerProfile>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
     }

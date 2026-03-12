@@ -23,8 +23,11 @@ public sealed class Job : Entity
     public JobStatus Status { get; private set; }
 
     public CompanyProfile? CompanyProfile { get; private set; }
-    public IEnumerable<JobApplication> Applications { get; private set; } = [];
-    public IEnumerable<JobSkill> Skills { get; private set; } = [];
+    private readonly List<JobApplication> _applications = [];
+    public IReadOnlyCollection<JobApplication> Applications => _applications;
+
+    private readonly List<JobSkill> _skills = [];
+    public IReadOnlyCollection<JobSkill> Skills => _skills;
 
     private Job() { }
 

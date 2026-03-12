@@ -24,11 +24,20 @@ public sealed class JobSeekerProfile : Entity
 
     public User? User { get; private set; }
     public Resume? Resume { get; private set; }
-    public IEnumerable<Education> Educations { get; private set; } = [];
-    public IEnumerable<Experience> Experiences { get; private set; } = [];
-    public IEnumerable<JobSeekerSkill> Skills { get; private set; } = [];
-    public IEnumerable<JobApplication> Applications { get; private set; } = [];
-    public IEnumerable<SavedJob> SavedJobs { get; private set; } = [];
+    private readonly List<Education> _educations = [];
+    public IReadOnlyCollection<Education> Educations => _educations;
+
+    private readonly List<Experience> _experiences = [];
+    public IReadOnlyCollection<Experience> Experiences => _experiences;
+
+    private readonly List<JobSeekerSkill> _skills = [];
+    public IReadOnlyCollection<JobSeekerSkill> Skills => _skills;
+
+    private readonly List<JobApplication> _applications = [];
+    public IReadOnlyCollection<JobApplication> Applications => _applications;
+
+    private readonly List<SavedJob> _savedJobs = [];
+    public IReadOnlyCollection<SavedJob> SavedJobs => _savedJobs;
 
     public string FullName => $"{FirstName} {MiddleName ?? ""} {LastName}";
 
