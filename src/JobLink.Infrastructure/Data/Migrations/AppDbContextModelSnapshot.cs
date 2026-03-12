@@ -51,7 +51,7 @@ namespace JobLink.Infrastructure.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Website")
-                        .HasMaxLength(100)
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -75,7 +75,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(5000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ExperienceLevel")
@@ -97,7 +97,7 @@ namespace JobLink.Infrastructure.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Requirements")
-                        .HasMaxLength(100)
+                        .HasMaxLength(5000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
@@ -106,7 +106,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -264,18 +264,32 @@ namespace JobLink.Infrastructure.Data.Migrations
                     b.Property<DateOnly?>("BirthDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("MaritalStatus")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MiddleName")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MilitaryStatus")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MobileNumber")
-                        .HasMaxLength(15)
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nationality")
@@ -325,7 +339,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                     b.Property<string>("FileUrl")
                         .IsRequired()
-                        .HasMaxLength(2000)
+                        .HasMaxLength(2048)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("JobSeekerProfileId")
@@ -375,6 +389,9 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Skills", (string)null);
                 });
 
@@ -385,15 +402,16 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProfilePictureUrl")
-                        .HasMaxLength(255)
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Role")
@@ -405,6 +423,9 @@ namespace JobLink.Infrastructure.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users", (string)null);
                 });
@@ -423,14 +444,17 @@ namespace JobLink.Infrastructure.Data.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Area")
+                                .HasMaxLength(100)
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("City")
                                 .IsRequired()
+                                .HasMaxLength(100)
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
+                                .HasMaxLength(100)
                                 .HasColumnType("TEXT");
 
                             b1.HasKey("CompanyLocationId");
@@ -492,14 +516,17 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.Property<string>("Area")
                                 .IsRequired()
+                                .HasMaxLength(100)
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("City")
                                 .IsRequired()
+                                .HasMaxLength(100)
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
+                                .HasMaxLength(100)
                                 .HasColumnType("TEXT");
 
                             b1.HasKey("JobId");
@@ -587,47 +614,25 @@ namespace JobLink.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("JobLink.Domain.Common.ValueObjects.FullName", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("JobSeekerProfileId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("MiddleName")
-                                .HasMaxLength(100)
-                                .HasColumnType("TEXT");
-
-                            b1.HasKey("JobSeekerProfileId");
-
-                            b1.ToTable("JobSeekerProfiles");
-
-                            b1.WithOwner()
-                                .HasForeignKey("JobSeekerProfileId");
-                        });
-
                     b.OwnsOne("JobLink.Domain.Common.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("JobSeekerProfileId")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("City")
-                                .IsRequired()
+                            b1.Property<string>("Area")
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Area");
+
+                            b1.Property<string>("City")
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("City");
 
                             b1.Property<string>("Country")
-                                .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("TEXT");
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Country");
 
                             b1.HasKey("JobSeekerProfileId");
 
@@ -637,9 +642,7 @@ namespace JobLink.Infrastructure.Data.Migrations
                                 .HasForeignKey("JobSeekerProfileId");
                         });
 
-                    b.Navigation("Address");
-
-                    b.Navigation("Name")
+                    b.Navigation("Address")
                         .IsRequired();
 
                     b.Navigation("User");

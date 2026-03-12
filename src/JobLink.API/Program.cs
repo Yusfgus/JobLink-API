@@ -1,11 +1,13 @@
-using JobLink.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration)
+    .AddApplication()
+    .AddPresentation();
 
 var app = builder.Build();
+
+app.MapControllers();
 
 app.MapGet("/", () => "Hello World!");
 

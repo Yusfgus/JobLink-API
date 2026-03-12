@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.Common.Enums;
@@ -9,13 +8,15 @@ using JobLink.Domain.SavedJobs;
 
 namespace JobLink.Domain.JobSeekers;
 
-public sealed partial class JobSeekerProfile : Entity
+public sealed class JobSeekerProfile : Entity
 {
     public Guid UserId { get; private set; }
-    public FullName Name { get; private set; } = default!;
+    public string FirstName { get; private set; } = default!;
+    public string? MiddleName { get; private set; }
+    public string LastName { get; private set; } = default!;
     public string? MobileNumber { get; private set; }
     public DateOnly? BirthDate { get; private set; }
-    public Address? Address { get; private set; }
+    public Address Address { get; private set; } = default!;
     public Gender Gender { get; private set; }
     public string? Nationality { get; private set; }
     public MilitaryStatus? MilitaryStatus { get; private set; }
@@ -29,16 +30,15 @@ public sealed partial class JobSeekerProfile : Entity
     public IEnumerable<JobApplication> Applications { get; private set; } = [];
     public IEnumerable<SavedJob> SavedJobs { get; private set; } = [];
 
-    public string FullName => $"{Name.FirstName} {Name.MiddleName ?? ""} {Name.LastName}";
-
-    [GeneratedRegex(@"^\+?\d{7,15}$")]
-    private static partial Regex MobileNumberRegex();
+    public string FullName => $"{FirstName} {MiddleName ?? ""} {LastName}";
 
     private JobSeekerProfile() { }
-    private JobSeekerProfile(Guid userId, FullName name, string? mobileNumber, DateOnly? birthDate, Address? address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
+    private JobSeekerProfile(Guid userId, string firstName, string? middleName, string lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
     {
         UserId = userId;
-        Name = name;
+        FirstName = firstName;
+        MiddleName = middleName;
+        LastName = lastName;
         MobileNumber = mobileNumber;
         BirthDate = birthDate;
         Address = address;
@@ -47,49 +47,33 @@ public sealed partial class JobSeekerProfile : Entity
         MilitaryStatus = militaryStatus;
         MaritalStatus = maritalStatus;
     }
-    public static Result<JobSeekerProfile> Create(Guid userId, FullName fullName, string? mobileNumber, DateOnly? birthDate, Address? address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
-    {
-        List<Error> errors = [];
 
+    public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string? middleName, string lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
+    {
         if (userId == Guid.Empty)
         {
-            errors.Add(JobSeekerProfileError.UserIdRequired);
+            return JobSeekerProfileError.UserIdRequired;
         }
 
-        if (string.IsNullOrWhiteSpace(fullName.FirstName))
+        if (string.IsNullOrWhiteSpace(firstName))
         {
-            errors.Add(JobSeekerProfileError.FirstNameRequired);
+            return JobSeekerProfileError.FirstNameRequired;
         }
 
-        if (string.IsNullOrWhiteSpace(fullName.LastName))
+        if (string.IsNullOrWhiteSpace(lastName))
         {
-            errors.Add(JobSeekerProfileError.LastNameRequired);
+            return JobSeekerProfileError.LastNameRequired;
         }
 
-        if (string.IsNullOrWhiteSpace(mobileNumber))
-        {
-            errors.Add(JobSeekerProfileError.MobileNumberRequired);
-        }
-        else if (!MobileNumberRegex().IsMatch(mobileNumber))
-        {
-            errors.Add(JobSeekerProfileError.MobileNumberInvalid);
-        }
-
-        if (errors.Count > 0)
-        {
-            return errors;
-        }
-
-        return new JobSeekerProfile(userId, fullName, mobileNumber, birthDate, address, gender, nationality, militaryStatus, maritalStatus);
+        return new JobSeekerProfile(userId, firstName, middleName, lastName, mobileNumber, birthDate, address, gender, nationality, militaryStatus, maritalStatus);
     }
 
 }
 
-public static class JobSeekerProfileError
+internal static class JobSeekerProfileError
 {
-    public static Error UserIdRequired => Error.Validation("JobSeekerProfile_UserId_Required", "User id is required");
-    public static Error FirstNameRequired => Error.Validation("JobSeekerProfile_FirstName_Required", "First name is required");
-    public static Error LastNameRequired => Error.Validation("JobSeekerProfile_LastName_Required", "Last name is required");
-    public static Error MobileNumberRequired => Error.Validation("JobSeekerProfile_MobileNumber_Required", "Mobile number is required");
-    public static Error MobileNumberInvalid => Error.Validation("JobSeekerProfile_MobileNumber_Invalid", "Mobile number is invalid");
+    public static Error UserIdRequired => Error.Validation("JobSeekerProfile.UserId", "User id is required");
+    public static Error FirstNameRequired => Error.Validation("FullName.FirstName", "First name is required.");
+    public static Error LastNameRequired => Error.Validation("FullName.LastName", "Last name is required.");
+
 }

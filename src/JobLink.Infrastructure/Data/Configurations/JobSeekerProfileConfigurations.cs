@@ -13,29 +13,30 @@ public class JobSeekerProfileConfiguration : EntityConfiguration<JobSeekerProfil
 
         builder.ToTable("JobSeekerProfiles");
 
-        builder.OwnsOne(x => x.Name, nameBuilder =>
-        {
-            nameBuilder.Property(x => x.FirstName)
+        builder.Property(x => x.FirstName)
                 .HasMaxLength(JobSeekerProfileConstraints.FirstNameMaxLength)
                 .IsRequired();
 
-            nameBuilder.Property(x => x.MiddleName)
-                .HasMaxLength(JobSeekerProfileConstraints.MiddleNameMaxLength);
+        builder.Property(x => x.MiddleName)
+            .HasMaxLength(JobSeekerProfileConstraints.MiddleNameMaxLength);
 
-            nameBuilder.Property(x => x.LastName)
-                .HasMaxLength(JobSeekerProfileConstraints.LastNameMaxLength)
-                .IsRequired();
-        });
+        builder.Property(x => x.LastName)
+            .HasMaxLength(JobSeekerProfileConstraints.LastNameMaxLength)
+            .IsRequired();
 
         builder.OwnsOne(x => x.Address, addressBuilder =>
         {
-            addressBuilder.Property(x => x.City)
-                .HasMaxLength(AddressConstraints.CityMaxLength)
-                .IsRequired();
-
             addressBuilder.Property(x => x.Country)
-                .HasMaxLength(AddressConstraints.CountryMaxLength)
-                .IsRequired();
+                .HasColumnName("Country")
+                .HasMaxLength(AddressConstraints.CountryMaxLength);
+
+            addressBuilder.Property(x => x.City)
+                .HasColumnName("City")
+                .HasMaxLength(AddressConstraints.CityMaxLength);
+
+            addressBuilder.Property(x => x.Area)
+                .HasColumnName("Area")
+                .HasMaxLength(AddressConstraints.AreaMaxLength);
         });
 
         builder.Property(x => x.MobileNumber)

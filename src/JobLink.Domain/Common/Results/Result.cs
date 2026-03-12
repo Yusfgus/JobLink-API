@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace JobLink.Domain.Common.Results;
 
 public class Result
@@ -19,6 +21,16 @@ public class Result
     }
 
     public static Result Success() => new();
+
+    public static Result Combine(params Result[] results)
+    {
+        List<Error> errors = results
+            .Where(r => r.IsFailure)
+            .SelectMany(r => r.Errors)
+            .ToList();
+
+        return errors.Count > 0 ? errors : Success();
+    }
 
     public static implicit operator Result(Error error) => new([error]);
     public static implicit operator Result(List<Error> errors) => new(errors);

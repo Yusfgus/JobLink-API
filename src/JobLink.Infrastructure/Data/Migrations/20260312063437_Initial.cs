@@ -28,9 +28,9 @@ namespace JobLink.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
-                    ProfilePictureUrl = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    ProfilePictureUrl = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Role = table.Column<string>(type: "TEXT", nullable: false),
                     Summary = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
                 },
@@ -47,7 +47,7 @@ namespace JobLink.Infrastructure.Data.Migrations
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Industry = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Website = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true)
+                    Website = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,13 +66,14 @@ namespace JobLink.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name_FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Name_MiddleName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    Name_LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    MiddleName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
                     BirthDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
-                    Address_Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    Address_City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    Area = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     Gender = table.Column<string>(type: "TEXT", nullable: false),
                     Nationality = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     MilitaryStatus = table.Column<string>(type: "TEXT", nullable: true),
@@ -95,9 +96,9 @@ namespace JobLink.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     CompanyProfileId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Address_Country = table.Column<string>(type: "TEXT", nullable: false),
-                    Address_City = table.Column<string>(type: "TEXT", nullable: false),
-                    Address_Area = table.Column<string>(type: "TEXT", nullable: true)
+                    Address_Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Address_City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Address_Area = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,14 +117,14 @@ namespace JobLink.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     CompanyProfileId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Requirements = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 5000, nullable: false),
+                    Requirements = table.Column<string>(type: "TEXT", maxLength: 5000, nullable: true),
                     JobType = table.Column<string>(type: "TEXT", nullable: false),
                     LocationType = table.Column<string>(type: "TEXT", nullable: false),
-                    Location_Country = table.Column<string>(type: "TEXT", nullable: false),
-                    Location_City = table.Column<string>(type: "TEXT", nullable: false),
-                    Location_Area = table.Column<string>(type: "TEXT", nullable: false),
+                    Location_Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Location_City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Location_Area = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     SalaryRange_Min = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SalaryRange_Max = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ExperienceLevel = table.Column<string>(type: "TEXT", nullable: false),
@@ -225,7 +226,7 @@ namespace JobLink.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     JobSeekerProfileId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FileUrl = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false)
+                    FileUrl = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -344,9 +345,10 @@ namespace JobLink.Infrastructure.Data.Migrations
                 column: "JobId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobApplications_JobSeekerProfileId",
+                name: "IX_JobApplications_JobSeekerProfileId_JobId",
                 table: "JobApplications",
-                column: "JobSeekerProfileId");
+                columns: new[] { "JobSeekerProfileId", "JobId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Jobs_CompanyProfileId",
@@ -360,9 +362,10 @@ namespace JobLink.Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobSeekerSkills_JobSeekerProfileId",
+                name: "IX_JobSeekerSkills_JobSeekerProfileId_SkillId",
                 table: "JobSeekerSkills",
-                column: "JobSeekerProfileId");
+                columns: new[] { "JobSeekerProfileId", "SkillId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_JobSeekerSkills_SkillId",
@@ -370,9 +373,10 @@ namespace JobLink.Infrastructure.Data.Migrations
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobSkills_JobId",
+                name: "IX_JobSkills_JobId_SkillId",
                 table: "JobSkills",
-                column: "JobId");
+                columns: new[] { "JobId", "SkillId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_JobSkills_SkillId",
@@ -391,9 +395,22 @@ namespace JobLink.Infrastructure.Data.Migrations
                 column: "JobId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SavedJobs_JobSeekerProfileId",
+                name: "IX_SavedJobs_JobSeekerProfileId_JobId",
                 table: "SavedJobs",
-                column: "JobSeekerProfileId");
+                columns: new[] { "JobSeekerProfileId", "JobId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_Name",
+                table: "Skills",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />

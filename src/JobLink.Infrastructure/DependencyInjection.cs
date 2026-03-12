@@ -1,11 +1,10 @@
 using JobLink.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Infrastructure.Database;
 
-namespace JobLink.Infrastructure;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
