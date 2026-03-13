@@ -1,32 +1,7 @@
-@baseUrl = https://localhost:7236/api/companies
+@baseUrl = https://localhost:7236/api/v1/companies
 
-@id = 9C6B4302-361C-496C-9D9B-C6BD83E1C241
+# @id = 9C6B4302-361C-496C-9D9B-C6BD83E1C241
+@id = c9f49fa5-bde1-490e-9696-8c5007ba6d33
 
 ###
 GET {{baseUrl}}/{{id}}
-
-###
-POST {{baseUrl}}
-Content-Type: application/json
-
-{
-  "email": "manga@example.com",
-  "password": "StrongPassword123!",
-  "profilePictureUrl": "https://example.com/profile.jpg",
-  "summary": "A brief summary of the user profile.",
-  "name": "Manga",
-  "industry": "IT",
-  "website": "https://www.google.com",
-  "locations": [
-    {
-      "country": "United States",
-      "city": "Mountain View",
-      "area": "California"
-    },
-    {
-      "country": "Egypt",
-      "city": "Cairo",
-      "area": "Nasr City"
-    }
-  ]
-}

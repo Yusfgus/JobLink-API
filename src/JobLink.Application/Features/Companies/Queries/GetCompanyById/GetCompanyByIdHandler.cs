@@ -7,9 +7,9 @@ using System.Data;
 
 namespace JobLink.Application.Features.Companies.Queries.GetCompanyById;
 
-public class GetCompanyByIdHandler(ISqlConnectionFactory sqlConnectionFactory) : IRequestHandler<GetCompanyByIdQuery, Result<CompanyDto>>
+public class GetCompanyByIdHandler(ISqlConnectionFactory sqlConnectionFactory) : IRequestHandler<GetCompanyByIdQuery, Result<CompanyProfileDto>>
 {
-    public async Task<Result<CompanyDto>> Handle(GetCompanyByIdQuery request, CancellationToken ct)
+    public async Task<Result<CompanyProfileDto>> Handle(GetCompanyByIdQuery request, CancellationToken ct)
     {
         using IDbConnection connection = sqlConnectionFactory.CreateConnection();
 
@@ -20,7 +20,7 @@ public class GetCompanyByIdHandler(ISqlConnectionFactory sqlConnectionFactory) :
             WHERE CP.Id = @Id
         ";
 
-        CompanyDto? companyDto = await connection.QueryFirstOrDefaultAsync<CompanyDto>(sql, new { Id = request.Id });
+        CompanyProfileDto? companyDto = await connection.QueryFirstOrDefaultAsync<CompanyProfileDto>(sql, new { Id = request.Id });
 
         if (companyDto is null)
         {

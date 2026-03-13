@@ -1,24 +1,8 @@
-@baseUrl = https://localhost:7236/api/job-seekers
+@baseUrl = https://localhost:7236/api/v1/job-seekers
 
-@id = a83f0a27-72aa-4d1c-b1ab-fc1567a38f4d
+# @id = a83f0a27-72aa-4d1c-b1ab-fc1567a38f4d
+@id = 98282828-3470-48F2-910F-FEFF0B8A210D
 
 ###
 GET {{baseUrl}}/{{id}}
 
-###
-POST {{baseUrl}}
-Content-Type: application/json
-
-{
-  "email": "yusfgus@example.com",
-  "password": "StrongPassword123!",
-  "profilePictureUrl": "https://example.com/profile.jpg",
-  "summary": "A brief summary of the user profile.",
-  "firstName": "Yousef",
-  "lastName": "Sayed",
-  "mobileNumber": "+1234567890",
-  "birthDate": "1990-01-01",
-  "country": "Egypt",
-  "gender": "Male",
-  "nationality": "Egyptian"
-}

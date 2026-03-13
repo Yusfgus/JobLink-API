@@ -7,23 +7,38 @@ using System.Data;
 
 namespace JobLink.Application.Features.JobSeekers.Queries.GetJobSeekerById;
 
-public class GetJobSeekerByIdHandler(ISqlConnectionFactory sqlConnectionFactory) : IRequestHandler<GetJobSeekerByIdQuery, Result<JobSeekerDto>>
+public class GetJobSeekerByIdHandler(ISqlConnectionFactory sqlConnectionFactory) : IRequestHandler<GetJobSeekerByIdQuery, Result<JobSeekerProfileDto>>
 {
-    public async Task<Result<JobSeekerDto>> Handle(GetJobSeekerByIdQuery request, CancellationToken ct)
+    public async Task<Result<JobSeekerProfileDto>> Handle(GetJobSeekerByIdQuery request, CancellationToken ct)
     {
         using IDbConnection connection = sqlConnectionFactory.CreateConnection();
 
-        string sql = @"
-            SELECT JP.Id as Id, JP.FirstName, JP.MiddleName, JP.LastName, U.Email, JP.MobileNumber, JP.BirthDate, JP.Country, JP.City, JP.Area
+        const string sql = @"
+            SELECT 
+                JP.Id,
+                JP.FirstName,
+                JP.MiddleName,
+                JP.LastName,
+                U.Email,
+                JP.MobileNumber,
+                JP.BirthDate,
+                JP.Gender,
+                JP.Nationality,
+                JP.MilitaryStatus,
+                JP.MaritalStatus,
+                JP.Country,
+                JP.City,
+                JP.Area
             FROM JobSeekerProfiles JP
             INNER JOIN Users U ON JP.UserId = U.Id
             WHERE JP.Id = @Id
         ";
 
-        JobSeekerDto? jobSeekerDto = await connection.QueryFirstOrDefaultAsync<JobSeekerDto>(sql, new { Id = request.Id });
+        JobSeekerProfileDto? jobSeekerDto = await connection.QueryFirstOrDefaultAsync<JobSeekerProfileDto>(sql, new { request.Id });
 
         if (jobSeekerDto is null)
         {
+            // do something
             return JobSeekerError.NotFound;
         }
 

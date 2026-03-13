@@ -4,4 +4,4 @@ using MediatR;
 
 namespace JobLink.Application.Features.Companies.Queries.GetCompanyById;
 
-public sealed record GetCompanyByIdQuery(Guid Id) : IRequest<Result<CompanyDto>>;
+public sealed record GetCompanyByIdQuery(Guid Id) : IRequest<Result<CompanyProfileDto>>;

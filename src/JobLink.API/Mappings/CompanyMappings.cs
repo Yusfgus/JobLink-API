@@ -11,14 +11,10 @@ public static class CompanyMappings
         return new RegisterCompanyCommand(
             new RegisterUserDto(
                 request.Email,
-                request.Password,
-                request.ProfilePictureUrl,
-                request.Summary
+                request.Password
             ),
             request.Name,
-            request.Industry,
-            request.Website,
-            request.Locations ?? []
+            request.Industry
         );
     }
 }

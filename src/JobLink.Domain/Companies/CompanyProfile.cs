@@ -51,6 +51,11 @@ public sealed class CompanyProfile : Entity
         return new CompanyProfile(userId, name, industry, website);
     }
 
+    public static Result<CompanyProfile> Register(Guid userId, string name, string industry)
+    {
+        return Create(userId, name, industry, null);
+    }
+
     public Result AddLocation(Address location)
     {
         var companyLocationResult = CompanyLocation.Create(Id, location);

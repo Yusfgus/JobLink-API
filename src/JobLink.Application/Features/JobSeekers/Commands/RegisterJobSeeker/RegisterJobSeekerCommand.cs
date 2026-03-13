@@ -8,13 +8,6 @@ namespace JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
 public sealed record RegisterJobSeekerCommand(
     RegisterUserDto User,
     string FirstName,
-    string? MiddleName,
     string LastName,
-    string? MobileNumber,
-    DateOnly? BirthDate,
-    AddressDto Address,
-    Gender Gender,
-    string? Nationality,
-    MilitaryStatus? MilitaryStatus,
-    MaritalStatus? MaritalStatus
+    Gender Gender
 ) : IRequest<Result<Guid>>;

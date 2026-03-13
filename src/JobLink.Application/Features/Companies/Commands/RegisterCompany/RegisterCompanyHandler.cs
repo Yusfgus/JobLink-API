@@ -20,16 +20,7 @@ public class RegisterCompanyHandler(IAppDbContext dbContext, IUserService userSe
 
         Guid userId = userIdResult.Value!;
 
-        List<Result<Address>> addressResults = request.Locations.ConvertAll(address => Address.Create(address.Country, address.City, address.Area));
-
-        if (addressResults.Any(x => x.IsFailure))
-        {
-            return addressResults.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
-        }
-
-        List<Address> locations = addressResults.ConvertAll(x => x.Value!);
-
-        Result<CompanyProfile> companyProfileResult = CompanyProfile.Create(userId, request.Name, request.Industry, request.Website);
+        Result<CompanyProfile> companyProfileResult = CompanyProfile.Register(userId, request.Name, request.Industry);
 
         if (companyProfileResult.IsFailure)
         {
@@ -38,12 +29,21 @@ public class RegisterCompanyHandler(IAppDbContext dbContext, IUserService userSe
 
         CompanyProfile companyProfile = companyProfileResult.Value!;
 
-        Result addLocationsResult = companyProfile.AddLocations(locations);
+        // List<Result<Address>> addressResults = request.Locations.ConvertAll(address => Address.Create(address.Country, address.City, address.Area));
 
-        if (addLocationsResult.IsFailure)
-        {
-            return addLocationsResult.Errors;
-        }
+        // if (addressResults.Any(x => x.IsFailure))
+        // {
+        //     return addressResults.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
+        // }
+
+        // List<Address> locations = addressResults.ConvertAll(x => x.Value!);
+
+        // Result addLocationsResult = companyProfile.AddLocations(locations);
+
+        // if (addLocationsResult.IsFailure)
+        // {
+        //     return addLocationsResult.Errors;
+        // }
 
         await dbContext.CompanyProfiles.AddAsync(companyProfile, ct);
 

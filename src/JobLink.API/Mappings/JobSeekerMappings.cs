@@ -11,24 +11,11 @@ public static class JobSeekerMappings
         return new RegisterJobSeekerCommand(
             new RegisterUserDto(
                 request.Email,
-                request.Password,
-                request.ProfilePictureUrl,
-                request.Summary
+                request.Password
             ),
             request.FirstName,
-            request.MiddleName,
             request.LastName,
-            request.MobileNumber,
-            request.BirthDate,
-            new AddressDto(
-                request.Country,
-                request.City,
-                request.Area
-            ),
-            request.Gender,
-            request.Nationality,
-            request.MilitaryStatus,
-            request.MaritalStatus
+            request.Gender
         );
     }
 }

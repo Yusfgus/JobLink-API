@@ -7,7 +7,5 @@ namespace JobLink.Application.Features.Companies.Commands.RegisterCompany;
 public sealed record RegisterCompanyCommand(
     RegisterUserDto User,
     string Name,
-    string Industry,
-    string? Website,
-    List<AddressDto> Locations
+    string Industry
 ) : IRequest<Result<Guid>>;

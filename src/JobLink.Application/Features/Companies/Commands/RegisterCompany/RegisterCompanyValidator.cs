@@ -21,11 +21,11 @@ public sealed class RegisterCompanyValidator : AbstractValidator<RegisterCompany
             .MinimumLength(CompanyProfileConstraints.IndustryMinLength)
             .NotEmpty();
 
-        RuleFor(x => x.Website)
-            .MaximumLength(CompanyProfileConstraints.WebsiteMaxLength)
-            .MinimumLength(CompanyProfileConstraints.WebsiteMinLength);
+        // RuleFor(x => x.Website)
+        //     .MaximumLength(CompanyProfileConstraints.WebsiteMaxLength)
+        //     .MinimumLength(CompanyProfileConstraints.WebsiteMinLength);
 
-        RuleForEach(x => x.Locations)
-            .SetValidator(new AddressValidator());
+        // RuleForEach(x => x.Locations)
+        //     .SetValidator(new AddressValidator());
     }
 }

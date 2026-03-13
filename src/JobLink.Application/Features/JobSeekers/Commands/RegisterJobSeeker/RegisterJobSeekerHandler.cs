@@ -19,35 +19,23 @@ public class RegisterJobSeekerHandler(IAppDbContext dbContext, IUserService user
             return userIdResult.Errors;
         }
 
-        bool mobileNumberExists = await dbContext.JobSeekerProfiles.AnyAsync(x => x.MobileNumber == request.MobileNumber, ct);
-
-        if (mobileNumberExists)
-        {
-            return JobSeekerError.MobileNumberAlreadyExists;
-        }
-
         Guid userId = userIdResult.Value!;
 
-        Result<Address> addressResult = Address.Create(request.Address.Country, request.Address.City, request.Address.Area);
+        // bool mobileNumberExists = await dbContext.JobSeekerProfiles.AnyAsync(x => x.MobileNumber == request.MobileNumber, ct);
 
-        if (addressResult.IsFailure)
-        {
-            return addressResult.Errors;
-        }
+        // if (mobileNumberExists)
+        // {
+        //     return JobSeekerError.MobileNumberAlreadyExists;
+        // }
 
-        Result<JobSeekerProfile> result = JobSeekerProfile.Create(
-            userId,
-            request.FirstName,
-            request.MiddleName,
-            request.LastName,
-            request.MobileNumber,
-            request.BirthDate,
-            addressResult.Value!,
-            request.Gender,
-            request.Nationality,
-            request.MilitaryStatus,
-            request.MaritalStatus
-        );
+        // Result<Address> addressResult = Address.Create(request.Address.Country, request.Address.City, request.Address.Area);
+
+        // if (addressResult.IsFailure)
+        // {
+        //     return addressResult.Errors;
+        // }
+
+        Result<JobSeekerProfile> result = JobSeekerProfile.Register(userId, request.FirstName, request.LastName, request.Gender);
 
         if (result.IsFailure)
         {

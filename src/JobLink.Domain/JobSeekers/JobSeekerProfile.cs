@@ -57,7 +57,7 @@ public sealed class JobSeekerProfile : Entity
         MaritalStatus = maritalStatus;
     }
 
-    public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string? middleName, string lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
+    public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string? middleName, string lastName, Gender gender, string? mobileNumber, DateOnly? birthDate, Address address, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
     {
         if (userId == Guid.Empty)
         {
@@ -75,6 +75,11 @@ public sealed class JobSeekerProfile : Entity
         }
 
         return new JobSeekerProfile(userId, firstName, middleName, lastName, mobileNumber, birthDate, address, gender, nationality, militaryStatus, maritalStatus);
+    }
+
+    public static Result<JobSeekerProfile> Register(Guid userId, string firstName, string lastName, Gender gender)
+    {
+        return Create(userId, firstName, null, lastName, gender, null, null, Address.Create(null, null, null).Value!, null, null, null);
     }
 
 }

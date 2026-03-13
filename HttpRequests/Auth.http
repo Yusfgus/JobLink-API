@@ -1,0 +1,26 @@
+@baseUrl = https://localhost:7236/api/v1/auth
+
+
+###
+POST {{baseUrl}}/register/job-seeker
+Content-Type: application/json
+
+{
+  "email": "mawad@example.com",
+  "password": "StrongPassword123!",
+  "firstName": "Mohamed",
+  "lastName": "Awad",
+  "gender": "Male"
+}
+
+
+###
+POST {{baseUrl}}/register/company
+Content-Type: application/json
+
+{
+  "email": "company1@example.com",
+  "password": "StrongPassword123!",
+  "name": "Company 1",
+  "industry": "Food"
+}

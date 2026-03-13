@@ -1,462 +1,499 @@
-# 1️⃣ Guest User Stories
+# 1️⃣ Authentication
 
-### Register account
+## Register
 
-**User Story**
+> Register new job seeker
 
-> As a guest, I want to create an account so that I can apply for jobs.
+```json
+POST /api/v1/auth/register/job-seeker
 
-**Endpoints**
-
+{
+    "email": "string",
+    "password": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "gender": "string",
+}
 ```
-POST /api/v1/auth/register
-POST /api/v1/auth/verify-email
-POST /api/v1/auth/resend-verification
+
+**Response**
+```json
+{
+    "AccessToken": "string",
+    "RefreshToken": "string"
+}
+```
+
+> Register new company
+
+```json
+POST /api/v1/auth/register/company
+
+{
+    "email": "string",
+    "password": "string",
+    "name": "string",
+    "industry": "string",
+}
+```
+
+**Response**
+```json
+{
+    "AccessToken": "string",
+    "RefreshToken": "string"
+}
 ```
 
 ---
 
-### Login
+## LogIn
 
-**User Story**
+> Login job seeker
 
-> As a guest, I want to login so that I can access my account.
-
-**Endpoints**
-
-```
+```json
 POST /api/v1/auth/login
-POST /api/v1/auth/refresh-token
-POST /api/v1/auth/logout
-GET  /api/v1/auth/me
+
+{
+    "email": "string",
+    "password": "string",
+}
+```
+
+**Response**
+```json
+{
+    "AccessToken": "string",
+    "RefreshToken": "string"
+}
+```
+---
+
+# 2️⃣ Job Seeker
+
+## General Info
+
+> Get general information.
+
+```
+GET /api/v1/job-seekers/me/profile
+```
+
+**Response**
+
+```json
+{
+    "firstName": "string",
+    "middleName": "string",
+    "lastName": "string",
+    "email": "string",
+    "mobileNumber": "string",
+    "birthdate": "string",
+    "gender": "string",
+    "nationality": "string",
+    "maritalStatus": "string",
+    "militaryStatus": "string",
+    "country": "string",
+    "city": "string",
+    "area": "string",
+}
+```
+
+> Update general information.
+
+```json
+PUT /api/v1/job-seekers/me/profile
+
+{
+    "firstName": "string",
+    "middleName": "string",
+    "lastName": "string",
+    "email": "string",
+    "mobileNumber": "string",
+    "birthdate": "string",
+    "gender": "string",
+    "nationality": "string",
+    "maritalStatus": "string",
+    "militaryStatus": "string",
+    "country": "string",
+    "city": "string",
+    "area": "string",
+}
 ```
 
 ---
 
-### Reset password
+## Skills
 
-**User Story**
+> Add a skill.
 
-> As a guest, I want to recover my password if I forget it.
+```json
+POST /api/v1/job-seekers/me/skills
 
-**Endpoints**
-
-```
-POST /api/v1/auth/forgot-password
-POST /api/v1/auth/reset-password
-```
-
----
-
-### Browse jobs
-
-**User Story**
-
-> As a guest, I want to browse jobs so that I can explore opportunities.
-
-**Endpoints**
-
-```
-GET /api/v1/jobs
-GET /api/v1/jobs/latest
-GET /api/v1/jobs/trending
-GET /api/v1/jobs/{jobId}
+{
+    "skillId": "string",
+    "level": "string",
+}
 ```
 
----
-
-### Search jobs
-
-**User Story**
-
-> As a guest, I want to search jobs by keyword and filters.
-
-**Endpoints**
+> Get all skills.
 
 ```
-GET /api/v1/jobs/search
+GET /api/v1/job-seekers/me/skills
 ```
 
-Query examples:
+**Response**
+
+```json
+[
+    {
+        "id": "string",
+        "name": "string",
+        "level": "string",
+    }
+]
+```
+
+> Get a skill by id.
 
 ```
-?keyword=backend
-&location=cairo
-&salaryMin=10000
-&experience=junior
+GET /api/v1/job-seekers/me/skills/{id}
 ```
 
----
+**Response**
 
-### View companies
+```json
+{
+    "id": "string",
+    "name": "string",
+    "level": "string",
+}
+```
 
-**User Story**
+> Update a skill by id.
 
-> As a guest, I want to view company information.
+```json
+PUT /api/v1/job-seekers/me/skills/{id}
 
-**Endpoints**
+{
+    "name": "string",
+    "level": "string",
+}
+```
+
+> Delete a skill by id.
 
 ```
-GET /api/v1/companies
-GET /api/v1/companies/{companyId}
-GET /api/v1/companies/{companyId}/jobs
+DELETE /api/v1/job-seekers/me/skills/{id}
 ```
 
 ---
 
-# 2️⃣ Job Seeker User Stories
+## Education
 
-### Manage profile
+> Add an education.
 
-**User Story**
+```json
+POST /api/v1/job-seekers/me/educations
 
-> As a job seeker, I want to manage my profile so employers can see my information.
-
-**Endpoints**
-
-```
-GET /api/v1/users/me
-PUT /api/v1/users/me
-GET /api/v1/jobseeker/profile
-PUT /api/v1/jobseeker/profile
-```
-
----
-
-### Manage skills
-
-**User Story**
-
-> As a job seeker, I want to add my skills.
-
-**Endpoints**
-
-```
-GET    /api/v1/skills
-POST   /api/v1/jobseeker/skills
-DELETE /api/v1/jobseeker/skills/{skillId}
+{
+    "degree": "string",
+    "institution": "string",
+    "fieldOfStudy": "string",
+    "grade": "string",
+    "country": "string",
+    "startYear": "string",
+    "endYear": "string",
+}
 ```
 
----
-
-### Manage education
-
-**User Story**
-
-> As a job seeker, I want to add my education history.
-
-**Endpoints**
+> Get all educations.
 
 ```
-POST   /api/v1/jobseeker/education
-PUT    /api/v1/jobseeker/education/{educationId}
-DELETE /api/v1/jobseeker/education/{educationId}
+GET /api/v1/job-seekers/me/educations
 ```
 
----
+**Response**
 
-### Manage experience
-
-**User Story**
-
-> As a job seeker, I want to add work experience.
-
-**Endpoints**
-
-```
-POST   /api/v1/jobseeker/experience
-PUT    /api/v1/jobseeker/experience/{experienceId}
-DELETE /api/v1/jobseeker/experience/{experienceId}
-```
-
----
-
-### Upload resume
-
-**User Story**
-
-> As a job seeker, I want to upload my CV.
-
-**Endpoints**
-
-```
-GET    /api/v1/resumes
-POST   /api/v1/resumes
-POST   /api/v1/resumes/{resumeId}/upload
-PUT    /api/v1/resumes/{resumeId}
-DELETE /api/v1/resumes/{resumeId}
+```json
+[
+    {
+        "id": "string",
+        "degree": "string",
+        "institution": "string",
+        "country": "string",
+        "startYear": "string",
+        "endYear": "string",
+    }
+]
 ```
 
----
-
-### Apply for a job
-
-**User Story**
-
-> As a job seeker, I want to apply for jobs.
-
-**Endpoints**
+> Get an education details by id.
 
 ```
-POST /api/v1/jobs/{jobId}/apply
-GET  /api/v1/applications/me
-GET  /api/v1/applications/{applicationId}
-PATCH /api/v1/applications/{applicationId}/withdraw
+GET /api/v1/job-seekers/me/educations/{id}
+```
+
+**Response**
+
+```json
+{
+    "id": "string",
+    "degree": "string",
+    "institution": "string",
+    "fieldOfStudy": "string",
+    "grade": "string",
+    "country": "string",
+    "startYear": "string",
+    "endYear": "string",
+}
+```
+
+> Update an education by id.
+
+```json
+PUT /api/v1/job-seekers/me/educations/{id}
+
+{
+    "degree": "string",
+    "institution": "string",
+    "fieldOfStudy": "string",
+    "grade": "string",
+    "country": "string",
+    "startYear": "string",
+    "endYear": "string",
+}
+```
+
+> Delete an education by id.
+
+```
+DELETE /api/v1/job-seekers/me/educations/{id}
 ```
 
 ---
 
-### Save jobs
+## Experience
 
-**User Story**
+> Add an experience.
 
-> As a job seeker, I want to save jobs to apply later.
+```json
+POST /api/v1/job-seekers/me/experiences
 
-**Endpoints**
-
-```
-GET    /api/v1/saved-jobs
-POST   /api/v1/saved-jobs/{jobId}
-DELETE /api/v1/saved-jobs/{jobId}
-GET    /api/v1/saved-jobs/count
-```
-
----
-
-### Follow companies
-
-**User Story**
-
-> As a job seeker, I want to follow companies to track their jobs.
-
-**Endpoints**
-
-```
-POST   /api/v1/companies/{companyId}/follow
-DELETE /api/v1/companies/{companyId}/follow
+{
+    "company": "string",
+    "position": "string",
+    "description": "string",
+    "country": "string",
+    "salary": "string",
+    "startDate": "string",
+    "endDate": "string",
+}
 ```
 
----
-
-### Get recommended jobs
-
-**User Story**
-
-> As a job seeker, I want personalized job recommendations.
-
-**Endpoints**
+> Get all experiences.
 
 ```
-GET /api/v1/jobs/recommended
+GET /api/v1/job-seekers/me/experiences
 ```
 
----
+**Response**
 
-### Notifications
-
-**User Story**
-
-> As a job seeker, I want notifications about applications and new jobs.
-
-**Endpoints**
-
-```
-GET   /api/v1/notifications
-PATCH /api/v1/notifications/{notificationId}/read
-PATCH /api/v1/notifications/read-all
-GET   /api/v1/notifications/unread-count
+```json
+[
+    {
+        "id": "string",
+        "company": "string",
+        "position": "string",
+        "country": "string",
+        "startDate": "string",
+        "endDate": "string",
+    }
+]
 ```
 
----
-
-# 3️⃣ Employer User Stories
-
-### Create company
-
-**User Story**
-
-> As an employer, I want to create a company profile.
-
-**Endpoints**
+> Get an experience details by id.
 
 ```
-POST /api/v1/companies
-PUT  /api/v1/companies/{companyId}
+GET /api/v1/job-seekers/me/experiences/{id}
 ```
 
----
+**Response**
 
-### Post jobs
+```json
+{
+    "id": "string",
+    "company": "string",
+    "position": "string",
+    "description": "string",
+    "country": "string",
+    "salary": "string",
+    "startDate": "string",
+    "endDate": "string",
+}
+```
 
-**User Story**
+> Update an experience.
 
-> As an employer, I want to create job posts.
+```json
+PUT /api/v1/job-seekers/me/experiences/{id}
 
-**Endpoints**
+{
+    "company": "string",
+    "position": "string",
+    "description": "string",
+    "country": "string",
+    "salary": "string",
+    "startDate": "string",
+    "endDate": "string",
+}
+```
+
+> Delete an experience.
 
 ```
-POST   /api/v1/jobs
-PUT    /api/v1/jobs/{jobId}
-DELETE /api/v1/jobs/{jobId}
-PATCH  /api/v1/jobs/{jobId}/close
-PATCH  /api/v1/jobs/{jobId}/reopen
+DELETE /api/v1/job-seekers/me/experiences/{id}
 ```
 
 ---
 
-### Add job skills
+## Resume
 
-**User Story**
+> Add resume.
 
-> As an employer, I want to add skills required for a job.
+```json
+POST /api/v1/job-seekers/me/resume
 
-**Endpoints**
-
-```
-POST   /api/v1/jobs/{jobId}/skills
-DELETE /api/v1/jobs/{jobId}/skills/{skillId}
-```
-
----
-
-### View applicants
-
-**User Story**
-
-> As an employer, I want to view candidates who applied.
-
-**Endpoints**
-
-```
-GET /api/v1/jobs/{jobId}/applications
-GET /api/v1/applications/{applicationId}
-GET /api/v1/resumes/{resumeId}/download
+{
+    "fileUrl": "string",
+}
 ```
 
----
-
-### Manage applications
-
-**User Story**
-
-> As an employer, I want to manage candidates.
-
-**Endpoints**
+> Get resume.
 
 ```
-PATCH /api/v1/applications/{applicationId}/accept
-PATCH /api/v1/applications/{applicationId}/reject
-PATCH /api/v1/applications/{applicationId}/shortlist
-PATCH /api/v1/applications/{applicationId}/interview
+GET /api/v1/job-seekers/me/resume
 ```
 
----
+**Response**
 
-### Job analytics
+```json
+{
+    "fileUrl": "string",
+}
+```
 
-**User Story**
-
-> As an employer, I want to see job statistics.
-
-**Endpoints**
+> Update resume.
 
 ```
-GET /api/v1/jobs/{jobId}/statistics
+PUT /api/v1/job-seekers/me/resume
+```
+
+**Body**
+
+```json
+{
+    "fileUrl": "string",
+}
+```
+
+> Delete resume.
+
+```
+DELETE /api/v1/job-seekers/me/resume
 ```
 
 ---
 
-### Messaging candidates
+## Applications
 
-**User Story**
-
-> As an employer, I want to communicate with applicants.
-
-**Endpoints**
+> Get all applications.
 
 ```
-POST /api/v1/messages/conversations
-POST /api/v1/messages
-GET  /api/v1/messages/{conversationId}
+GET /api/v1/job-seekers/me/applications
 ```
+
+**Response**
+
+```json
+[
+    {
+        "id": "string",
+        "jobTitle": "string",
+        "companyName": "string",
+        "companyProfilePictureUrl": "string",
+        "location": "string",
+        "appliedAt": "string",
+        "status": "string",
+    }
+]
+```
+
+> Get an application details by id.
+
+```
+GET /api/v1/job-seekers/me/applications/{id}
+```
+
+**Response**
+
+```json
+{
+    "id": "string",
+    "jobTitle": "string",
+    "jobType": "string",
+    "experienceLevel": "string",
+    "salaryRange": "string",
+    "companyName": "string",
+    "companyProfilePictureUrl": "string",
+    "location": "string",
+    "locationType": "string",
+    "postedAt": "string",
+    "appliedAt": "string",
+    "status": "string",
+}
+```
+
+> Withdraw an application details by id.
+
+```
+DELETE /api/v1/job-seekers/me/applications/{id}
+```
+
 
 ---
 
-# 4️⃣ Admin User Stories
+## Saved Jobs
 
-### Manage users
-
-**User Story**
-
-> As an admin, I want to manage platform users.
-
-**Endpoints**
+> Get all saved jobs.
 
 ```
-GET   /api/v1/admin/users
-GET   /api/v1/users/{userId}
-PATCH /api/v1/users/{userId}/ban
-PATCH /api/v1/users/{userId}/unban
-PATCH /api/v1/users/{userId}/activate
-PATCH /api/v1/users/{userId}/deactivate
+GET /api/v1/job-seekers/me/saved-jobs
 ```
 
----
+**Response**
 
-### Moderate jobs
-
-**User Story**
-
-> As an admin, I want to remove inappropriate jobs.
-
-**Endpoints**
-
-```
-GET    /api/v1/admin/jobs
-DELETE /api/v1/admin/jobs/{jobId}
-```
-
----
-
-### Manage companies
-
-**User Story**
-
-> As an admin, I want to approve companies.
-
-**Endpoints**
-
-```
-GET   /api/v1/admin/companies
-PATCH /api/v1/admin/companies/{companyId}/approve
-PATCH /api/v1/admin/companies/{companyId}/reject
+```json
+[
+    {
+        "id": "string",
+        "jobTitle": "string",
+        "jobType": "string",
+        "jobType": "string",
+        "companyName": "string",
+        "companyProfilePictureUrl": "string",
+        "location": "string",
+        "appliedAt": "string",
+        "status": "string",
+    }
+]
 ```
 
----
 
-### Platform statistics
-
-**User Story**
-
-> As an admin, I want platform statistics.
-
-**Endpoints**
+> Unsave saved job by id.
 
 ```
-GET /api/v1/admin/statistics
+DELETE /api/v1/job-seekers/me/saved-jobs/{id}
 ```
-
----
-
-# 📊 Result
-
-| Actor      | User Stories | Endpoints |
-| ---------- | ------------ | --------- |
-| Guest      | 6            | ~15       |
-| Job Seeker | 10           | ~40       |
-| Employer   | 6            | ~25       |
-| Admin      | 4            | ~10       |
-
-**Total endpoints ≈ 90–110**
 
 ---

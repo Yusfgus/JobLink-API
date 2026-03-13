@@ -17,8 +17,5 @@ public sealed class RegisterUserValidator : AbstractValidator<RegisterUserDto>
             .NotEmpty().WithMessage("Password is required")
             .MaximumLength(UserConstraints.PasswordHashMaxLength)
             .MinimumLength(UserConstraints.PasswordHashMinLength);
-
-        RuleFor(x => x.Summary)
-            .MaximumLength(UserConstraints.SummaryMaxLength);
     }
 }
