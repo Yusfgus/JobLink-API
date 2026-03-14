@@ -8,4 +8,4 @@ public sealed record RegisterCompanyCommand(
     RegisterUserDto User,
     string Name,
     string Industry
-) : IRequest<Result<Guid>>;
+) : IRequest<Result<TokenDto>>;

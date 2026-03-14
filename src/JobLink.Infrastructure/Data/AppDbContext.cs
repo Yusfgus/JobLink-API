@@ -1,4 +1,4 @@
-using JobLink.Domain.Users;
+using JobLink.Domain.Identity;
 using JobLink.Domain.JobSeekers;
 using JobLink.Domain.Companies;
 using JobLink.Domain.Companies.Jobs;
@@ -25,6 +25,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<JobApplication> JobApplications => Set<JobApplication>();
     public DbSet<SavedJob> SavedJobs => Set<SavedJob>();
     public DbSet<Skill> Skills => Set<Skill>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

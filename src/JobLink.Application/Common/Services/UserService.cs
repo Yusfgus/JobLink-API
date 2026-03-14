@@ -2,7 +2,7 @@ using JobLink.Application.Common.DTOs;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Domain.Common.Enums;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.Users;
+using JobLink.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace JobLink.Application.Common.Services;

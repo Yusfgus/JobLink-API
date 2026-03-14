@@ -1,16 +1,16 @@
+using JobLink.Application.Common.DTOs;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Domain.Common.Enums;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.JobSeekers;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
 
-public class RegisterJobSeekerHandler(IAppDbContext dbContext, IUserService userService) : IRequestHandler<RegisterJobSeekerCommand, Result<Guid>>
+public class RegisterJobSeekerHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
+    : IRequestHandler<RegisterJobSeekerCommand, Result<TokenDto>>
 {
-    public async Task<Result<Guid>> Handle(RegisterJobSeekerCommand request, CancellationToken ct)
+    public async Task<Result<TokenDto>> Handle(RegisterJobSeekerCommand request, CancellationToken ct)
     {
         Result<Guid> userIdResult = await userService.RegisterUser(request.User, UserRole.JobSeeker, ct);
 
@@ -46,8 +46,17 @@ public class RegisterJobSeekerHandler(IAppDbContext dbContext, IUserService user
 
         await dbContext.JobSeekerProfiles.AddAsync(jobSeekerProfile, ct);
 
+        Result<TokenDto> tokenResult = await jwtProvider.GenerateJWTAsync(userId, request.User.Email, UserRole.JobSeeker, ct);
+
+        if (tokenResult.IsFailure)
+        {
+            return tokenResult.Errors;
+        }
+
+        TokenDto token = tokenResult.Value!;
+
         await dbContext.SaveChangesAsync(ct);
 
-        return jobSeekerProfile.Id;
+        return token;
     }
 }

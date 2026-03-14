@@ -1,4 +1,4 @@
-using JobLink.Domain.Users;
+using JobLink.Domain.Identity;
 using JobLink.Domain.JobSeekers;
 using JobLink.Domain.Companies;
 using JobLink.Domain.Companies.Jobs;

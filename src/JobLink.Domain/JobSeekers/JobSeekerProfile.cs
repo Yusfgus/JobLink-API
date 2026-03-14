@@ -1,7 +1,7 @@
 using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.Common.Enums;
-using JobLink.Domain.Users;
+using JobLink.Domain.Identity;
 using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.JobApplications;
 using JobLink.Domain.SavedJobs;

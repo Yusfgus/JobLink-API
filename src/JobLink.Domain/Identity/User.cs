@@ -3,7 +3,7 @@ using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.Common.Enums;
 
-namespace JobLink.Domain.Users;
+namespace JobLink.Domain.Identity;
 
 public sealed class User : Entity
 {

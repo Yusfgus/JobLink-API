@@ -13,7 +13,7 @@ public class GetCompanyByIdHandler(ISqlConnectionFactory sqlConnectionFactory) :
     {
         using IDbConnection connection = sqlConnectionFactory.CreateConnection();
 
-        string sql = @"
+        const string sql = @"
             SELECT CP.Id as Id, CP.Name, U.Email, U.Summary
             FROM CompanyProfiles CP
             INNER JOIN Users U ON CP.UserId = U.Id
@@ -24,6 +24,7 @@ public class GetCompanyByIdHandler(ISqlConnectionFactory sqlConnectionFactory) :
 
         if (companyDto is null)
         {
+            // do something
             return CompanyError.NotFound;
         }
 

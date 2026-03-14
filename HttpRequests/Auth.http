@@ -24,3 +24,11 @@ Content-Type: application/json
   "name": "Company 1",
   "industry": "Food"
 }
+
+###
+POST {{baseUrl}}/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "xCC2nq/Ngf3zB3oCceq3pMydvn8qqqDi+w5l0Mx1AwI="
+}

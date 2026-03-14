@@ -10,4 +10,4 @@ public sealed record RegisterJobSeekerCommand(
     string FirstName,
     string LastName,
     Gender Gender
-) : IRequest<Result<Guid>>;
+) : IRequest<Result<TokenDto>>;

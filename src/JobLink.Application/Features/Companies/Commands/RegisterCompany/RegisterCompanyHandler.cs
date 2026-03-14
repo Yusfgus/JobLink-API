@@ -1,15 +1,16 @@
+using JobLink.Application.Common.DTOs;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Domain.Common.Enums;
 using JobLink.Domain.Common.Results;
-using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.Companies;
 using MediatR;
 
 namespace JobLink.Application.Features.Companies.Commands.RegisterCompany;
 
-public class RegisterCompanyHandler(IAppDbContext dbContext, IUserService userService) : IRequestHandler<RegisterCompanyCommand, Result<Guid>>
+public class RegisterCompanyHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
+    : IRequestHandler<RegisterCompanyCommand, Result<TokenDto>>
 {
-    public async Task<Result<Guid>> Handle(RegisterCompanyCommand request, CancellationToken ct)
+    public async Task<Result<TokenDto>> Handle(RegisterCompanyCommand request, CancellationToken ct)
     {
         Result<Guid> userIdResult = await userService.RegisterUser(request.User, UserRole.Company, ct);
 
@@ -47,8 +48,17 @@ public class RegisterCompanyHandler(IAppDbContext dbContext, IUserService userSe
 
         await dbContext.CompanyProfiles.AddAsync(companyProfile, ct);
 
+        Result<TokenDto> tokenResult = await jwtProvider.GenerateJWTAsync(userId, request.User.Email, UserRole.Company, ct);
+
+        if (tokenResult.IsFailure)
+        {
+            return tokenResult.Errors;
+        }
+
+        TokenDto token = tokenResult.Value!;
+
         await dbContext.SaveChangesAsync(ct);
 
-        return companyProfile.Id;
+        return token;
     }
 }

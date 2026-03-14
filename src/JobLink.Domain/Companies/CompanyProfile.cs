@@ -2,7 +2,7 @@ using JobLink.Domain.Common;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.Companies.Jobs;
-using JobLink.Domain.Users;
+using JobLink.Domain.Identity;
 
 namespace JobLink.Domain.Companies;
 

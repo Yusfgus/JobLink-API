@@ -1,4 +1,4 @@
-using JobLink.Domain.Users;
+using JobLink.Domain.Identity;
 using JobLink.Domain.Common.Constants;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;

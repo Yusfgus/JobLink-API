@@ -1,8 +1,10 @@
 @baseUrl = https://localhost:7236/api/v1/job-seekers
 
-# @id = a83f0a27-72aa-4d1c-b1ab-fc1567a38f4d
-@id = 98282828-3470-48F2-910F-FEFF0B8A210D
+@token = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImYzMmEyMDkzLWY5ZmYtNDlhMy1hZjk3LTU5N2M4N2MwMjI2YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6Im1hd2FkQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiSm9iU2Vla2VyIiwiZXhwIjoxNzczNzI4NTI1LCJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOiJsb2NhbGhvc3QifQ.nWrn2vSa7pr0DMkecID3kijKK7aDGXkdIPqQIhSd68I
+
+@refreshToken = xCC2nq/Ngf3zB3oCceq3pMydvn8qqqDi+w5l0Mx1AwI=
 
 ###
-GET {{baseUrl}}/{{id}}
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
 
