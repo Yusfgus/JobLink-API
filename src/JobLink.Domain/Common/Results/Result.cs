@@ -53,7 +53,9 @@ public class Result<T> : Result
         Value = value ?? throw new ArgumentNullException(nameof(value));
     }
 
-    public static implicit operator Result<T>(T value) => new(value);
+    public static Result<T> Success(T value) => new(value);
+
+    public static implicit operator Result<T>(T value) => Success(value);
     public static implicit operator Result<T>(Error error) => new([error]);
     public static implicit operator Result<T>(List<Error> errors) => new(errors);
 

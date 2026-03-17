@@ -1,14 +1,14 @@
 using JobLink.Application.Common.Interfaces;
 using JobLink.Domain.Common.Results;
 using MediatR;
-using JobLink.Application.Common.DTOs;
+using JobLink.Application.Features.Companies.DTOs;
 using Dapper;
 using System.Data;
 using JobLink.Application.Features.Identity;
 
 namespace JobLink.Application.Features.Companies.Queries.GetMyCompany;
 
-public class GetMyCompanyHandler(ISqlConnectionFactory sqlConnectionFactory, ICurrentUser currentUser) : IRequestHandler<GetMyCompanyQuery, Result<CompanyProfileDto>>
+public class GetMyCompanyQueryHandler(ISqlConnectionFactory sqlConnectionFactory, ICurrentUser currentUser) : IRequestHandler<GetMyCompanyQuery, Result<CompanyProfileDto>>
 {
     public async Task<Result<CompanyProfileDto>> Handle(GetMyCompanyQuery request, CancellationToken ct)
     {

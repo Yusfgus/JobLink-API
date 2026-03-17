@@ -1,4 +1,4 @@
-namespace JobLink.Application.Common.DTOs;
+namespace JobLink.Application.Features.Companies.DTOs;
 
 public sealed record CompanyProfileDto(
     string Id,

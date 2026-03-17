@@ -4,9 +4,9 @@ using JobLink.Application.Common.Validators;
 
 namespace JobLink.Application.Features.Companies.Commands.RegisterCompany;
 
-public sealed class RegisterCompanyValidator : AbstractValidator<RegisterCompanyCommand>
+public sealed class RegisterCompanyCommandValidator : AbstractValidator<RegisterCompanyCommand>
 {
-    public RegisterCompanyValidator()
+    public RegisterCompanyCommandValidator()
     {
         RuleFor(x => x.User)
             .SetValidator(new RegisterUserValidator());

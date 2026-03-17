@@ -31,7 +31,26 @@ public sealed class Skill : Entity
         return new Skill(name);
     }
 
+    public Result Update(string name)
+    {
+        List<Error> errors = [];
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            errors.Add(SkillError.NameRequired);
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
+        Name = name;
+
+        return Result.Success();
+    }
 }
+
 public static class SkillError
 {
     public static Error NameRequired => Error.Validation("Skill_Name_Required", "Name is required");

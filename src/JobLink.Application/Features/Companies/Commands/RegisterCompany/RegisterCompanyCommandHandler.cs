@@ -7,7 +7,7 @@ using MediatR;
 
 namespace JobLink.Application.Features.Companies.Commands.RegisterCompany;
 
-public class RegisterCompanyHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
+public class RegisterCompanyCommandHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
     : IRequestHandler<RegisterCompanyCommand, Result<TokenDto>>
 {
     public async Task<Result<TokenDto>> Handle(RegisterCompanyCommand request, CancellationToken ct)

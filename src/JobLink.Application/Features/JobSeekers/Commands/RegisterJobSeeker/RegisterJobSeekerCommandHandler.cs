@@ -7,7 +7,7 @@ using MediatR;
 
 namespace JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
 
-public class RegisterJobSeekerHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
+public class RegisterJobSeekerCommandHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
     : IRequestHandler<RegisterJobSeekerCommand, Result<TokenDto>>
 {
     public async Task<Result<TokenDto>> Handle(RegisterJobSeekerCommand request, CancellationToken ct)

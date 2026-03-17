@@ -76,7 +76,7 @@ POST /api/v1/auth/login
 > Get general information.
 
 ```
-GET /api/v1/job-seekers/me/profile
+GET /api/v1/job-seekers/me
 ```
 
 **Response**
@@ -102,7 +102,7 @@ GET /api/v1/job-seekers/me/profile
 > Update general information.
 
 ```json
-PUT /api/v1/job-seekers/me/profile
+PUT /api/v1/job-seekers/me
 
 {
     "firstName": "string",
