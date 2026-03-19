@@ -9,11 +9,14 @@ public class RefreshTokenRepository(AppDbContext context)
     public async Task AddAsync(RefreshToken refreshToken, CancellationToken ct)
     {
         await context.RefreshTokens.AddAsync(refreshToken, ct);
+        
+        await context.SaveChangesAsync(ct);
     }
 
     public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken ct)
     {
         return await context.RefreshTokens
+                .AsNoTracking()
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Token == token, ct);
     }

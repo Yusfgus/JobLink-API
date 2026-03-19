@@ -1,4 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,20 +8,19 @@ using JobLink.Application.Common.Interfaces;
 using JobLink.Application.Common.DTOs;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.Identity;
-using JobLink.Domain.Common.Enums;
 
 namespace JobLink.Infrastructure.Identity;
 
 public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration, RefreshTokenRepository refreshTokenRepo) : IJwtProvider
 {
-    public async Task<Result<TokenDto>> GenerateJWTAsync(Guid userId, string email, UserRole role, CancellationToken ct)
+    public async Task<Result<TokenDto>> GenerateJWTAsync(GenerateJWTRequest request, CancellationToken ct)
     {
         // create claims
         var claims = new List<Claim>
         {
-            new (ClaimTypes.NameIdentifier, userId.ToString()),
-            new (ClaimTypes.Email, email),
-            new (ClaimTypes.Role, role.ToString()),
+            new (ClaimTypes.NameIdentifier, request.UserId.ToString()),
+            new (ClaimTypes.Email, request.Email),
+            new (ClaimTypes.Role, request.Role.ToString()),
         };
 
         // foreach(var permission in request.Permissions)
@@ -29,25 +28,17 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
 
         // ----------
 
-        // get jwtSettings from the configurations
-        var jwtSettings = configuration.GetSection("JwtSettings");
+        var expires = timeProvider.GetUtcNow().UtcDateTime.AddMinutes(AccessTokenExpirationInMinutes);
 
-        var issuer = jwtSettings["Issuer"]!;
-        var audience = jwtSettings["Audience"]!;
-        var secretKey = jwtSettings["SecretKey"]!;
-        var expires = DateTime.UtcNow.AddMinutes(int.Parse(jwtSettings["TokenExpirationInMinutes"]!));
-
-        // ----------
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
         // create jwt security token
         var securityToken = new JwtSecurityToken
         (
-            issuer: issuer,
-            audience: audience,
+            issuer: Issuer,
+            audience: Audience,
             claims: claims,
             expires: expires,
             signingCredentials: creds
@@ -55,7 +46,7 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
 
         string accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
-        var refreshTokenResult = await GenerateRefreshTokenAsync(userId, ct);
+        var refreshTokenResult = await GenerateRefreshTokenAsync(request.UserId, ct);
 
         if (refreshTokenResult.IsFailure)
         {
@@ -81,10 +72,38 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
             return Error.Unauthorized("REFRESH_TOKEN_EXPIRED", "Refresh token expired");
         }
 
+        // get user info for db
         User user = oldRefreshToken.User;
 
         // create new token
-        return await GenerateJWTAsync(user.Id, user.Email, user.Role, ct);
+        return await GenerateJWTAsync(new GenerateJWTRequest(user.Id, user.Email, user.Role), ct);
+    }
+
+    private Result<ClaimsPrincipal> GetClaimsPrincipal(string accessToken)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = Issuer,
+            ValidateAudience = true,
+            ValidAudience = Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+            !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            return Error.Unauthorized("REFRESH_TOKEN_INVALID", "Invalid refresh token");
+        }
+
+        return principal;
     }
 
     private async Task<Result<string>> GenerateRefreshTokenAsync(Guid userId, CancellationToken ct)
@@ -97,7 +116,7 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
         (
             userId: userId,
             token: token,
-            expiresOnUtc: DateTime.UtcNow.AddDays(7)
+            expiresOnUtc: timeProvider.GetUtcNow().UtcDateTime.AddDays(RefreshTokenExpirationInDays)
         );
 
         if (refreshTokenResult.IsFailure)
@@ -109,6 +128,13 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
 
         return token;
     }
+
+    private IConfigurationSection JwtSettings => configuration.GetSection("JwtSettings");
+    private string Issuer => JwtSettings["Issuer"]!;
+    private string Audience => JwtSettings["Audience"]!;
+    private string SecretKey => JwtSettings["SecretKey"]!;
+    private int AccessTokenExpirationInMinutes => int.Parse(JwtSettings["AccessTokenExpirationInMinutes"]!);
+    private int RefreshTokenExpirationInDays => int.Parse(JwtSettings["RefreshTokenExpirationInDays"]!);
 
 }
 

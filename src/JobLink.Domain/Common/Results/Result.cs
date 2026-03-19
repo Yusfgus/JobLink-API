@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace JobLink.Domain.Common.Results;
 
 public class Result

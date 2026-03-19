@@ -1,7 +1,5 @@
-using JobLink.API.Contracts.Companies;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using JobLink.API.Mappings;
 using JobLink.Application.Features.Companies.Queries.GetMyCompany;
 using Microsoft.AspNetCore.Authorization;
 using JobLink.Domain.Common.Enums;

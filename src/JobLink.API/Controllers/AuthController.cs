@@ -6,6 +6,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using JobLink.Domain.Common.Enums;
+using JobLink.Application.Features.Identity.Commands.RefreshToken;
+using JobLink.Application.Features.Identity.Queries.LogIn;
 
 namespace JobLink.API.Controllers;
 
@@ -37,18 +40,40 @@ public class AuthController(ISender sender) : ApiController
         );
     }
 
+    [HttpPost("register/admin")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request, CancellationToken ct)
+    {
+        var result = await sender.Send(request.ToCommand(), ct);
+
+        return result.Match(
+            tokenDto => Ok(tokenDto),
+            errors => Problem(errors)
+        );
+    }
+
     [HttpPost("login")]
     [AllowAnonymous]
-    public Task<IActionResult> LogIn([FromBody] LogInRequest request, CancellationToken ct)
+    public async Task<IActionResult> LogIn([FromBody] LogInRequest request, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var result = await sender.Send(new LogInQuery(request.Email, request.Password), ct);
+
+        return result.Match(
+            tokenDto => Ok(tokenDto),
+            errors => Problem(errors)
+        );
     }
 
     [HttpPost("refresh-token")]
     [AllowAnonymous]
-    public Task<IActionResult> RefreshToken(CancellationToken ct)
+    public async Task<IActionResult> RefreshToken([FromBody] string refreshToken, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var result = await sender.Send(new RefreshTokenCommand(refreshToken), ct);
+
+        return result.Match(
+            tokenDto => Ok(tokenDto),
+            errors => Problem(errors)
+        );
     }
 
     [HttpPost("logout")]

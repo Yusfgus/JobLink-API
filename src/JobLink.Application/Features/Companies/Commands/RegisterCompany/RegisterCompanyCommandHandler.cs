@@ -48,7 +48,9 @@ public class RegisterCompanyCommandHandler(IAppDbContext dbContext, IUserService
 
         await dbContext.CompanyProfiles.AddAsync(companyProfile, ct);
 
-        Result<TokenDto> tokenResult = await jwtProvider.GenerateJWTAsync(userId, request.User.Email, UserRole.Company, ct);
+        var generateJWTRequest = new GenerateJWTRequest(userId, request.User.Email, UserRole.Company);
+
+        Result<TokenDto> tokenResult = await jwtProvider.GenerateJWTAsync(generateJWTRequest, ct);
 
         if (tokenResult.IsFailure)
         {

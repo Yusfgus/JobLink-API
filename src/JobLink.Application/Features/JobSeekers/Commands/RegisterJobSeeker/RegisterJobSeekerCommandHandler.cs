@@ -46,7 +46,9 @@ public class RegisterJobSeekerCommandHandler(IAppDbContext dbContext, IUserServi
 
         await dbContext.JobSeekerProfiles.AddAsync(jobSeekerProfile, ct);
 
-        Result<TokenDto> tokenResult = await jwtProvider.GenerateJWTAsync(userId, request.User.Email, UserRole.JobSeeker, ct);
+        var generateJWTRequest = new GenerateJWTRequest(userId, request.User.Email, UserRole.JobSeeker);
+
+        Result<TokenDto> tokenResult = await jwtProvider.GenerateJWTAsync(generateJWTRequest, ct);
 
         if (tokenResult.IsFailure)
         {

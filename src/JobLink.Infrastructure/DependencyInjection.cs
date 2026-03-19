@@ -17,6 +17,8 @@ public static class DependencyInjection
         services.AddDatabase(configuration)
                 .AddJwtAuthentication(configuration);
 
+        services.AddSingleton(TimeProvider.System);
+
         return services;
     }
 

@@ -36,8 +36,8 @@ public sealed class RegisterJobSeekerCommandValidator : AbstractValidator<Regist
         // RuleFor(x => x.Address)
         //     .SetValidator(new AddressValidator());
 
-        // RuleFor(x => x.Gender)
-        //     .IsInEnum().WithMessage("Invalid gender");
+        RuleFor(x => x.Gender)
+            .IsInEnum().WithMessage("Invalid gender");
 
         // RuleFor(x => x.Nationality)
         //     .MaximumLength(JobSeekerProfileConstraints.NationalityMaxLength);

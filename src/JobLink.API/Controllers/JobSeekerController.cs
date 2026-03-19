@@ -1,7 +1,5 @@
-using JobLink.API.Contracts.JobSeekers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using JobLink.API.Mappings;
 using JobLink.Application.Features.JobSeekers.Queries.GetMyJobSeeker;
 using Microsoft.AspNetCore.Authorization;
 using JobLink.Domain.Common.Enums;
