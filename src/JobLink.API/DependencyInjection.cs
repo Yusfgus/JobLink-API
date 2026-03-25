@@ -9,8 +9,7 @@ public static class DependencyInjection
         services.AddControllers()
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(
-                    new JsonStringEnumConverter());
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
         return services;

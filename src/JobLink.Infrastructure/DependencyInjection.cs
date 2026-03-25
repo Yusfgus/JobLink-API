@@ -64,7 +64,7 @@ public static class DependencyInjection
 
         services.AddScoped<IJwtProvider, JwtProvider>();
 
-        services.AddScoped<ICurrentUser, CurrentUser>();
+        services.AddScoped<IAppUser, AppUser>();
 
         services.AddHttpContextAccessor();
 

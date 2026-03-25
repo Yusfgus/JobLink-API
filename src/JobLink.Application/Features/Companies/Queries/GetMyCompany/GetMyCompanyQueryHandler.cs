@@ -8,11 +8,11 @@ using JobLink.Application.Features.Identity;
 
 namespace JobLink.Application.Features.Companies.Queries.GetMyCompany;
 
-public class GetMyCompanyQueryHandler(ISqlConnectionFactory sqlConnectionFactory, ICurrentUser currentUser) : IRequestHandler<GetMyCompanyQuery, Result<CompanyProfileDto>>
+public class GetMyCompanyQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyCompanyQuery, Result<CompanyProfileDto>>
 {
     public async Task<Result<CompanyProfileDto>> Handle(GetMyCompanyQuery request, CancellationToken ct)
     {
-        Guid? userId = currentUser.Id;
+        Guid? userId = appUser.UserId;
 
         if (userId is null)
         {

@@ -8,11 +8,11 @@ using JobLink.Application.Features.Identity;
 
 namespace JobLink.Application.Features.JobSeekers.Queries.GetMyJobSeeker;
 
-public class GetMyJobSeekerQueryHandler(ISqlConnectionFactory sqlConnectionFactory, ICurrentUser currentUser) : IRequestHandler<GetMyJobSeekerQuery, Result<JobSeekerProfileDto>>
+public class GetMyJobSeekerQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyJobSeekerQuery, Result<JobSeekerProfileDto>>
 {
     public async Task<Result<JobSeekerProfileDto>> Handle(GetMyJobSeekerQuery request, CancellationToken ct)
     {
-        Guid? userId = currentUser.Id;
+        Guid? userId = appUser.UserId;
 
         if (userId is null)
         {
@@ -43,7 +43,7 @@ public class GetMyJobSeekerQueryHandler(ISqlConnectionFactory sqlConnectionFacto
             WHERE JP.UserId = @UserId
         ";
 
-        JobSeekerProfileDto? jobSeekerDto = await connection.QueryFirstOrDefaultAsync<JobSeekerProfileDto>(sql, new { UserId = userId });
+        JobSeekerProfileDto? jobSeekerDto = await connection.QueryFirstOrDefaultAsync<JobSeekerProfileDto>(sql, new { UserId = userId.Value });
 
         if (jobSeekerDto is null)
         {

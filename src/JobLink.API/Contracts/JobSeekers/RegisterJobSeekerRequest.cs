@@ -2,7 +2,7 @@ using JobLink.Domain.Common.Enums;
 
 namespace JobLink.API.Contracts.JobSeekers;
 
-public record RegisterJobSeekerRequest(
+public sealed record RegisterJobSeekerRequest(
     string Email,
     string Password,
     string FirstName,

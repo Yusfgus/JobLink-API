@@ -1,4 +1,4 @@
-using JobLink.API.Contracts.JobSeekers;
+using JobLink.API.Contracts.Admin;
 using JobLink.Application.Common.DTOs;
 using JobLink.Application.Features.Admins.Commands.RegisterAdmin;
 
