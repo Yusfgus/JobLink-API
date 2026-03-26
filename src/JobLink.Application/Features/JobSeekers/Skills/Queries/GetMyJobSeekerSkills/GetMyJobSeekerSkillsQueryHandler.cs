@@ -13,22 +13,13 @@ public class GetMyJobSeekerSkillsQueryHandler(ISqlConnectionFactory sqlConnectio
     public async Task<Result<IEnumerable<JobSeekerSkillDto>>> Handle(GetMyJobSeekerSkillsQuery request, CancellationToken ct)
     {
         Guid? userId = appUser.UserId;
-
         if (userId is null)
         {
             // do something
-            return IdentityError.UserNotFound;
+            return IdentityError.Unauthenticated;
         }
 
         using IDbConnection connection = sqlConnectionFactory.CreateConnection();
-
-        Guid? jobSeekerProfileId = appUser.JobSeekerId;
-
-        if (jobSeekerProfileId is null)
-        {
-            // do something
-            return JobSeekerError.NotFound;
-        }
 
         const string sql = @"
             SELECT 
@@ -38,10 +29,11 @@ public class GetMyJobSeekerSkillsQueryHandler(ISqlConnectionFactory sqlConnectio
                 JS.SkillLevel
             FROM JobSeekerSkills JS
             INNER JOIN Skills S ON JS.SkillId = S.Id
-            WHERE JS.JobSeekerProfileId = @JobSeekerProfileId
+            INNER JOIN JobSeekerProfiles JSP ON JS.JobSeekerProfileId = JSP.Id
+            WHERE JSP.UserId = @UserId
         ";
 
-        IEnumerable<JobSeekerSkillDto>? jobSeekerSkillsDto = await connection.QueryAsync<JobSeekerSkillDto>(sql, new { JobSeekerProfileId = jobSeekerProfileId! });
+        IEnumerable<JobSeekerSkillDto>? jobSeekerSkillsDto = await connection.QueryAsync<JobSeekerSkillDto>(sql, new { UserId = userId.Value });
 
         if (jobSeekerSkillsDto is null)
         {

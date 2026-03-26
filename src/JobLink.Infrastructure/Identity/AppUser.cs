@@ -42,7 +42,7 @@ public sealed class AppUser(IHttpContextAccessor contextAccessor, ISqlConnection
         get
         {
             if (Role == nameof(UserRole.JobSeeker))
-            {   
+            {
                 using IDbConnection connection = sqlConnectionFactory.CreateConnection();
 
                 string? id = connection.QueryFirstOrDefault<string?>("""

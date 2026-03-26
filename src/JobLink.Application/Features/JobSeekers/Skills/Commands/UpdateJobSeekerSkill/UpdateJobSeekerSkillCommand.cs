@@ -5,7 +5,7 @@ using MediatR;
 namespace JobLink.Application.Features.JobSeekers.Skills.Commands.UpdateJobSeekerSkill;
 
 public sealed record UpdateJobSeekerSkillCommand(
-    Guid JobSeekerSkillId,
+    Guid Id,
     Guid SkillId,
     SkillLevel SkillLevel
 ) : IRequest<Result>;

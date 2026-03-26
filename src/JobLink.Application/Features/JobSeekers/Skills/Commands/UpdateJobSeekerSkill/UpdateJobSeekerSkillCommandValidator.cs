@@ -6,7 +6,7 @@ public class UpdateJobSeekerSkillCommandValidator : AbstractValidator<UpdateJobS
 {
     public UpdateJobSeekerSkillCommandValidator()
     {
-        RuleFor(x => x.JobSeekerSkillId).NotEmpty();
+        RuleFor(x => x.Id).NotEmpty();
 
         RuleFor(x => x.SkillId).NotEmpty();
 

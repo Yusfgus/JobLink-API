@@ -19,18 +19,19 @@ public sealed class Education : Entity
 
     private Education() { }
 
-    private Education(Guid jobSeekerProfileId, string institution, string degree, string fieldOfStudy, string country, DateOnly startDate, DateOnly endDate)
+    private Education(Guid jobSeekerProfileId, string degree, string country, string institution, string fieldOfStudy, DateOnly startDate, DateOnly endDate, AcademicGrade grade)
     {
         JobSeekerProfileId = jobSeekerProfileId;
-        Institution = institution;
         Degree = degree;
-        FieldOfStudy = fieldOfStudy;
         Country = country;
+        Institution = institution;
+        FieldOfStudy = fieldOfStudy;
         StartDate = startDate;
         EndDate = endDate;
+        Grade = grade;
     }
 
-    public static Result<Education> Create(Guid jobSeekerProfileId, string institution, string degree, string fieldOfStudy, string country, DateOnly startDate, DateOnly endDate)
+    public static Result<Education> Create(Guid jobSeekerProfileId, string degree, string country, string institution, string fieldOfStudy, DateOnly startDate, DateOnly endDate, AcademicGrade grade)
     {
         List<Error> errors = [];
 
@@ -81,13 +82,86 @@ public sealed class Education : Entity
             errors.Add(EducationError.EndDateMustBeInPast);
         }
 
+        if (grade == default)
+        {
+            errors.Add(EducationError.GradeRequired);
+        }
+
         if (errors.Count > 0)
         {
             return errors;
         }
 
-        return new Education(jobSeekerProfileId, institution, degree, fieldOfStudy, country, startDate, endDate);
+        return new Education(jobSeekerProfileId, degree, country, institution, fieldOfStudy, startDate, endDate, grade);
     }
+
+    public Result Update(string degree, string country, string institution, string fieldOfStudy, DateOnly startDate, DateOnly endDate, AcademicGrade grade)
+    {
+        List<Error> errors = [];
+
+        if (string.IsNullOrWhiteSpace(institution))
+        {
+            errors.Add(EducationError.InstitutionRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(degree))
+        {
+            errors.Add(EducationError.DegreeRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(fieldOfStudy))
+        {
+            errors.Add(EducationError.FieldOfStudyRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(country))
+        {
+            errors.Add(EducationError.CountryRequired);
+        }
+
+        if (startDate == default)
+        {
+            errors.Add(EducationError.StartDateRequired);
+        }
+        else if (startDate > DateOnly.FromDateTime(DateTime.Now))
+        {
+            errors.Add(EducationError.StartDateMustBeInPast);
+        }
+
+        if (endDate == default)
+        {
+            errors.Add(EducationError.EndDateRequired);
+        }
+        else if (endDate < startDate)
+        {
+            errors.Add(EducationError.EndDateMustBeAfterStartDate);
+        }
+        else if (endDate > DateOnly.FromDateTime(DateTime.Now))
+        {
+            errors.Add(EducationError.EndDateMustBeInPast);
+        }
+
+        if (grade == default)
+        {
+            errors.Add(EducationError.GradeRequired);
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
+        Institution = institution;
+        Degree = degree;
+        FieldOfStudy = fieldOfStudy;
+        Country = country;
+        StartDate = startDate;
+        EndDate = endDate;
+        Grade = grade;
+
+        return Result.Success();
+    }
+
 }
 
 public static class EducationError
@@ -102,4 +176,5 @@ public static class EducationError
     public static Error StartDateMustBeInPast => Error.Validation("Education_StartDate_MustBeInPast", "StartDate must be in past");
     public static Error EndDateMustBeInPast => Error.Validation("Education_EndDate_MustBeInPast", "EndDate must be in past");
     public static Error EndDateMustBeAfterStartDate => Error.Validation("Education_EndDate_MustBeAfterStartDate", "EndDate must be after StartDate");
+    public static Error GradeRequired => Error.Validation("Education_Grade_Required", "Grade is required");
 }

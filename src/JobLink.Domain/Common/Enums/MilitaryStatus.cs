@@ -2,7 +2,7 @@ namespace JobLink.Domain.Common.Enums;
 
 public enum MilitaryStatus
 {
-    Nationality,
+    Nationality = 1,
     Exempted,
     Completed,
     Postponed

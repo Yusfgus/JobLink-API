@@ -21,7 +21,7 @@ public class JobSeekerSkillsController(ISender sender) : ApiController
         var result = await sender.Send(new GetMyJobSeekerSkillsQuery(), ct);
 
         return result.Match(
-            skills => Ok(skills),
+            skill => Ok(skill),
             errors => Problem(errors)
         );
     }
@@ -36,20 +36,20 @@ public class JobSeekerSkillsController(ISender sender) : ApiController
             errors => Problem(errors)
         );
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> AddJobSeekerSkill([FromBody] AddJobSeekerSkillRequest request, CancellationToken ct)
+    public async Task<IActionResult> AddJobSeekerSkill([FromBody] JobSeekerSkillDto request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(), ct);
 
         return result.Match(
-            skills => Ok(skills),
+            id => CreatedAtAction(nameof(GetJobSeekerSkill), new { jobSeekerSkillId = id }, id),
             errors => Problem(errors)
         );
     }
-    
+
     [HttpPut("{jobSeekerSkillId:guid}")]
-    public async Task<IActionResult> UpdateJobSeekerSkill(Guid jobSeekerSkillId, [FromBody] UpdateJobSeekerSkillRequest request, CancellationToken ct)
+    public async Task<IActionResult> UpdateJobSeekerSkill(Guid jobSeekerSkillId, [FromBody] JobSeekerSkillDto request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(jobSeekerSkillId), ct);
 

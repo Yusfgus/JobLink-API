@@ -2,7 +2,7 @@ namespace JobLink.Domain.Common.Enums;
 
 public enum JobType
 {
-    FullTime,
+    FullTime = 1,
     PartTime,
     Internship,
     Freelance,

@@ -2,7 +2,7 @@ namespace JobLink.Domain.Common.Enums;
 
 public enum ApplicationStatus
 {
-    Pending,
+    Pending = 1,
     Reviewing,
     Interview,
     Accepted,

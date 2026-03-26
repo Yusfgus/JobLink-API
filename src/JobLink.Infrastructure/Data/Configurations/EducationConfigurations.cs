@@ -33,6 +33,12 @@ public class EducationConfiguration : EntityConfiguration<Education>
             .HasConversion<string>()
             .IsRequired();
 
+        builder.Property(x => x.StartDate)
+            .IsRequired();
+
+        builder.Property(x => x.EndDate)
+            .IsRequired();
+
         builder.HasOne(x => x.JobSeekerProfile)
             .WithMany(x => x.Educations)
             .HasForeignKey(x => x.JobSeekerProfileId)

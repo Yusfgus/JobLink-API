@@ -11,6 +11,6 @@ public abstract class Entity
 
     protected Entity(Guid id)
     {
-        Id = id == Guid.Empty ? Guid.NewGuid() : id;
+        Id = id == Guid.Empty ? throw new ArgumentException("Id cannot be empty.", nameof(id)) : id;
     }
 }

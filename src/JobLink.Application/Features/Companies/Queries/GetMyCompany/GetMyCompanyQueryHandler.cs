@@ -17,7 +17,7 @@ public class GetMyCompanyQueryHandler(ISqlConnectionFactory sqlConnectionFactory
         if (userId is null)
         {
             // do something
-            return IdentityError.UserNotFound;
+            return IdentityError.Unauthenticated;
         }
 
         using IDbConnection connection = sqlConnectionFactory.CreateConnection();

@@ -59,19 +59,26 @@ public sealed class JobSeekerProfile : Entity
 
     public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string? middleName, string lastName, Gender gender, string? mobileNumber, DateOnly? birthDate, Address address, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
     {
+        List<Error> errors = [];
+
         if (userId == Guid.Empty)
         {
-            return JobSeekerProfileError.UserIdRequired;
+            errors.Add(JobSeekerProfileError.UserIdRequired);
         }
 
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return JobSeekerProfileError.FirstNameRequired;
+            errors.Add(JobSeekerProfileError.FirstNameRequired);
         }
 
         if (string.IsNullOrWhiteSpace(lastName))
         {
-            return JobSeekerProfileError.LastNameRequired;
+            errors.Add(JobSeekerProfileError.LastNameRequired);
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
         }
 
         return new JobSeekerProfile(userId, firstName, middleName, lastName, mobileNumber, birthDate, address, gender, nationality, militaryStatus, maritalStatus);

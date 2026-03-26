@@ -15,7 +15,6 @@ public sealed class JobSeekerSkill : Entity
     public Skill? Skill { get; private set; }
 
     private JobSeekerSkill() { }
-
     private JobSeekerSkill(Guid jobSeekerProfileId, Guid skillId, SkillLevel skillLevel)
     {
         JobSeekerProfileId = jobSeekerProfileId;
@@ -37,6 +36,11 @@ public sealed class JobSeekerSkill : Entity
             errors.Add(JobSeekerSkillError.SkillIdRequired);
         }
 
+        if (skillLevel == default)
+        {
+            errors.Add(JobSeekerSkillError.SkillLevelRequired);
+        }
+
         if (errors.Count > 0)
         {
             return errors;
@@ -52,6 +56,11 @@ public sealed class JobSeekerSkill : Entity
         if (skillId == Guid.Empty)
         {
             errors.Add(JobSeekerSkillError.SkillIdRequired);
+        }
+
+        if (skillLevel == default)
+        {
+            errors.Add(JobSeekerSkillError.SkillLevelRequired);
         }
 
         if (errors.Count > 0)
@@ -70,4 +79,5 @@ public static class JobSeekerSkillError
 {
     public static Error JobSeekerProfileIdRequired => Error.Validation("JobSeekerSkill_JobSeekerProfileId_Required", "JobSeekerProfileId is required");
     public static Error SkillIdRequired => Error.Validation("JobSeekerSkill_SkillId_Required", "SkillId is required");
+    public static Error SkillLevelRequired => Error.Validation("JobSeekerSkill_SkillLevel_Required", "SkillLevel is required");
 }

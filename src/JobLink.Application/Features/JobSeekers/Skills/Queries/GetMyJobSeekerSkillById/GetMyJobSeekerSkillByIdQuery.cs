@@ -4,4 +4,4 @@ using MediatR;
 
 namespace JobLink.Application.Features.JobSeekers.Skills.Queries.GetMyJobSeekerSkillById;
 
-public sealed record GetMyJobSeekerSkillByIdQuery(Guid JobSeekerSkillId) : IRequest<Result<JobSeekerSkillDto>>;
+public sealed record GetMyJobSeekerSkillByIdQuery(Guid Id) : IRequest<Result<JobSeekerSkillDto>>;

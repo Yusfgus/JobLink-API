@@ -2,7 +2,7 @@ namespace JobLink.Domain.Common.Enums;
 
 public enum JobStatus
 {
-    Draft,
+    Draft = 1,
     Published,
     Closed
 }

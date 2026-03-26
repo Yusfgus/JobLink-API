@@ -13,22 +13,13 @@ public class GetMyJobSeekerSkillByIdQueryHandler(ISqlConnectionFactory sqlConnec
     public async Task<Result<JobSeekerSkillDto>> Handle(GetMyJobSeekerSkillByIdQuery request, CancellationToken ct)
     {
         Guid? userId = appUser.UserId;
-
         if (userId is null)
         {
             // do something
-            return IdentityError.UserNotFound;
+            return IdentityError.Unauthenticated;
         }
 
         using IDbConnection connection = sqlConnectionFactory.CreateConnection();
-
-        Guid? jobSeekerProfileId = appUser.JobSeekerId;
-
-        if (jobSeekerProfileId is null)
-        {
-            // do something
-            return JobSeekerError.NotFound;
-        }
 
         const string sql = @"
             SELECT 
@@ -37,12 +28,12 @@ public class GetMyJobSeekerSkillByIdQueryHandler(ISqlConnectionFactory sqlConnec
                 S.Name,
                 JS.SkillLevel
             FROM JobSeekerSkills JS
-            INNER JOIN JobSeekerProfiles JSP ON JS.JobSeekerProfileId = JSP.Id
             INNER JOIN Skills S ON JS.SkillId = S.Id
-            WHERE JS.JobSeekerProfileId = @JobSeekerProfileId AND JS.Id = @JobSeekerSkillId
+            INNER JOIN JobSeekerProfiles JSP ON JS.JobSeekerProfileId = JSP.Id
+            WHERE JSP.UserId = @UserId AND JS.Id = @Id
         ";
 
-        JobSeekerSkillDto? jobSeekerSkillDto = await connection.QueryFirstOrDefaultAsync<JobSeekerSkillDto>(sql, new { JobSeekerProfileId = jobSeekerProfileId!, JobSeekerSkillId = request.JobSeekerSkillId });
+        JobSeekerSkillDto? jobSeekerSkillDto = await connection.QueryFirstOrDefaultAsync<JobSeekerSkillDto>(sql, new { UserId = userId.Value, Id = request.Id });
 
         if (jobSeekerSkillDto is null)
         {

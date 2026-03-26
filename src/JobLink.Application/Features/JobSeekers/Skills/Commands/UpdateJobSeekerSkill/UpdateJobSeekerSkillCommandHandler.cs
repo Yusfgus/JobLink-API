@@ -10,41 +10,45 @@ namespace JobLink.Application.Features.JobSeekers.Skills.Commands.UpdateJobSeeke
 public class UpdateJobSeekerSkillCommandHandler(IAppDbContext dbContext, IAppUser appUser) : IRequestHandler<UpdateJobSeekerSkillCommand, Result>
 {
     public async Task<Result> Handle(UpdateJobSeekerSkillCommand request, CancellationToken cancellationToken)
-    {        
+    {
         Guid? userId = appUser.UserId;
         if (userId is null)
         {
-            // do something
-            return IdentityError.UserNotFound;
+            return IdentityError.Unauthenticated;
         }
 
-        Guid? jobSeekerProfileId = appUser.JobSeekerId;
-        if (jobSeekerProfileId is null)
-        {
-            return Error.NotFound("Job seeker profile not found");
-        }
+        var result = await (
+            from js in dbContext.JobSeekerSkills
+            join profile in dbContext.JobSeekerProfiles
+                on js.JobSeekerProfileId equals profile.Id
+            where js.Id == request.Id && profile.UserId == userId
+            select new
+            {
+                JobSeekerSkill = js,
+                SkillExists = dbContext.Skills.Any(s => s.Id == request.SkillId),
+                HasDuplicate = dbContext.JobSeekerSkills
+                    .Any(x => x.JobSeekerProfileId == js.JobSeekerProfileId
+                        && x.SkillId == request.SkillId
+                        && x.Id != js.Id)
+            }
+        ).FirstOrDefaultAsync(cancellationToken);
 
-        JobSeekerSkill? jobSeekerSkill = await dbContext.JobSeekerSkills.FirstOrDefaultAsync(x => x.Id == request.JobSeekerSkillId && x.JobSeekerProfileId == jobSeekerProfileId, cancellationToken);
-        if (jobSeekerSkill is null)
+        if (result is null)
         {
             return Error.NotFound("Job seeker skill not found");
         }
 
-        bool skillExists = await dbContext.Skills.AsNoTracking().AnyAsync(x => x.Id == request.SkillId, cancellationToken);
-        if (!skillExists)
+        if (result.HasDuplicate)
+        {
+            return Error.Conflict("Job seeker already has this skill");
+        }
+
+        if (!result.SkillExists)
         {
             return Error.NotFound("Skill not found");
         }
 
-        bool exists = await dbContext.JobSeekerSkills.AsNoTracking().AnyAsync(
-            x => x.JobSeekerProfileId == jobSeekerProfileId 
-            && x.SkillId == request.SkillId 
-            && x.Id != request.JobSeekerSkillId, 
-            cancellationToken);
-        if (exists)
-        {
-            return Error.Conflict("Job seeker skill already exists");
-        }
+        JobSeekerSkill jobSeekerSkill = result.JobSeekerSkill;
 
         var jobSeekerSkillResult = jobSeekerSkill.Update(request.SkillId, request.SkillLevel);
         if (jobSeekerSkillResult.IsFailure)

@@ -3,6 +3,8 @@ using JobLink.API.Contracts.JobSeekers;
 using JobLink.Application.Common.DTOs;
 using JobLink.Application.Features.JobSeekers.Skills.Commands.AddJobSeekerSkill;
 using JobLink.Application.Features.JobSeekers.Skills.Commands.UpdateJobSeekerSkill;
+using JobLink.Application.Features.JobSeekers.Educations.Commands.AddEducation;
+using JobLink.Application.Features.JobSeekers.Educations.Commands.UpdateEducation;
 
 namespace JobLink.API.Mappings;
 
@@ -21,7 +23,7 @@ public static class JobSeekerMappings
         );
     }
 
-    public static AddJobSeekerSkillCommand ToCommand(this AddJobSeekerSkillRequest request)
+    public static AddJobSeekerSkillCommand ToCommand(this JobSeekerSkillDto request)
     {
         return new AddJobSeekerSkillCommand(
             request.SkillId,
@@ -29,12 +31,39 @@ public static class JobSeekerMappings
         );
     }
 
-    public static UpdateJobSeekerSkillCommand ToCommand(this UpdateJobSeekerSkillRequest request, Guid jobSeekerSkillId)
+    public static UpdateJobSeekerSkillCommand ToCommand(this JobSeekerSkillDto request, Guid jobSeekerSkillId)
     {
         return new UpdateJobSeekerSkillCommand(
             jobSeekerSkillId,
             request.SkillId,
             request.Level
+        );
+    }
+
+    public static AddEducationCommand ToCommand(this EducationDto request)
+    {
+        return new AddEducationCommand(
+            request.Degree,
+            request.Country,
+            request.Institution,
+            request.FieldOfStudy,
+            request.StartDate,
+            request.EndDate,
+            request.Grade
+        );
+    }
+
+    public static UpdateEducationCommand ToCommand(this EducationDto request, Guid educationId)
+    {
+        return new UpdateEducationCommand(
+            educationId,
+            request.Degree,
+            request.Country,
+            request.Institution,
+            request.FieldOfStudy,
+            request.StartDate,
+            request.EndDate,
+            request.Grade
         );
     }
 }

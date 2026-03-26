@@ -4,5 +4,5 @@ using MediatR;
 namespace JobLink.Application.Features.JobSeekers.Skills.Commands.DeleteJobSeekerSkill;
 
 public sealed record DeleteJobSeekerSkillCommand(
-    Guid JobSeekerSkillId
+    Guid Id
 ) : IRequest<Result>;
