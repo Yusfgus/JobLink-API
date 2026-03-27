@@ -1,5 +1,4 @@
 using JobLink.Application.Common.Interfaces;
-using JobLink.Application.Features.Identity;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.JobSeekers;
 using MediatR;
@@ -11,26 +10,19 @@ public sealed class UpdateEducationCommandHandler(IAppDbContext dbContext, IAppU
 {
     public async Task<Result> Handle(UpdateEducationCommand request, CancellationToken cancellationToken)
     {
-        Guid? userId = appUser.UserId;
-        if (userId is null)
+        Guid? jobSeekerId = appUser.JobSeekerId;
+        if (jobSeekerId is null)
         {
-            return IdentityError.Unauthenticated;
+            return JobSeekerError.NotFound;
         }
 
-        var result = await dbContext.Educations
-            .Join(
-                dbContext.JobSeekerProfiles,
-                education => education.JobSeekerProfileId,
-                profile => profile.Id,
-                (education, profile) => new { education, profile.UserId }
-            )
-            .FirstOrDefaultAsync(x => x.education.Id == request.Id && x.UserId == userId, cancellationToken);
-        if (result is null)
+        Education? education = await dbContext.Educations
+            .FirstOrDefaultAsync(js => js.Id == request.Id, cancellationToken);
+
+        if (education is null)
         {
             return Error.NotFound("Education not found");
         }
-
-        Education education = result.education;
 
         var educationResult = education.Update(
             request.Degree,

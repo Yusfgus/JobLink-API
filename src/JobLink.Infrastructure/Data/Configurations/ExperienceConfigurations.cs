@@ -14,7 +14,7 @@ public class ExperienceConfiguration : EntityConfiguration<Experience>
         builder.ToTable("Experiences");
 
         builder.Property(x => x.Company)
-            .HasMaxLength(ExperienceConstraints.CompanyMaxLength)
+            .HasMaxLength(ExperienceConstraints.CompanyNameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Position)
@@ -29,7 +29,7 @@ public class ExperienceConfiguration : EntityConfiguration<Experience>
             .HasMaxLength(ExperienceConstraints.DescriptionMaxLength);
 
         builder.Property(x => x.Salary)
-            .HasColumnType("decimal(18,2)");
+            .HasPrecision(18, 2);
 
         builder.HasOne(x => x.JobSeekerProfile)
             .WithMany(x => x.Experiences)

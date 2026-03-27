@@ -37,11 +37,11 @@ public class JobConfiguration : EntityConfiguration<Job>
             locationBuilder.Property(a => a.Country)
                 .HasMaxLength(AddressConstraints.CountryMaxLength)
                 .IsRequired();
-                
+
             locationBuilder.Property(a => a.City)
                 .HasMaxLength(AddressConstraints.CityMaxLength)
                 .IsRequired();
-                
+
             locationBuilder.Property(a => a.Area)
                 .HasMaxLength(AddressConstraints.AreaMaxLength)
                 .IsRequired();
@@ -49,8 +49,8 @@ public class JobConfiguration : EntityConfiguration<Job>
 
         builder.OwnsOne(x => x.SalaryRange, salaryRangeBuilder =>
         {
-            salaryRangeBuilder.Property(sr => sr.Min).HasColumnType("decimal(18,2)").IsRequired();
-            salaryRangeBuilder.Property(sr => sr.Max).HasColumnType("decimal(18,2)").IsRequired();
+            salaryRangeBuilder.Property(sr => sr.Min).HasColumnType("int(18,2)").IsRequired();
+            salaryRangeBuilder.Property(sr => sr.Max).HasColumnType("int(18,2)").IsRequired();
         });
 
         builder.Property(x => x.ExperienceLevel)

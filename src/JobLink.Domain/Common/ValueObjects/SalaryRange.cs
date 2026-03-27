@@ -1,3 +1,3 @@
 namespace JobLink.Domain.Common.ValueObjects;
 
-public record SalaryRange(decimal Min, decimal Max);
+public record SalaryRange(int Min, int Max);

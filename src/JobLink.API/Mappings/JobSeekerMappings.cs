@@ -5,6 +5,8 @@ using JobLink.Application.Features.JobSeekers.Skills.Commands.AddJobSeekerSkill;
 using JobLink.Application.Features.JobSeekers.Skills.Commands.UpdateJobSeekerSkill;
 using JobLink.Application.Features.JobSeekers.Educations.Commands.AddEducation;
 using JobLink.Application.Features.JobSeekers.Educations.Commands.UpdateEducation;
+using JobLink.Application.Features.JobSeekers.Experiences.Commands.AddExperience;
+using JobLink.Application.Features.JobSeekers.Experiences.Commands.UpdateExperience;
 
 namespace JobLink.API.Mappings;
 
@@ -64,6 +66,33 @@ public static class JobSeekerMappings
             request.StartDate,
             request.EndDate,
             request.Grade
+        );
+    }
+
+    public static AddExperienceCommand ToCommand(this ExperienceDto request)
+    {
+        return new AddExperienceCommand(
+            request.Company,
+            request.Position,
+            request.Country,
+            request.Description,
+            request.Salary,
+            request.StartDate,
+            request.EndDate
+        );
+    }
+
+    public static UpdateExperienceCommand ToCommand(this ExperienceDto request, Guid experienceId)
+    {
+        return new UpdateExperienceCommand(
+            experienceId,
+            request.Company,
+            request.Position,
+            request.Country,
+            request.Description,
+            request.Salary,
+            request.StartDate,
+            request.EndDate
         );
     }
 }
