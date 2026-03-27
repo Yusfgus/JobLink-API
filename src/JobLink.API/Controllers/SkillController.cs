@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using JobLink.Domain.Common.Enums;
 using JobLink.API.Contracts.Skills;
-using JobLink.API.Mappings;
+
 using JobLink.Application.Features.Skills.Queries.GetSkills;
 using JobLink.Application.Features.Skills.Queries.GetSkillById;
 

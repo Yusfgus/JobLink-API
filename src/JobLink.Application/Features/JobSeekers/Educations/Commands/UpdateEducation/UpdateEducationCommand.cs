@@ -6,11 +6,11 @@ namespace JobLink.Application.Features.JobSeekers.Educations.Commands.UpdateEduc
 
 public sealed record UpdateEducationCommand(
     Guid Id,
-    string Degree,
-    string Country,
-    string Institution,
-    string FieldOfStudy,
-    DateOnly StartDate,
-    DateOnly EndDate,
-    AcademicGrade Grade
+    string? Degree,
+    string? Country,
+    string? Institution,
+    string? FieldOfStudy,
+    DateOnly? StartDate,
+    DateOnly? EndDate,
+    AcademicGrade? Grade
 ) : IRequest<Result>;

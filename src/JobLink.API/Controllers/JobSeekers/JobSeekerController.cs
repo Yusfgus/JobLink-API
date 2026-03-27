@@ -34,4 +34,16 @@ public class JobSeekerController(ISender sender) : ApiController
             errors => Problem(errors)
         );
     }
+
+    // [HttpPatch("me")]
+    // [Authorize(Roles = nameof(UserRole.JobSeeker))]
+    // public async Task<IActionResult> UpdateMyJobSeeker(UpdateMyJobSeekerCommand command, CancellationToken ct)
+    // {
+    //     var result = await sender.Send(command, ct);
+
+    //     return result.Match(
+    //         jobSeeker => Ok(jobSeeker),
+    //         errors => Problem(errors)
+    //     );
+    // }
 }

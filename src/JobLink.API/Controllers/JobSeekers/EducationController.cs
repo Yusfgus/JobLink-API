@@ -1,5 +1,5 @@
 using JobLink.API.Contracts.JobSeekers;
-using JobLink.API.Mappings;
+
 using JobLink.Application.Features.JobSeekers.Educations.Commands.DeleteEducation;
 using JobLink.Application.Features.JobSeekers.Educations.Queries.GetMyEducationById;
 using JobLink.Application.Features.JobSeekers.Educations.Queries.GetMyEducations;
@@ -36,7 +36,7 @@ public class EducationController(ISender sender) : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddEducation([FromBody] EducationDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddEducation([FromBody] AddEducationRequest request, CancellationToken cancellationToken)
     {
         var result = await sender.Send(request.ToCommand(), cancellationToken);
 
@@ -46,7 +46,7 @@ public class EducationController(ISender sender) : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateEducation(Guid id, [FromBody] EducationDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateEducation(Guid id, [FromBody] UpdateEducationRequest request, CancellationToken cancellationToken)
     {
         var result = await sender.Send(request.ToCommand(id), cancellationToken);
 

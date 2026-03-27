@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using JobLink.Domain.Common.Enums;
 using JobLink.API.Contracts.JobSeekers;
-using JobLink.API.Mappings;
+
 using JobLink.Application.Features.JobSeekers.Skills.Queries.GetMyJobSeekerSkills;
 using JobLink.Application.Features.JobSeekers.Skills.Queries.GetMyJobSeekerSkillById;
 using JobLink.Application.Features.JobSeekers.Skills.Commands.DeleteJobSeekerSkill;
@@ -38,7 +38,7 @@ public class JobSeekerSkillsController(ISender sender) : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddJobSeekerSkill([FromBody] JobSeekerSkillDto request, CancellationToken ct)
+    public async Task<IActionResult> AddJobSeekerSkill([FromBody] AddJobSeekerSkillRequest request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(), ct);
 
@@ -49,7 +49,7 @@ public class JobSeekerSkillsController(ISender sender) : ApiController
     }
 
     [HttpPut("{jobSeekerSkillId:guid}")]
-    public async Task<IActionResult> UpdateJobSeekerSkill(Guid jobSeekerSkillId, [FromBody] JobSeekerSkillDto request, CancellationToken ct)
+    public async Task<IActionResult> UpdateJobSeekerSkill(Guid jobSeekerSkillId, [FromBody] UpdateJobSeekerSkillRequest request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(jobSeekerSkillId), ct);
 

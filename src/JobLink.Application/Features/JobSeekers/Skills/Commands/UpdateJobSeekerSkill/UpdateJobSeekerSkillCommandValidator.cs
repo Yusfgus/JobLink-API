@@ -8,8 +8,12 @@ public class UpdateJobSeekerSkillCommandValidator : AbstractValidator<UpdateJobS
     {
         RuleFor(x => x.Id).NotEmpty();
 
-        RuleFor(x => x.SkillId).NotEmpty();
+        RuleFor(x => x.SkillId)
+            .NotEmpty()
+            .When(x => x.SkillId.HasValue);
 
-        RuleFor(x => x.SkillLevel).IsInEnum();
+        RuleFor(x => x.SkillLevel)
+            .IsInEnum()
+            .When(x => x.SkillLevel.HasValue);
     }
 }

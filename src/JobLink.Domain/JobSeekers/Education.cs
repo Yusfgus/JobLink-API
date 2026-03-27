@@ -95,69 +95,68 @@ public sealed class Education : Entity
         return new Education(jobSeekerProfileId, degree, country, institution, fieldOfStudy, startDate, endDate, grade);
     }
 
-    public Result Update(string degree, string country, string institution, string fieldOfStudy, DateOnly startDate, DateOnly endDate, AcademicGrade grade)
+    public Result Update(string? degree, string? country, string? institution, string? fieldOfStudy, DateOnly? startDate, DateOnly? endDate, AcademicGrade? grade)
     {
         List<Error> errors = [];
 
-        if (string.IsNullOrWhiteSpace(institution))
+        if (startDate.HasValue)
         {
-            errors.Add(EducationError.InstitutionRequired);
+            if (startDate.Value > DateOnly.FromDateTime(DateTime.Now))
+            {
+                errors.Add(EducationError.StartDateMustBeInPast);
+            }
+            else
+            {
+                StartDate = startDate.Value;
+            }
+        }
+        
+        if (endDate.HasValue)
+        {
+            if (endDate.Value > DateOnly.FromDateTime(DateTime.Now))
+            {
+                errors.Add(EducationError.EndDateMustBeInPast);
+            }
+            else
+            {
+                EndDate = endDate.Value;
+            }
         }
 
-        if (string.IsNullOrWhiteSpace(degree))
-        {
-            errors.Add(EducationError.DegreeRequired);
-        }
-
-        if (string.IsNullOrWhiteSpace(fieldOfStudy))
-        {
-            errors.Add(EducationError.FieldOfStudyRequired);
-        }
-
-        if (string.IsNullOrWhiteSpace(country))
-        {
-            errors.Add(EducationError.CountryRequired);
-        }
-
-        if (startDate == default)
-        {
-            errors.Add(EducationError.StartDateRequired);
-        }
-        else if (startDate > DateOnly.FromDateTime(DateTime.Now))
-        {
-            errors.Add(EducationError.StartDateMustBeInPast);
-        }
-
-        if (endDate == default)
-        {
-            errors.Add(EducationError.EndDateRequired);
-        }
-        else if (endDate < startDate)
+        if (StartDate > EndDate)
         {
             errors.Add(EducationError.EndDateMustBeAfterStartDate);
         }
-        else if (endDate > DateOnly.FromDateTime(DateTime.Now))
+
+        if (!string.IsNullOrWhiteSpace(institution))
         {
-            errors.Add(EducationError.EndDateMustBeInPast);
+            Institution = institution;
         }
 
-        if (grade == default)
+        if (!string.IsNullOrWhiteSpace(degree))
         {
-            errors.Add(EducationError.GradeRequired);
+            Degree = degree;
         }
 
+        if (!string.IsNullOrWhiteSpace(fieldOfStudy))
+        {
+            FieldOfStudy = fieldOfStudy;
+        }
+
+        if (!string.IsNullOrWhiteSpace(country))
+        {
+            Country = country;
+        }
+
+        if (grade.HasValue)
+        {
+            Grade = grade.Value;
+        }
+        
         if (errors.Count > 0)
         {
             return errors;
         }
-
-        Institution = institution;
-        Degree = degree;
-        FieldOfStudy = fieldOfStudy;
-        Country = country;
-        StartDate = startDate;
-        EndDate = endDate;
-        Grade = grade;
 
         return Result.Success();
     }

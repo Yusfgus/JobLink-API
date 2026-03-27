@@ -49,27 +49,17 @@ public sealed class JobSeekerSkill : Entity
         return new JobSeekerSkill(jobSeekerProfileId, skillId, skillLevel);
     }
 
-    public Result Update(Guid skillId, SkillLevel skillLevel)
+    public Result Update(Guid? skillId, SkillLevel? skillLevel)
     {
-        List<Error> errors = [];
-
-        if (skillId == Guid.Empty)
+        if (skillId.HasValue)
         {
-            errors.Add(JobSeekerSkillError.SkillIdRequired);
+            SkillId = skillId.Value;
         }
 
-        if (skillLevel == default)
+        if (skillLevel.HasValue)
         {
-            errors.Add(JobSeekerSkillError.SkillLevelRequired);
+            SkillLevel = skillLevel.Value;
         }
-
-        if (errors.Count > 0)
-        {
-            return errors;
-        }
-
-        SkillId = skillId;
-        SkillLevel = skillLevel;
 
         return Result.Success();
     }

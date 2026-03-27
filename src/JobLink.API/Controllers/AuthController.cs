@@ -2,7 +2,7 @@ using JobLink.API.Contracts.Admin;
 using JobLink.API.Contracts.Authentication;
 using JobLink.API.Contracts.JobSeekers;
 using JobLink.API.Contracts.Companies;
-using JobLink.API.Mappings;
+
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;

@@ -89,64 +89,75 @@ public sealed class Experience : Entity
         return new Experience(jobSeekerProfileId, company, position, country, description, salary, startDate, endDate);
     }
 
-    public Result Update(string company, string position, string country, string? description, int salary, DateOnly startDate, DateOnly endDate)
+    public Result Update(string? company, string? position, string? country, string? description, int? salary, DateOnly? startDate, DateOnly? endDate)
     {
         List<Error> errors = [];
 
-        if (string.IsNullOrWhiteSpace(company))
+        if (startDate.HasValue)
         {
-            errors.Add(ExperienceError.CompanyRequired);
+            if (startDate.Value > DateOnly.FromDateTime(DateTime.Now))
+            {
+                errors.Add(EducationError.StartDateMustBeInPast);
+            }
+            else
+            {
+                StartDate = startDate.Value;
+            }
+        }
+        
+        if (endDate.HasValue)
+        {
+            if (endDate.Value > DateOnly.FromDateTime(DateTime.Now))
+            {
+                errors.Add(EducationError.EndDateMustBeInPast);
+            }
+            else
+            {
+                EndDate = endDate.Value;
+            }
         }
 
-        if (string.IsNullOrWhiteSpace(position))
+        if (StartDate > EndDate)
         {
-            errors.Add(ExperienceError.PositionRequired);
+            errors.Add(EducationError.EndDateMustBeAfterStartDate);
         }
 
-        if (string.IsNullOrWhiteSpace(country))
+        if (!string.IsNullOrWhiteSpace(company))
         {
-            errors.Add(ExperienceError.CountryRequired);
+            Company = company;
         }
 
-        if (startDate == default)
+        if (!string.IsNullOrWhiteSpace(position))
         {
-            errors.Add(ExperienceError.StartDateRequired);
-        }
-        else if (startDate > DateOnly.FromDateTime(DateTime.Now))
-        {
-            errors.Add(ExperienceError.StartDateMustBeInPast);
+            Position = position;
         }
 
-        if (endDate == default)
+        if (!string.IsNullOrWhiteSpace(country))
         {
-            errors.Add(ExperienceError.EndDateRequired);
-        }
-        else if (endDate < startDate)
-        {
-            errors.Add(ExperienceError.EndDateMustBeAfterStartDate);
-        }
-        else if (endDate > DateOnly.FromDateTime(DateTime.Now))
-        {
-            errors.Add(ExperienceError.EndDateMustBeInPast);
+            Country = country;
         }
 
-        if (salary < 0)
+        if (salary.HasValue)
         {
-            errors.Add(ExperienceError.SalaryMustBeNonNegative);
+            if (salary.Value < 0)
+            {
+                errors.Add(ExperienceError.SalaryMustBeNonNegative);
+            }
+            else
+            {
+                Salary = salary.Value;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            Description = description;
         }
 
         if (errors.Count > 0)
         {
             return errors;
         }
-
-        Company = company;
-        Position = position;
-        Country = country;
-        Description = description;
-        Salary = salary;
-        StartDate = startDate;
-        EndDate = endDate;
 
         return Result.Success();
     }

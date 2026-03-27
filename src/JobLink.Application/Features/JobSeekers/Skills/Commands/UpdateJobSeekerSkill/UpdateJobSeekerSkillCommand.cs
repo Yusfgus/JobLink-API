@@ -6,6 +6,6 @@ namespace JobLink.Application.Features.JobSeekers.Skills.Commands.UpdateJobSeeke
 
 public sealed record UpdateJobSeekerSkillCommand(
     Guid Id,
-    Guid SkillId,
-    SkillLevel SkillLevel
+    Guid? SkillId,
+    SkillLevel? SkillLevel
 ) : IRequest<Result>;

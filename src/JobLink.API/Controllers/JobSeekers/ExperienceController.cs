@@ -1,5 +1,5 @@
 using JobLink.API.Contracts.JobSeekers;
-using JobLink.API.Mappings;
+
 using JobLink.Application.Features.JobSeekers.Experiences.Commands.DeleteExperience;
 using JobLink.Application.Features.JobSeekers.Experiences.Queries.GetMyExperienceById;
 using JobLink.Application.Features.JobSeekers.Experiences.Queries.GetMyExperiences;
@@ -36,7 +36,7 @@ public class ExperienceController(ISender sender) : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddExperience([FromBody] ExperienceDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddExperience([FromBody] AddExperienceRequest request, CancellationToken cancellationToken)
     {
         var result = await sender.Send(request.ToCommand(), cancellationToken);
 
@@ -46,7 +46,7 @@ public class ExperienceController(ISender sender) : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateExperience(Guid id, [FromBody] ExperienceDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateExperience(Guid id, [FromBody] UpdateExperienceRequest request, CancellationToken cancellationToken)
     {
         var result = await sender.Send(request.ToCommand(id), cancellationToken);
 
