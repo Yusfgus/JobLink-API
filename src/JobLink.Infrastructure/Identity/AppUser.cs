@@ -68,7 +68,7 @@ public sealed class AppUser(IHttpContextAccessor contextAccessor, ISqlConnection
 
                 string? id = connection.QueryFirstOrDefault<string?>("""
                 SELECT Id
-                FROM Companies
+                FROM CompanyProfiles
                 WHERE UserId = @UserId
             """, new { UserId });
 

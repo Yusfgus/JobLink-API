@@ -36,22 +36,21 @@ public class JobConfiguration : EntityConfiguration<Job>
         {
             locationBuilder.Property(a => a.Country)
                 .HasMaxLength(AddressConstraints.CountryMaxLength)
+                .HasColumnName("Country")
                 .IsRequired();
 
             locationBuilder.Property(a => a.City)
                 .HasMaxLength(AddressConstraints.CityMaxLength)
+                .HasColumnName("City")
                 .IsRequired();
 
             locationBuilder.Property(a => a.Area)
                 .HasMaxLength(AddressConstraints.AreaMaxLength)
-                .IsRequired();
+                .HasColumnName("Area");
         });
 
-        builder.OwnsOne(x => x.SalaryRange, salaryRangeBuilder =>
-        {
-            salaryRangeBuilder.Property(sr => sr.Min).HasColumnType("int(18,2)").IsRequired();
-            salaryRangeBuilder.Property(sr => sr.Max).HasColumnType("int(18,2)").IsRequired();
-        });
+        builder.Property(x => x.MinSalary).IsRequired();
+        builder.Property(x => x.MaxSalary).IsRequired();
 
         builder.Property(x => x.ExperienceLevel)
             .HasConversion<string>()
@@ -60,9 +59,9 @@ public class JobConfiguration : EntityConfiguration<Job>
         builder.Property(x => x.PostedAtUtc)
             .IsRequired();
 
-        builder.Property(x => x.ClosedAtUtc);
+        builder.Property(x => x.ClosedAt);
 
-        builder.Property(x => x.ExpirationDateUtc)
+        builder.Property(x => x.ExpirationDate)
             .IsRequired();
 
         builder.Property(x => x.Status)

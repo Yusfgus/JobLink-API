@@ -1,10 +1,10 @@
 using FluentValidation;
 using JobLink.Domain.Common.Constants;
-using JobLink.Application.Common.DTOs;
+using JobLink.Domain.Common.ValueObjects;
 
 namespace JobLink.Application.Common.Validators;
 
-public sealed class AddressValidator : AbstractValidator<AddressDto>
+public sealed class AddressValidator : AbstractValidator<Address>
 {
     public AddressValidator()
     {

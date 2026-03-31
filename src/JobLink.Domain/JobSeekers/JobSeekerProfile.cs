@@ -57,6 +57,14 @@ public sealed class JobSeekerProfile : Entity
         MaritalStatus = maritalStatus;
     }
 
+    public JobSeekerProfile(Guid userId, string firstName, string lastName, Gender gender)
+    {
+        UserId = userId;
+        FirstName = firstName;
+        LastName = lastName;
+        Gender = gender;
+    }
+
     public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string? middleName, string lastName, Gender gender, string? mobileNumber, DateOnly? birthDate, Address address, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
     {
         List<Error> errors = [];
@@ -86,7 +94,29 @@ public sealed class JobSeekerProfile : Entity
 
     public static Result<JobSeekerProfile> Register(Guid userId, string firstName, string lastName, Gender gender)
     {
-        return Create(userId, firstName, null, lastName, gender, null, null, Address.Create(null, null, null).Value!, null, null, null);
+        List<Error> errors = [];
+
+        if (userId == Guid.Empty)
+        {
+            errors.Add(JobSeekerProfileError.UserIdRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            errors.Add(JobSeekerProfileError.FirstNameRequired);
+        }
+
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            errors.Add(JobSeekerProfileError.LastNameRequired);
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
+        return new JobSeekerProfile(userId, firstName, lastName, gender);
     }
 
 }

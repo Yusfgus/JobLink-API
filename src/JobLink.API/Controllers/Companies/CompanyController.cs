@@ -4,7 +4,7 @@ using JobLink.Application.Features.Companies.Queries.GetMyCompany;
 using Microsoft.AspNetCore.Authorization;
 using JobLink.Domain.Common.Enums;
 
-namespace JobLink.API.Controllers;
+namespace JobLink.API.Controllers.Companies;
 
 [ApiController]
 [Route("api/v1/companies")]

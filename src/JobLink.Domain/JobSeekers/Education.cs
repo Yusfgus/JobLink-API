@@ -110,7 +110,7 @@ public sealed class Education : Entity
                 StartDate = startDate.Value;
             }
         }
-        
+
         if (endDate.HasValue)
         {
             if (endDate.Value > DateOnly.FromDateTime(DateTime.Now))
@@ -152,7 +152,7 @@ public sealed class Education : Entity
         {
             Grade = grade.Value;
         }
-        
+
         if (errors.Count > 0)
         {
             return errors;
