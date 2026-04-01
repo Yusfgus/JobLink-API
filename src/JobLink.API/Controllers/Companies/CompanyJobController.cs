@@ -1,5 +1,7 @@
+using JobLink.API.Contracts;
 using JobLink.API.Contracts.Companies;
 using JobLink.Application.Features.Companies.Jobs.Commands.CloseJob;
+using JobLink.Application.Features.Companies.Jobs.Queries.GetJobApplicants;
 using JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobById;
 using JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobs;
 using JobLink.Domain.Common.Enums;
@@ -15,12 +17,12 @@ namespace JobLink.API.Controllers.Companies;
 public class CompanyJobController(ISender sender) : ApiController
 {
     [HttpGet]
-    public async Task<IActionResult> GetAllMyJob(CancellationToken ct)
+    public async Task<IActionResult> GetAllMyJob([FromQuery] PageRequest request, CancellationToken ct)
     {
-        var result = await sender.Send(new GetMyJobsQuery(), ct);
+        var result = await sender.Send(new GetMyJobsQuery(request.Page, request.PageSize), ct);
 
         return result.Match(
-            jobs => Ok(jobs),
+            paginatedJobs => Ok(paginatedJobs),
             errors => Problem(errors)
         );
     }
@@ -47,7 +49,7 @@ public class CompanyJobController(ISender sender) : ApiController
         );
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateJob(Guid id, [FromBody] UpdateJobRequest request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(id), ct);
@@ -65,6 +67,17 @@ public class CompanyJobController(ISender sender) : ApiController
 
         return result.Match(
             NoContent,
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpGet("{id:guid}/applications")]
+    public async Task<IActionResult> GetJobApplications(Guid id, [FromQuery] PageRequest request, CancellationToken ct)
+    {
+        var result = await sender.Send(new GetJobApplicantsQuery(id, request.Page, request.PageSize), ct);
+
+        return result.Match(
+            paginatedApplications => Ok(paginatedApplications),
             errors => Problem(errors)
         );
     }

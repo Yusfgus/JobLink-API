@@ -18,16 +18,11 @@ public class UpdateJobCommandHandler(IAppDbContext dbContext, IAppUser appUser) 
         }
 
         Job? job = await dbContext.Jobs
-            .Join(
-                dbContext.CompanyProfiles,
-                job => job.CompanyProfileId,
-                companyProfile => companyProfile.Id,
-                (job, companyProfile) => new { job, companyProfile.UserId }
-            )
-            .Where(j => j.UserId == userId)
-            .Select(j => j.job)
-            .FirstOrDefaultAsync(j => j.Id == request.Id, ct);
-
+            .FirstOrDefaultAsync(j =>
+                j.Id == request.Id &&
+                j.CompanyProfile!.UserId == userId,
+                ct
+            );
         if (job == null)
         {
             return Features.Jobs.JobError.NotFound;

@@ -18,16 +18,11 @@ public class CloseJobCommandHandler(IAppDbContext dbContext, IAppUser appUser) :
         }
 
         var job = await dbContext.Jobs
-            .Join(
-                dbContext.CompanyProfiles,
-                job => job.CompanyProfileId,
-                profile => profile.Id,
-                (job, profile) => new { job, profile.UserId }
-            )
-            .Where(x => x.UserId == userId)
-            .Select(x => x.job)
-            .FirstOrDefaultAsync(ct);
-
+            .FirstOrDefaultAsync(j =>
+                j.Id == request.Id &&
+                j.CompanyProfile!.UserId == userId,
+                ct
+            );
         if (job is null)
         {
             return JobError.NotFound;

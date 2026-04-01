@@ -28,7 +28,7 @@ public sealed class CreateJobCommandHandler(IAppDbContext dbContext, IAppUser ap
             request.MaxSalary,
             request.ExperienceLevel,
             request.ExpirationDate,
-            JobStatus.Published
+            JobStatus.Opened
         );
 
         if (jobResult.IsFailure)

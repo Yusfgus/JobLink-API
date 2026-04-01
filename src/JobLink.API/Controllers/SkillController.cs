@@ -18,7 +18,7 @@ public class SkillController(ISender sender) : ApiController
     public async Task<IActionResult> GetSkills(CancellationToken ct)
     {
         var result = await sender.Send(new GetSkillsQuery(), ct);
-        
+
         return result.Match(
             skills => Ok(skills),
             error => Problem(error)
@@ -29,7 +29,7 @@ public class SkillController(ISender sender) : ApiController
     public async Task<IActionResult> GetSkillById(Guid id, CancellationToken ct)
     {
         var result = await sender.Send(new GetSkillByIdQuery(id), ct);
-        
+
         return result.Match(
             skill => Ok(skill),
             error => Problem(error)
@@ -52,7 +52,7 @@ public class SkillController(ISender sender) : ApiController
     public async Task<IActionResult> UpdateSkill(Guid id, [FromBody] UpdateSkillRequest request, CancellationToken ct)
     {
         var result = await sender.Send(request.ToCommand(id), ct);
-        
+
         return result.Match(
             NoContent,
             error => Problem(error)
@@ -60,7 +60,7 @@ public class SkillController(ISender sender) : ApiController
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteSkill(Guid id, CancellationToken ct)
+    public Task<IActionResult> DeleteSkill(Guid id, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

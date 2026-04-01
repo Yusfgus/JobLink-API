@@ -1,0 +1,51 @@
+using JobLink.API.Contracts;
+using JobLink.Application.Features.Jobs.Queries.GetJobs;
+using JobLink.Application.Features.Jobs.Queries.GetJobById;
+using JobLink.Application.Features.JobSeekers.JobApplications.Commands.ApplyForJob;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using JobLink.Domain.Common.Enums;
+
+namespace JobLink.API.Controllers;
+
+[ApiController]
+[Route("api/v1/jobs")]
+[Authorize]
+public class JobController(ISender sender) : ApiController
+{
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new GetJobsQuery(pageRequest.Page, pageRequest.PageSize), cancellationToken);
+
+        return result.Match(
+            paginatedJobs => Ok(paginatedJobs),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetJobDetails(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new GetJobByIdQuery(id), cancellationToken);
+
+        return result.Match(
+            jobDetails => Ok(jobDetails),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpPost("{id}/apply")]
+    [Authorize(Roles = nameof(UserRole.JobSeeker))]
+    public async Task<IActionResult> ApplyForJob(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new ApplyForJobCommand(id), cancellationToken);
+
+        return result.Match(
+            () => Ok("Job applied successfully"),
+            errors => Problem(errors)
+        );
+    }
+
+}

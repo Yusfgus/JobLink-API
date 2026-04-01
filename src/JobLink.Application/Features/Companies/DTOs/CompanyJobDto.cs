@@ -1,6 +1,6 @@
-namespace JobLink.Application.Features.Jobs.Dtos;
+namespace JobLink.Application.Features.Companies.DTOs;
 
-public sealed record JobDto(
+public sealed record CompanyJobDto(
     string Id,
     string Title,
     string Description,

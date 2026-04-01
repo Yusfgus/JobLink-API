@@ -12,7 +12,7 @@ namespace JobLink.API.Controllers.JobSeekers;
 public class JobSeekerController(ISender sender) : ApiController
 {
     [HttpGet("{id:guid}")]
-    [Authorize(Roles = nameof(UserRole.Company))]
+    [Authorize(Roles = nameof(UserRole.Company) + "," + nameof(UserRole.Admin))]
     public async Task<IActionResult> GetJobSeeker(Guid id, CancellationToken ct)
     {
         var result = await sender.Send(new GetJobSeekerByIdQuery(id), ct);

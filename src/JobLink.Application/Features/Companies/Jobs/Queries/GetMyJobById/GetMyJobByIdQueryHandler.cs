@@ -2,15 +2,15 @@ using System.Data;
 using Dapper;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Application.Features.Jobs;
-using JobLink.Application.Features.Jobs.Dtos;
+using JobLink.Application.Features.Companies.DTOs;
 using JobLink.Domain.Common.Results;
 using MediatR;
 
 namespace JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobById;
 
-public sealed class GetMyJobByIdQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyJobByIdQuery, Result<JobDto>>
+public sealed class GetMyJobByIdQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyJobByIdQuery, Result<CompanyJobDto>>
 {
-    public async Task<Result<JobDto>> Handle(GetMyJobByIdQuery request, CancellationToken ct)
+    public async Task<Result<CompanyJobDto>> Handle(GetMyJobByIdQuery request, CancellationToken ct)
     {
         var userId = appUser.UserId;
         if (userId == null)
@@ -43,7 +43,7 @@ public sealed class GetMyJobByIdQueryHandler(ISqlConnectionFactory sqlConnection
             WHERE CP.UserId = @UserId AND J.Id = @Id
         ";
 
-        JobDto? job = await connection.QueryFirstOrDefaultAsync<JobDto>(sql, new { UserId = userId, Id = request.Id });
+        CompanyJobDto? job = await connection.QueryFirstOrDefaultAsync<CompanyJobDto>(sql, new { UserId = userId, Id = request.Id });
 
         if (job is null)
         {

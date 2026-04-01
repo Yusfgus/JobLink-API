@@ -26,7 +26,7 @@ public sealed class JobApplication : Entity
         AppliedAtUtc = appliedAtUtc;
     }
 
-    public static Result<JobApplication> Create(Guid jobSeekerProfileId, Guid jobId, ApplicationStatus status)
+    public static Result<JobApplication> Create(Guid jobSeekerProfileId, Guid jobId)
     {
         List<Error> errors = [];
 
@@ -45,7 +45,7 @@ public sealed class JobApplication : Entity
             return errors;
         }
 
-        return new JobApplication(jobSeekerProfileId, jobId, status, DateTime.UtcNow);
+        return new JobApplication(jobSeekerProfileId, jobId, ApplicationStatus.Pending, DateTime.UtcNow);
     }
 }
 

@@ -17,14 +17,10 @@ public class DeleteEducationCommandHandler(IAppDbContext dbContext, IAppUser app
         }
 
         var affectedRows = await dbContext.Educations
-            .Join(
-                dbContext.JobSeekerProfiles,
-                education => education.JobSeekerProfileId,
-                profile => profile.Id,
-                (education, profile) => new { education, profile.UserId }
+            .Where(e =>
+                e.Id == request.Id &&
+                e.JobSeekerProfile!.UserId == userId
             )
-            .Where(x => x.education.Id == request.Id && x.UserId == userId)
-            .Select(x => x.education)
             .ExecuteDeleteAsync(cancellationToken);
 
         if (affectedRows == 0)
