@@ -3,7 +3,7 @@ using MediatR;
 using JobLink.Domain.Common.Enums;
 using JobLink.Application.Common.DTOs;
 
-namespace JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
+namespace JobLink.Application.Features.JobSeekers.Profile.Commands.RegisterJobSeeker;
 
 public sealed record RegisterJobSeekerCommand(
     RegisterUserDto User,

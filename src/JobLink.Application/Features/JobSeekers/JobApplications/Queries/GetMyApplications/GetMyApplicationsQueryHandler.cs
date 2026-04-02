@@ -27,7 +27,9 @@ public sealed class GetMyApplicationsQueryHandler(IAppDbContext dbContext, IAppU
         return await query
             .Select(ja => new JobApplicationSummaryDto(
                 ja.Id,
+                ja.Job!.Id,
                 ja.Job!.Title,
+                ja.Job.CompanyProfileId,
                 ja.Job.CompanyProfile!.Name,
                 ja.Job.CompanyProfile!.User!.ProfilePictureUrl,
                 $"{ja.Job.Location.Country} - {ja.Job.Location.City}",

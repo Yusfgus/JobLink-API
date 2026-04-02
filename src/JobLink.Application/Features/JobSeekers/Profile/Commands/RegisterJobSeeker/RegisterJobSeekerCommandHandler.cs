@@ -5,7 +5,7 @@ using JobLink.Domain.Common.Results;
 using JobLink.Domain.JobSeekers;
 using MediatR;
 
-namespace JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
+namespace JobLink.Application.Features.JobSeekers.Profile.Commands.RegisterJobSeeker;
 
 public class RegisterJobSeekerCommandHandler(IAppDbContext dbContext, IUserService userService, IJwtProvider jwtProvider)
     : IRequestHandler<RegisterJobSeekerCommand, Result<TokenDto>>

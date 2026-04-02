@@ -1,4 +1,4 @@
-using JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
+using JobLink.Application.Features.JobSeekers.Profile.Commands.RegisterJobSeeker;
 using JobLink.Application.Common.DTOs;
 using JobLink.Domain.Common.Enums;
 

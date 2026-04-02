@@ -2,7 +2,7 @@ using FluentValidation;
 using JobLink.Domain.Common.Constants;
 using JobLink.Application.Common.Validators;
 
-namespace JobLink.Application.Features.JobSeekers.Commands.RegisterJobSeeker;
+namespace JobLink.Application.Features.JobSeekers.Profile.Commands.RegisterJobSeeker;
 
 public sealed class RegisterJobSeekerCommandValidator : AbstractValidator<RegisterJobSeekerCommand>
 {

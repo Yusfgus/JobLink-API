@@ -6,7 +6,7 @@ using Dapper;
 using System.Data;
 using JobLink.Application.Features.Identity;
 
-namespace JobLink.Application.Features.JobSeekers.Queries.GetMyJobSeeker;
+namespace JobLink.Application.Features.JobSeekers.Profile.Queries.GetMyJobSeeker;
 
 public class GetMyJobSeekerQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyJobSeekerQuery, Result<JobSeekerProfileDto>>
 {

@@ -119,6 +119,62 @@ public sealed class JobSeekerProfile : Entity
         return new JobSeekerProfile(userId, firstName, lastName, gender);
     }
 
+    public Result Update(string? firstName, string? middleName, string? lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender? gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
+    {
+        List<Error> errors = [];
+
+        if (!string.IsNullOrWhiteSpace(firstName))
+        {
+            FirstName = firstName;
+        }
+
+        if (middleName != null)
+        {
+            MiddleName = middleName;
+        }
+
+        if (!string.IsNullOrWhiteSpace(lastName))
+        {
+            LastName = lastName;
+        }
+
+        if (mobileNumber != null)
+        {
+            MobileNumber = mobileNumber;
+        }
+
+        if (birthDate.HasValue)
+        {
+            BirthDate = birthDate;
+        }
+
+        if (address is not null)
+        {
+            Address = address;
+        }
+
+        if (gender.HasValue)
+        {
+            Gender = gender.Value;
+        }
+
+        if (!string.IsNullOrWhiteSpace(nationality))
+        {
+            Nationality = nationality;
+        }
+
+        if (militaryStatus.HasValue)
+        {
+            MilitaryStatus = militaryStatus;
+        }
+
+        if (maritalStatus.HasValue)
+        {
+            MaritalStatus = maritalStatus;
+        }
+
+        return Result.Success();
+    }
 }
 
 internal static class JobSeekerProfileError

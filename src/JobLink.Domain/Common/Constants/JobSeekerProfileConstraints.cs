@@ -10,5 +10,6 @@ public static class JobSeekerProfileConstraints
     public const int LastNameMinLength = 2;
     public const int MobileNumberMaxLength = 20;
     public const int NationalityMaxLength = 100;
+    public const int NationalityMinLength = 2;
     public const string MobileNumberRegex = @"^\+?\d{7,15}$";
 }
