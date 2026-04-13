@@ -9,7 +9,7 @@ public class RefreshTokenRepository(AppDbContext context)
     public async Task AddAsync(RefreshToken refreshToken, CancellationToken ct)
     {
         await context.RefreshTokens.AddAsync(refreshToken, ct);
-        
+
         await context.SaveChangesAsync(ct);
     }
 

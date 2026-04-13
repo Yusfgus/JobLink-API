@@ -10,4 +10,5 @@ public interface IJwtProvider
 {
     Task<Result<TokenDto>> GenerateJWTAsync(GenerateJWTRequest request, CancellationToken ct);
     Task<Result<TokenDto>> RefreshAsync(string refreshToken, CancellationToken ct);
+    Task<Result> RevokeAllAsync(Guid userId, CancellationToken ct);
 }

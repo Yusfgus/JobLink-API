@@ -108,7 +108,7 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
 
     private async Task<Result<string>> GenerateRefreshTokenAsync(Guid userId, CancellationToken ct)
     {
-        await refreshTokenRepo.RemoveAllAsync(userId, ct);
+        await RevokeAllAsync(userId, ct);
 
         string token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 
@@ -127,6 +127,27 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
         await refreshTokenRepo.AddAsync(refreshTokenResult.Value!, ct);
 
         return token;
+    }
+
+    public async Task<Result> RevokeAsync(string refreshToken, CancellationToken ct)
+    {
+        var oldRefreshToken = await refreshTokenRepo.GetByTokenAsync(refreshToken, ct);
+
+        if (oldRefreshToken is null)
+        {
+            return Error.Unauthorized("REFRESH_TOKEN_INVALID", "Invalid refresh token");
+        }
+
+        await refreshTokenRepo.RemoveAllAsync(oldRefreshToken.UserId, ct);
+
+        return Result.Success();
+    }
+
+    public async Task<Result> RevokeAllAsync(Guid userId, CancellationToken ct)
+    {
+        await refreshTokenRepo.RemoveAllAsync(userId, ct);
+
+        return Result.Success();
     }
 
     private IConfigurationSection JwtSettings => configuration.GetSection("JwtSettings");

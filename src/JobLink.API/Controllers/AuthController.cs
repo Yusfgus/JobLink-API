@@ -2,12 +2,12 @@ using JobLink.API.Contracts.Admin;
 using JobLink.API.Contracts.Authentication;
 using JobLink.API.Contracts.JobSeekers;
 using JobLink.API.Contracts.Companies;
-
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using JobLink.Domain.Common.Enums;
+using JobLink.Application.Features.Identity.Commands.LogOut;
 using JobLink.Application.Features.Identity.Commands.RefreshToken;
 using JobLink.Application.Features.Identity.Queries.LogIn;
 
@@ -79,9 +79,14 @@ public class AuthController(ISender sender) : ApiController
 
     [HttpPost("logout")]
     [Authorize]
-    public Task<IActionResult> LogOut(CancellationToken ct)
+    public async Task<IActionResult> LogOut(CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var result = await sender.Send(new LogOutCommand(), ct);
+
+        return result.Match(
+            NoContent,
+            errors => Problem(errors)
+        );
     }
 
     [HttpGet("me")]
