@@ -19,6 +19,8 @@ public class Result
     }
 
     public static Result Success() => new();
+    public static Result Failure(Error error) => new([error]);
+    public static Result Failure(List<Error> errors) => new(errors);
 
     public static Result Combine(params Result[] results)
     {
@@ -52,6 +54,8 @@ public class Result<T> : Result
     }
 
     public static Result<T> Success(T value) => new(value);
+    new public static Result<T> Failure(Error error) => new([error]);
+    new public static Result<T> Failure(List<Error> errors) => new(errors);
 
     public static implicit operator Result<T>(T value) => Success(value);
     public static implicit operator Result<T>(Error error) => new([error]);

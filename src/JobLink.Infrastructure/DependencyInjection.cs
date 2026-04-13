@@ -2,6 +2,7 @@ using JobLink.Application.Common.Interfaces;
 using JobLink.Infrastructure.Data;
 using JobLink.Infrastructure.Database;
 using JobLink.Infrastructure.Identity;
+using JobLink.Infrastructure.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,8 @@ public static class DependencyInjection
                 .AddJwtAuthentication(configuration);
 
         services.AddSingleton(TimeProvider.System);
+
+        services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
         return services;
     }

@@ -26,16 +26,16 @@ public class JobSeekerApplicationsController(ISender sender) : ApiController
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetMyApplicationById(Guid id, CancellationToken cancellationToken)
+    public Task<IActionResult> GetMyApplicationById(Guid id, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
 
-        var result = await sender.Send(new GetMyApplicationByIdQuery(id), cancellationToken);
+        // var result = await sender.Send(new GetMyApplicationByIdQuery(id), cancellationToken);
 
-        return result.Match(
-            applicationDetails => Ok(applicationDetails),
-            errors => Problem(errors)
-        );
+        // return result.Match(
+        //     applicationDetails => Ok(applicationDetails),
+        //     errors => Problem(errors)
+        // );
     }
 
     [HttpDelete("{id:guid}")]

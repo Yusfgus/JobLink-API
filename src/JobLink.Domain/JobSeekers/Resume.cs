@@ -12,18 +12,27 @@ public sealed class Resume : Entity
 
     private Resume() { }
 
-    private Resume(Guid jobSeekerId, string fileUrl)
+    private Resume(Guid jobSeekerId)
     {
         JobSeekerProfileId = jobSeekerId;
-        FileUrl = fileUrl;
     }
 
-    public static Result<Resume> Create(Guid jobSeekerId, string fileUrl)
+    public static Result<Resume> Create(Guid jobSeekerId)
     {
         List<Error> errors = [];
 
         if (jobSeekerId == Guid.Empty)
             errors.Add(ResumeError.JobSeekerProfileIdRequired);
+
+        if (errors.Count > 0)
+            return errors;
+
+        return new Resume(jobSeekerId);
+    }
+
+    public Result SetFileUrl(string fileUrl)
+    {
+        List<Error> errors = [];
 
         if (string.IsNullOrEmpty(fileUrl))
             errors.Add(ResumeError.FileUrlRequired);
@@ -31,7 +40,9 @@ public sealed class Resume : Entity
         if (errors.Count > 0)
             return errors;
 
-        return new Resume(jobSeekerId, fileUrl);
+        FileUrl = fileUrl;
+
+        return Result.Success();
     }
 }
 
