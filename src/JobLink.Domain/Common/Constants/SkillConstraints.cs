@@ -6,4 +6,5 @@ public static class SkillConstraints
     public const int NameMinLength = 2;
 
     public const int JobSeekerSkillCountMax = 20;
+    public const int JobSkillCountMax = 15;
 }

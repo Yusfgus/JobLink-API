@@ -22,7 +22,7 @@ public sealed class JobSkill : Entity
         IsRequired = isRequired;
     }
 
-    public static Result<JobSkill> Create(Guid jobId, Guid skillId, bool isRequired)
+    public static Result<JobSkill> Create(Guid jobId, Guid skillId, bool isRequired = true)
     {
         List<Error> errors = [];
 
@@ -42,6 +42,26 @@ public sealed class JobSkill : Entity
         }
 
         return new JobSkill(jobId, skillId, isRequired);
+    }
+
+    public Result Update(Guid? skillId, bool? isRequired)
+    {
+        if (skillId.HasValue)
+        {
+            if (skillId.Value == Guid.Empty)
+            {
+                return JobSkillError.SkillIdRequired;
+            }
+
+            SkillId = skillId.Value;
+        }
+
+        if (isRequired.HasValue)
+        {
+            IsRequired = isRequired.Value;
+        }
+
+        return Result.Success();
     }
 }
 

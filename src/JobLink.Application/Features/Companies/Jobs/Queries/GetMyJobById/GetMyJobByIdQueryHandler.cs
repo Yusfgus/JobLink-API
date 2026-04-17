@@ -1,16 +1,15 @@
-using System.Data;
-using Dapper;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Application.Features.Jobs;
 using JobLink.Application.Features.Companies.DTOs;
 using JobLink.Domain.Common.Results;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobById;
 
-public sealed class GetMyJobByIdQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyJobByIdQuery, Result<CompanyJobDto>>
+public sealed class GetMyJobByIdQueryHandler(IAppDbContext dbContext, IAppUser appUser) : IRequestHandler<GetMyJobByIdQuery, Result<CompanyJobDetailsDto>>
 {
-    public async Task<Result<CompanyJobDto>> Handle(GetMyJobByIdQuery request, CancellationToken ct)
+    public async Task<Result<CompanyJobDetailsDto>> Handle(GetMyJobByIdQuery request, CancellationToken ct)
     {
         var userId = appUser.UserId;
         if (userId == null)
@@ -18,32 +17,28 @@ public sealed class GetMyJobByIdQueryHandler(ISqlConnectionFactory sqlConnection
             return CompanyError.NotFound;
         }
 
-        using IDbConnection connection = sqlConnectionFactory.CreateConnection();
-
-        const string sql = @"
-            SELECT
-                J.Id,
-                J.Title,
-                J.Description,
-                J.Requirements,
-                J.ExperienceLevel,
-                J.JobType,
-                J.LocationType,
-                J.Country,
-                J.City,
-                J.Area,
-                J.MinSalary,
-                J.MaxSalary,
-                J.PostedAtUtc,
-                J.ClosedAt,
-                J.ExpirationDate,
-                J.Status
-            FROM Jobs J
-            INNER JOIN CompanyProfiles CP ON J.CompanyProfileId = CP.Id
-            WHERE CP.UserId = @UserId AND J.Id = @Id
-        ";
-
-        CompanyJobDto? job = await connection.QueryFirstOrDefaultAsync<CompanyJobDto>(sql, new { UserId = userId, Id = request.Id });
+        var job = await dbContext.Jobs.AsNoTracking()
+            .Where(j => j.Id == request.Id && j.CompanyProfile!.UserId == userId)
+            .Select(j => new CompanyJobDetailsDto(
+                j.Id,
+                j.Title,
+                j.JobType,
+                j.LocationType,
+                j.Location!.Country!,
+                j.Location!.City!,
+                j.Location!.Area,
+                j.PostedAtUtc,
+                j.ClosedAt,
+                j.ExpirationDate,
+                j.Status,
+                j.ExperienceLevel,
+                j.MinSalary,
+                j.MaxSalary,
+                j.Skills.Select(js => new CompanyJobSkillDto(js.Id, js.Skill!.Name, js.IsRequired)).ToList(),
+                j.Description,
+                j.Requirements
+            ))
+            .FirstOrDefaultAsync(ct);
 
         if (job is null)
         {

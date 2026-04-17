@@ -7,6 +7,13 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseMiddleware<RequestLoggingMiddleware>();
+
+// app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.MapGet("/", () => "Hello World!");

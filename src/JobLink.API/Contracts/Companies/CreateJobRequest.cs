@@ -3,6 +3,17 @@ using JobLink.Domain.Common.Enums;
 
 namespace JobLink.API.Contracts.Companies;
 
+public sealed record CreateJobSkillRequest(
+    Guid SkillId,
+    bool IsRequired
+)
+{
+    public CreateJobSkillCommand ToCommand()
+    {
+        return new CreateJobSkillCommand(SkillId, IsRequired);
+    }
+};
+
 public sealed record CreateJobRequest(
     string Title,
     string Description,
@@ -15,7 +26,8 @@ public sealed record CreateJobRequest(
     string? Area,
     int MinSalary,
     int MaxSalary,
-    DateOnly ExpirationDate
+    DateOnly ExpirationDate,
+    List<CreateJobSkillRequest> Skills
 )
 {
     public CreateJobCommand ToCommand()
@@ -30,7 +42,8 @@ public sealed record CreateJobRequest(
             new (Country, City, Area),
             MinSalary,
             MaxSalary,
-            ExpirationDate
+            ExpirationDate,
+            Skills.Select(s => s.ToCommand()).ToList()
         );
     }
 };

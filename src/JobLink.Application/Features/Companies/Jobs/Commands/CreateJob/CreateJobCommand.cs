@@ -5,6 +5,8 @@ using MediatR;
 
 namespace JobLink.Application.Features.Companies.Jobs.Commands.CreateJob;
 
+public sealed record CreateJobSkillCommand(Guid SkillId, bool IsRequired);
+
 public sealed record CreateJobCommand(
     string Title,
     string Description,
@@ -15,5 +17,6 @@ public sealed record CreateJobCommand(
     Address Location,
     int MinSalary,
     int MaxSalary,
-    DateOnly ExpirationDate
+    DateOnly ExpirationDate,
+    List<CreateJobSkillCommand> Skills
 ) : IRequest<Result<Guid>>;

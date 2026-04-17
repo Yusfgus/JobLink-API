@@ -4,6 +4,9 @@ using JobLink.Application.Features.Companies.Jobs.Commands.CloseJob;
 using JobLink.Application.Features.Companies.Jobs.Queries.GetJobApplicants;
 using JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobById;
 using JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobs;
+using JobLink.Application.Features.Companies.Jobs.Skills.Commands.AddJobSkill;
+using JobLink.Application.Features.Companies.Jobs.Skills.Commands.DeleteJobSkill;
+using JobLink.Application.Features.Companies.Jobs.Skills.Commands.UpdateJobSkill;
 using JobLink.Domain.Common.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -78,6 +81,39 @@ public class CompanyJobController(ISender sender) : ApiController
 
         return result.Match(
             paginatedApplications => Ok(paginatedApplications),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpPost("{jobId:guid}/skills")]
+    public async Task<IActionResult> AddJobSkill(Guid jobId, [FromBody] AddJobSkillRequest request, CancellationToken ct)
+    {
+        var result = await sender.Send(request.ToCommand(jobId), ct);
+
+        return result.Match(
+            id => Ok(id),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpPut("{jobId:guid}/skills/{id:guid}")]
+    public async Task<IActionResult> UpdateJobSkill(Guid jobId, Guid id, [FromBody] UpdateJobSkillRequest request, CancellationToken ct)
+    {
+        var result = await sender.Send(request.ToCommand(jobId, id), ct);
+
+        return result.Match(
+            NoContent,
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpDelete("{jobId:guid}/skills/{id:guid}")]
+    public async Task<IActionResult> DeleteJobSkill(Guid jobId, Guid id, CancellationToken ct)
+    {
+        var result = await sender.Send(new DeleteJobSkillCommand(jobId, id), ct);
+
+        return result.Match(
+            NoContent,
             errors => Problem(errors)
         );
     }

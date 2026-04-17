@@ -5,4 +5,4 @@ using MediatR;
 
 namespace JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobs;
 
-public sealed record GetMyJobsQuery(int PageNumber, int PageSize) : IRequest<Result<PaginatedList<CompanyJobDto>>>;
+public sealed record GetMyJobsQuery(int Page = 1, int PageSize = 10) : IRequest<Result<PaginatedList<CompanyJobSummaryDto>>>;

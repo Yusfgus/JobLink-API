@@ -1,14 +1,12 @@
 using JobLink.Domain.Common.Enums;
 
-namespace JobLink.Application.Features.Jobs.DTOs;
+namespace JobLink.Application.Features.Companies.DTOs;
 
-public sealed record JobDetailsDto(
+public sealed record CompanyJobDetailsDto(
     Guid Id,
     string Title,
     JobType JobType,
     JobLocationType LocationType,
-    string CompanyName,
-    string? CompanyLogoUrl,
     string Country,
     string City,
     string? Area,
@@ -19,7 +17,7 @@ public sealed record JobDetailsDto(
     ExperienceLevel ExperienceLevel,
     int MinSalary,
     int MaxSalary,
-    List<JobSkillDto> Skills,
+    List<CompanyJobSkillDto> Skills,
     string Description,
     string? Requirements
 );

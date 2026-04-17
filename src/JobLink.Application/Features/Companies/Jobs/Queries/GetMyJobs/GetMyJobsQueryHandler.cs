@@ -1,17 +1,16 @@
-using System.Data;
-using Dapper;
 using JobLink.Application.Common.Interfaces;
 using JobLink.Application.Features.Identity;
 using JobLink.Application.Features.Companies.DTOs;
 using JobLink.Domain.Common.Results;
 using MediatR;
 using JobLink.Application.Common.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobLink.Application.Features.Companies.Jobs.Queries.GetMyJobs;
 
-public sealed class GetMyJobsQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IAppUser appUser) : IRequestHandler<GetMyJobsQuery, Result<PaginatedList<CompanyJobDto>>>
+public sealed class GetMyJobsQueryHandler(IAppDbContext dbContext, IAppUser appUser) : IRequestHandler<GetMyJobsQuery, Result<PaginatedList<CompanyJobSummaryDto>>>
 {
-    public async Task<Result<PaginatedList<CompanyJobDto>>> Handle(GetMyJobsQuery request, CancellationToken ct)
+    public async Task<Result<PaginatedList<CompanyJobSummaryDto>>> Handle(GetMyJobsQuery request, CancellationToken ct)
     {
         var userId = appUser.UserId;
         if (userId == null)
@@ -19,36 +18,25 @@ public sealed class GetMyJobsQueryHandler(ISqlConnectionFactory sqlConnectionFac
             return IdentityError.Unauthenticated;
         }
 
-        using IDbConnection connection = sqlConnectionFactory.CreateConnection();
+        var query = dbContext.Jobs.AsNoTracking();
 
-        const string sql = @"
-            SELECT 
-                J.Id,
-                J.Title,
-                J.Description,
-                J.Requirements,
-                J.ExperienceLevel,
-                J.JobType,
-                J.LocationType,
-                J.Country,
-                J.City,
-                J.Area,
-                J.MinSalary,
-                J.MaxSalary,
-                J.PostedAtUtc,
-                J.ClosedAt,
-                J.ExpirationDate,
-                J.Status
-            FROM Jobs J
-            INNER JOIN CompanyProfiles CP ON J.CompanyProfileId = CP.Id
-            WHERE CP.UserId = @UserId
-            LIMIT @PageSize OFFSET @Offset
-        ";
+        int totalCount = await query.Where(j => j.CompanyProfile!.UserId == userId).CountAsync(ct);
 
-        IEnumerable<CompanyJobDto> jobs = await connection.QueryAsync<CompanyJobDto>(sql, new { UserId = userId, PageSize = request.PageSize, Offset = (request.PageNumber - 1) * request.PageSize });
-
-        int totalCount = await connection.QuerySingleAsync<int>(@"SELECT COUNT(*) FROM Jobs J INNER JOIN CompanyProfiles CP ON J.CompanyProfileId = CP.Id WHERE CP.UserId = @UserId", new { UserId = userId });
-
-        return new PaginatedList<CompanyJobDto>(request.PageNumber, request.PageSize, totalCount, jobs.ToList());
+        return await query
+            .Where(j => j.CompanyProfile!.UserId == userId)
+            .Select(j => new CompanyJobSummaryDto(
+                j.Id,
+                j.Title,
+                j.JobType,
+                j.LocationType,
+                j.Location!.Country,
+                j.Location!.City,
+                j.ExperienceLevel,
+                j.Skills.Select(js => js.Skill!.Name).ToList(),
+                j.PostedAtUtc
+            ))
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToPaginatedListAsync(request.Page, request.PageSize, totalCount, ct);
     }
 }

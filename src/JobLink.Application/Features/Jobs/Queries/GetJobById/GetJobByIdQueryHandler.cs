@@ -29,7 +29,7 @@ public sealed class GetJobByIdQueryHandler(IAppDbContext dbContext) : IRequestHa
                 j.ExperienceLevel,
                 j.MinSalary,
                 j.MaxSalary,
-                j.Skills.Select(js => js.Skill!.Name).ToList(),
+                j.Skills.Select(js => new JobSkillDto(js.Skill!.Id, js.Skill.Name, js.IsRequired)).ToList(),
                 j.Description,
                 j.Requirements
             ))

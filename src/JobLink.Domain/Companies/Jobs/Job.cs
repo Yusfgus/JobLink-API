@@ -49,7 +49,7 @@ public sealed class Job : Entity
         Status = status;
     }
 
-    public static Result<Job> Create(Guid companyProfileId, string title, string description, string? requirements, JobType jobType, JobLocationType locationType, Address location, int minSalary, int maxSalary, ExperienceLevel experienceLevel, DateOnly expirationDate, JobStatus status)
+    public static Result<Job> Create(Guid companyProfileId, string title, string description, string? requirements, JobType jobType, JobLocationType locationType, Address location, int minSalary, int maxSalary, ExperienceLevel experienceLevel, DateOnly expirationDate)
     {
         List<Error> errors = [];
 
@@ -102,7 +102,7 @@ public sealed class Job : Entity
             return errors;
         }
 
-        return new Job(companyProfileId, title, description, requirements, jobType, locationType, location!, minSalary, maxSalary, experienceLevel, DateTime.UtcNow, expirationDate, status);
+        return new Job(companyProfileId, title, description, requirements, jobType, locationType, location!, minSalary, maxSalary, experienceLevel, DateTime.UtcNow, expirationDate, JobStatus.Opened);
     }
 
     public void Close()
