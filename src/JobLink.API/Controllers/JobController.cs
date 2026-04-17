@@ -2,6 +2,7 @@ using JobLink.API.Contracts;
 using JobLink.Application.Features.Jobs.Queries.GetJobs;
 using JobLink.Application.Features.Jobs.Queries.GetJobById;
 using JobLink.Application.Features.JobSeekers.JobApplications.Commands.ApplyForJob;
+using JobLink.Application.Features.JobSeekers.SavedJobs.Commands.SaveJob;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,4 +49,15 @@ public class JobController(ISender sender) : ApiController
         );
     }
 
+    [HttpPost("{id}/save")]
+    [Authorize(Roles = nameof(UserRole.JobSeeker))]
+    public async Task<IActionResult> SaveJob(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new SaveJobCommand(id), cancellationToken);
+
+        return result.Match(
+            () => Ok("Job saved successfully"),
+            errors => Problem(errors)
+        );
+    }
 }
