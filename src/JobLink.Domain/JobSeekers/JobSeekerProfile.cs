@@ -21,6 +21,8 @@ public sealed class JobSeekerProfile : Entity
     public string? Nationality { get; private set; }
     public MilitaryStatus? MilitaryStatus { get; private set; }
     public MaritalStatus? MaritalStatus { get; private set; }
+    public string? ProfilePictureUrl { get; private set; }
+    public string? Summary { get; private set; }
 
     public User? User { get; private set; }
     public Resume? Resume { get; private set; }
@@ -42,22 +44,8 @@ public sealed class JobSeekerProfile : Entity
     public string FullName => $"{FirstName} {MiddleName ?? ""} {LastName}";
 
     private JobSeekerProfile() { }
-    private JobSeekerProfile(Guid userId, string firstName, string? middleName, string lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
-    {
-        UserId = userId;
-        FirstName = firstName;
-        MiddleName = middleName;
-        LastName = lastName;
-        MobileNumber = mobileNumber;
-        BirthDate = birthDate;
-        Address = address;
-        Gender = gender;
-        Nationality = nationality;
-        MilitaryStatus = militaryStatus;
-        MaritalStatus = maritalStatus;
-    }
 
-    public JobSeekerProfile(Guid userId, string firstName, string lastName, Gender gender)
+    private JobSeekerProfile(Guid userId, string firstName, string lastName, Gender gender)
     {
         UserId = userId;
         FirstName = firstName;
@@ -65,34 +53,7 @@ public sealed class JobSeekerProfile : Entity
         Gender = gender;
     }
 
-    public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string? middleName, string lastName, Gender gender, string? mobileNumber, DateOnly? birthDate, Address address, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
-    {
-        List<Error> errors = [];
-
-        if (userId == Guid.Empty)
-        {
-            errors.Add(JobSeekerProfileError.UserIdRequired);
-        }
-
-        if (string.IsNullOrWhiteSpace(firstName))
-        {
-            errors.Add(JobSeekerProfileError.FirstNameRequired);
-        }
-
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            errors.Add(JobSeekerProfileError.LastNameRequired);
-        }
-
-        if (errors.Count > 0)
-        {
-            return errors;
-        }
-
-        return new JobSeekerProfile(userId, firstName, middleName, lastName, mobileNumber, birthDate, address, gender, nationality, militaryStatus, maritalStatus);
-    }
-
-    public static Result<JobSeekerProfile> Register(Guid userId, string firstName, string lastName, Gender gender)
+    public static Result<JobSeekerProfile> Create(Guid userId, string firstName, string lastName, Gender gender)
     {
         List<Error> errors = [];
 
@@ -119,7 +80,7 @@ public sealed class JobSeekerProfile : Entity
         return new JobSeekerProfile(userId, firstName, lastName, gender);
     }
 
-    public Result Update(string? firstName, string? middleName, string? lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender? gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus)
+    public Result Update(string? firstName, string? middleName, string? lastName, string? mobileNumber, DateOnly? birthDate, Address address, Gender? gender, string? nationality, MilitaryStatus? militaryStatus, MaritalStatus? maritalStatus, string? profilePictureUrl, string? summary)
     {
         List<Error> errors = [];
 
@@ -171,6 +132,16 @@ public sealed class JobSeekerProfile : Entity
         if (maritalStatus.HasValue)
         {
             MaritalStatus = maritalStatus;
+        }
+
+        if (profilePictureUrl != null)
+        {
+            ProfilePictureUrl = profilePictureUrl;
+        }
+
+        if (summary != null)
+        {
+            Summary = summary;
         }
 
         return Result.Success();

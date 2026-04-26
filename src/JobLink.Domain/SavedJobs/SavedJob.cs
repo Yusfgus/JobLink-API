@@ -7,8 +7,8 @@ namespace JobLink.Domain.SavedJobs;
 
 public sealed class SavedJob : Entity
 {
-    public Guid JobSeekerProfileId { get; private set; } = default!;
-    public Guid JobId { get; private set; } = default!;
+    public Guid JobSeekerProfileId { get; private set; }
+    public Guid JobId { get; private set; }
     public DateTime SavedAtUtc { get; private set; } = default!;
 
     public JobSeekerProfile? JobSeekerProfile { get; private set; }

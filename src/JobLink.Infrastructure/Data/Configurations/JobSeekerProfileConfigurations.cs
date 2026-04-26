@@ -61,5 +61,11 @@ public class JobSeekerProfileConfiguration : EntityConfiguration<JobSeekerProfil
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
+        builder.Property(x => x.ProfilePictureUrl)
+            .HasMaxLength(UserConstraints.ProfilePictureUrlMaxLength);
+
+        builder.Property(x => x.Summary)
+            .HasMaxLength(UserConstraints.SummaryMaxLength);
+
     }
 }

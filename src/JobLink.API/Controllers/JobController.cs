@@ -2,7 +2,9 @@ using JobLink.API.Contracts;
 using JobLink.Application.Features.Jobs.Queries.GetJobs;
 using JobLink.Application.Features.Jobs.Queries.GetJobById;
 using JobLink.Application.Features.JobSeekers.JobApplications.Commands.ApplyForJob;
+using JobLink.Application.Features.JobSeekers.JobApplications.Commands.WithdrawApplication;
 using JobLink.Application.Features.JobSeekers.SavedJobs.Commands.SaveJob;
+using JobLink.Application.Features.JobSeekers.SavedJobs.Commands.UnsaveJob;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +46,19 @@ public class JobController(ISender sender) : ApiController
         var result = await sender.Send(new ApplyForJobCommand(id), cancellationToken);
 
         return result.Match(
-            () => Ok("Job applied successfully"),
+            NoContent,
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpDelete("applications/{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.JobSeeker))]
+    public async Task<IActionResult> WithdrawApplication(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new WithdrawApplicationCommand(id), cancellationToken);
+
+        return result.Match(
+            NoContent,
             errors => Problem(errors)
         );
     }
@@ -56,7 +70,19 @@ public class JobController(ISender sender) : ApiController
         var result = await sender.Send(new SaveJobCommand(id), cancellationToken);
 
         return result.Match(
-            () => Ok("Job saved successfully"),
+            NoContent,
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpDelete("{id:guid}/unsave")]
+    [Authorize(Roles = nameof(UserRole.JobSeeker))]
+    public async Task<IActionResult> UnsaveJob(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new UnsaveJobCommand(id), cancellationToken);
+
+        return result.Match(
+            NoContent,
             errors => Problem(errors)
         );
     }

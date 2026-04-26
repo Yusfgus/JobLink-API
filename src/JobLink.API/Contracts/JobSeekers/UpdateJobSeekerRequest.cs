@@ -15,7 +15,9 @@ public sealed record UpdateJobSeekerRequest(
     MilitaryStatus? MilitaryStatus,
     string? Country,
     string? City,
-    string? Area
+    string? Area,
+    string? ProfilePictureUrl,
+    string? Summary
 )
 {
     public UpdateMyJobSeekerCommand ToCommand()
@@ -30,7 +32,9 @@ public sealed record UpdateJobSeekerRequest(
             Nationality,
             MaritalStatus,
             MilitaryStatus,
-            new(Country, City, Area)
+            new(Country, City, Area),
+            ProfilePictureUrl,
+            Summary
         );
     }
 }

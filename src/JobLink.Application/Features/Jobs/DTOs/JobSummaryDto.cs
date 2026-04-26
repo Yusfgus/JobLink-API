@@ -11,7 +11,10 @@ public sealed record JobSummaryDto(
     string? CompanyLogoUrl,
     string? Country,
     string? City,
+    string Description,
     ExperienceLevel ExperienceLevel,
     List<string> Skills,
-    DateTime PostedAtUtc
+    DateTime PostedAtUtc,
+    bool IsApplied,
+    bool IsSaved
 );

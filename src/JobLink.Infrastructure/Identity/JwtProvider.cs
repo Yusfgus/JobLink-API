@@ -55,7 +55,7 @@ public class JwtProvider(TimeProvider timeProvider, IConfiguration configuration
 
         string refreshToken = refreshTokenResult.Value!;
 
-        return new TokenDto(accessToken, refreshToken, expires);
+        return new TokenDto(accessToken, refreshToken, expires, request.Role);
     }
 
     public async Task<Result<TokenDto>> RefreshAsync(string refreshToken, CancellationToken ct)

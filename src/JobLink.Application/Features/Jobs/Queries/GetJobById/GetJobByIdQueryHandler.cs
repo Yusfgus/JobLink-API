@@ -18,7 +18,7 @@ public sealed class GetJobByIdQueryHandler(IAppDbContext dbContext) : IRequestHa
                 j.JobType,
                 j.LocationType,
                 j.CompanyProfile!.Name,
-                j.CompanyProfile!.User!.ProfilePictureUrl,
+                j.CompanyProfile!.LogoUrl,
                 j.Location!.Country!,
                 j.Location!.City!,
                 j.Location!.Area,

@@ -21,12 +21,6 @@ public class UserConfiguration : EntityConfiguration<User>
             .HasMaxLength(UserConstraints.PasswordHashMaxLength)
             .IsRequired();
 
-        builder.Property(x => x.ProfilePictureUrl)
-            .HasMaxLength(UserConstraints.ProfilePictureUrlMaxLength);
-
-        builder.Property(x => x.Summary)
-            .HasMaxLength(UserConstraints.SummaryMaxLength);
-
         builder.Property(x => x.Role)
             .HasConversion<string>()
             .IsRequired();

@@ -33,7 +33,9 @@ public class UpdateMyJobSeekerCommandHandler(IAppDbContext dbContext, IAppUser a
             request.Gender,
             request.Nationality,
             request.MilitaryStatus,
-            request.MaritalStatus
+            request.MaritalStatus,
+            request.ProfilePictureUrl,
+            request.Summary
         );
 
         if (updateResult.IsFailure)

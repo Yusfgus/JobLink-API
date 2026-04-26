@@ -20,7 +20,7 @@ public class WithdrawApplicationCommandHandler(IAppDbContext dbContext, IAppUser
 
         JobApplication? jobApplication = await dbContext.JobApplications
             .FirstOrDefaultAsync(ja =>
-                ja.Id == request.Id &&
+                ja.JobId == request.Id &&
                 ja.JobSeekerProfile!.UserId == userId,
                 cancellationToken
             );

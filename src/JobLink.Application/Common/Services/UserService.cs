@@ -22,7 +22,7 @@ public sealed class UserService(IAppDbContext dbContext) : IUserService
 
         string passwordHash = registerUserDto.Password; // TODO: Hash password
 
-        var result = User.Create(email, passwordHash, null, role, null);
+        var result = User.Create(email, passwordHash, role);
 
         if (result.IsFailure)
         {

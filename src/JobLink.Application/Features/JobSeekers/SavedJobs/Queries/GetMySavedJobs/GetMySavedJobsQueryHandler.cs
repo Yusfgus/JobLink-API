@@ -33,7 +33,7 @@ public sealed class GetMySavedJobsQueryHandler(IAppDbContext dbContext, IAppUser
                     sj.Job!.Title,
                     sj.Job.CompanyProfileId,
                     sj.Job.CompanyProfile!.Name,
-                    sj.Job.CompanyProfile!.User!.ProfilePictureUrl,
+                    sj.Job.CompanyProfile!.LogoUrl,
                     $"{sj.Job.Location.Country} - {sj.Job.Location.City}",
                     sj.SavedAtUtc,
                     ja != null

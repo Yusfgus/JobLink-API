@@ -42,7 +42,7 @@ public class GetJobApplicantsQueryHandler(IAppDbContext dbContext, IAppUser appU
                 ja.JobSeekerProfile!.FirstName + " " + ja.JobSeekerProfile.LastName,
                 ja.JobSeekerProfile!.User!.Email,
                 ja.JobSeekerProfile!.MobileNumber,
-                ja.JobSeekerProfile!.User!.ProfilePictureUrl,
+                ja.JobSeekerProfile!.ProfilePictureUrl,
                 ja.JobSeekerProfile!.Resume!.FileUrl,
                 ja.AppliedAtUtc,
                 ja.Status

@@ -15,5 +15,7 @@ public sealed record UpdateMyJobSeekerCommand(
     string? Nationality,
     MaritalStatus? MaritalStatus,
     MilitaryStatus? MilitaryStatus,
-    Address Address
+    Address Address,
+    string? ProfilePictureUrl,
+    string? Summary
 ) : IRequest<Result>;

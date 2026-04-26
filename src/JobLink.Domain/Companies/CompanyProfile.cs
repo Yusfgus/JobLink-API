@@ -11,6 +11,8 @@ public sealed class CompanyProfile : Entity
     public Guid UserId { get; private set; }
     public string Name { get; private set; } = default!;
     public string Industry { get; private set; } = default!;
+    public string? Description { get; private set; }
+    public string? LogoUrl { get; private set; }
     public string? Website { get; private set; }
 
     public User? User { get; private set; }
@@ -21,15 +23,14 @@ public sealed class CompanyProfile : Entity
 
     private CompanyProfile() { }
 
-    private CompanyProfile(Guid userId, string name, string industry, string? website)
+    private CompanyProfile(Guid userId, string name, string industry)
     {
         Name = name;
         Industry = industry;
-        Website = website;
         UserId = userId;
     }
 
-    public static Result<CompanyProfile> Create(Guid userId, string name, string industry, string? website)
+    public static Result<CompanyProfile> Create(Guid userId, string name, string industry)
     {
         List<Error> errors = [];
 
@@ -48,12 +49,44 @@ public sealed class CompanyProfile : Entity
             return errors;
         }
 
-        return new CompanyProfile(userId, name, industry, website);
+        return new CompanyProfile(userId, name, industry);
     }
 
-    public static Result<CompanyProfile> Register(Guid userId, string name, string industry)
+    public Result Update(string? name, string? industry, string? description, string? logoUrl, string? website)
     {
-        return Create(userId, name, industry, null);
+        List<Error> errors = [];
+
+        if (name is not null)
+        {
+            Name = name;
+        }
+
+        if (industry is not null)
+        {
+            Industry = industry;
+        }
+
+        if (description is not null)
+        {
+            Description = description;
+        }
+
+        if (logoUrl is not null)
+        {
+            LogoUrl = logoUrl;
+        }
+
+        if (website is not null)
+        {
+            Website = website;
+        }
+
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
+        return Result.Success();
     }
 
     public Result AddLocation(Address location)

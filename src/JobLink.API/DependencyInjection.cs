@@ -12,6 +12,19 @@ public static class DependencyInjection
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
+        // Add CORS services
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAngularApp",
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200", "http://localhost:5173") // The URL of your Angular app
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials(); // Required if you use Cookies/Identity
+                });
+        });
+
         return services;
     }
 }

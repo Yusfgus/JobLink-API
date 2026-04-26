@@ -12,10 +12,6 @@ public sealed class LogInQueryHandler(IAppDbContext dbContext, IJwtProvider jwtP
 {
     public async Task<Result<TokenDto>> Handle(LogInQuery request, CancellationToken ct)
     {
-        // using var connection = sqlConnectionFactory.CreateConnection();
-
-        // var user = await connection.QueryFirstOrDefaultAsync<User>(new CommandDefinition("SELECT * FROM Users WHERE Email = @Email", new { request.Email }, cancellationToken: ct));
-
         User? user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == request.Email, ct);
 
         if (user is null)

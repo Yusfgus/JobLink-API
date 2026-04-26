@@ -29,5 +29,12 @@ public class CompanyProfileConfiguration : EntityConfiguration<CompanyProfile>
             .HasForeignKey<CompanyProfile>(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+
+        builder.Property(x => x.LogoUrl)
+            .HasMaxLength(CompanyProfileConstraints.LogoUrlMaxLength);
+
+        builder.Property(x => x.Description)
+            .HasMaxLength(CompanyProfileConstraints.DescriptionMaxLength);
+
     }
 }

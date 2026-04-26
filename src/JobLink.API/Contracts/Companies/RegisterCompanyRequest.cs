@@ -1,4 +1,4 @@
-using JobLink.Application.Features.Companies.Commands.RegisterCompany;
+using JobLink.Application.Features.Companies.Profile.Commands.RegisterCompany;
 using JobLink.Application.Common.DTOs;
 
 namespace JobLink.API.Contracts.Companies;

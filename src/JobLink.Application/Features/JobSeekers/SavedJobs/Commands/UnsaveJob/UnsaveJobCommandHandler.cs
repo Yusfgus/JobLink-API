@@ -19,7 +19,7 @@ public class UnsaveJobCommandHandler(IAppDbContext dbContext, IAppUser appUser) 
 
         SavedJob? savedJob = await dbContext.SavedJobs
             .FirstOrDefaultAsync(sj =>
-                sj.Id == request.Id &&
+                sj.JobId == request.JobId &&
                 sj.JobSeekerProfile!.UserId == userId,
                 cancellationToken
             );

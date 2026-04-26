@@ -2,7 +2,7 @@ using FluentValidation;
 using JobLink.Domain.Common.Constants;
 using JobLink.Application.Common.Validators;
 
-namespace JobLink.Application.Features.Companies.Commands.RegisterCompany;
+namespace JobLink.Application.Features.Companies.Profile.Commands.RegisterCompany;
 
 public sealed class RegisterCompanyCommandValidator : AbstractValidator<RegisterCompanyCommand>
 {
@@ -20,12 +20,5 @@ public sealed class RegisterCompanyCommandValidator : AbstractValidator<Register
             .MaximumLength(CompanyProfileConstraints.IndustryMaxLength)
             .MinimumLength(CompanyProfileConstraints.IndustryMinLength)
             .NotEmpty();
-
-        // RuleFor(x => x.Website)
-        //     .MaximumLength(CompanyProfileConstraints.WebsiteMaxLength)
-        //     .MinimumLength(CompanyProfileConstraints.WebsiteMinLength);
-
-        // RuleForEach(x => x.Locations)
-        //     .SetValidator(new AddressValidator());
     }
 }

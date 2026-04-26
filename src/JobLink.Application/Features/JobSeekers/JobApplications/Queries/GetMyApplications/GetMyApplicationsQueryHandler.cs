@@ -31,7 +31,7 @@ public sealed class GetMyApplicationsQueryHandler(IAppDbContext dbContext, IAppU
                 ja.Job!.Title,
                 ja.Job.CompanyProfileId,
                 ja.Job.CompanyProfile!.Name,
-                ja.Job.CompanyProfile!.User!.ProfilePictureUrl,
+                ja.Job.CompanyProfile!.LogoUrl,
                 $"{ja.Job.Location.Country} - {ja.Job.Location.City}",
                 ja.Status,
                 ja.AppliedAtUtc

@@ -3,6 +3,7 @@ using System;
 using JobLink.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobLink.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260426171311_Update-User")]
+    partial class UpdateUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -505,7 +508,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.HasKey("CompanyLocationId");
 
-                            b1.ToTable("CompanyLocations", (string)null);
+                            b1.ToTable("CompanyLocations");
 
                             b1.WithOwner()
                                 .HasForeignKey("CompanyLocationId");
@@ -560,7 +563,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.HasKey("JobId");
 
-                            b1.ToTable("Jobs", (string)null);
+                            b1.ToTable("Jobs");
 
                             b1.WithOwner()
                                 .HasForeignKey("JobId");
@@ -673,7 +676,7 @@ namespace JobLink.Infrastructure.Data.Migrations
 
                             b1.HasKey("JobSeekerProfileId");
 
-                            b1.ToTable("JobSeekerProfiles", (string)null);
+                            b1.ToTable("JobSeekerProfiles");
 
                             b1.WithOwner()
                                 .HasForeignKey("JobSeekerProfileId");

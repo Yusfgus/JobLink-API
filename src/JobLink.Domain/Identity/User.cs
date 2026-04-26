@@ -9,22 +9,18 @@ public sealed class User : Entity
 {
     public string Email { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;
-    public string? ProfilePictureUrl { get; private set; }
     public UserRole Role { get; private set; }
-    public string? Summary { get; private set; }
 
     private User() { }
 
-    private User(string email, string passwordHash, string? profilePictureUrl, UserRole role, string? summary)
+    private User(string email, string passwordHash, UserRole role)
     {
         Email = email;
         PasswordHash = passwordHash;
-        ProfilePictureUrl = profilePictureUrl;
         Role = role;
-        Summary = summary;
     }
 
-    public static Result<User> Create(string email, string passwordHash, string? profilePictureUrl, UserRole role, string? summary)
+    public static Result<User> Create(string email, string passwordHash, UserRole role)
     {
         List<Error> errors = [];
 
@@ -54,7 +50,7 @@ public sealed class User : Entity
             return errors;
         }
 
-        return new User(email, passwordHash, profilePictureUrl, role, summary);
+        return new User(email, passwordHash, role);
     }
 }
 

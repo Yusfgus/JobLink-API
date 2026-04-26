@@ -3,6 +3,7 @@ using JobLink.Domain.Common.Enums;
 using JobLink.Domain.Common.ValueObjects;
 using JobLink.Domain.Common.Results;
 using JobLink.Domain.JobApplications;
+using JobLink.Domain.SavedJobs;
 
 namespace JobLink.Domain.Companies.Jobs;
 
@@ -26,6 +27,9 @@ public sealed class Job : Entity
     public CompanyProfile? CompanyProfile { get; private set; }
     private readonly List<JobApplication> _applications = [];
     public IReadOnlyCollection<JobApplication> Applications => _applications;
+
+    private readonly List<SavedJob> _saves = [];
+    public IReadOnlyCollection<SavedJob> Saves => _saves;
 
     private readonly List<JobSkill> _skills = [];
     public IReadOnlyCollection<JobSkill> Skills => _skills;

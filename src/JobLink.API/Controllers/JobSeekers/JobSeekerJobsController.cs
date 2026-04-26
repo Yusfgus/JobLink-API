@@ -1,7 +1,5 @@
 using JobLink.API.Contracts;
-using JobLink.Application.Features.JobSeekers.JobApplications.Commands.WithdrawApplication;
 using JobLink.Application.Features.JobSeekers.JobApplications.Queries.GetMyApplications;
-using JobLink.Application.Features.JobSeekers.SavedJobs.Commands.UnsaveJob;
 using JobLink.Application.Features.JobSeekers.SavedJobs.Queries.GetMySavedJobs;
 using JobLink.Domain.Common.Enums;
 using MediatR;
@@ -39,16 +37,16 @@ public class JobSeekerJobsController(ISender sender) : ApiController
         // );
     }
 
-    [HttpDelete("applications/{id:guid}")]
-    public async Task<IActionResult> WithdrawApplication(Guid id, CancellationToken cancellationToken)
-    {
-        var result = await sender.Send(new WithdrawApplicationCommand(id), cancellationToken);
+    // [HttpDelete("applications/{id:guid}")]
+    // public async Task<IActionResult> WithdrawApplication(Guid id, CancellationToken cancellationToken)
+    // {
+    //     var result = await sender.Send(new WithdrawApplicationCommand(id), cancellationToken);
 
-        return result.Match(
-            () => Ok("Job application withdrawn"),
-            errors => Problem(errors)
-        );
-    }
+    //     return result.Match(
+    //         () => Ok("Job application withdrawn"),
+    //         errors => Problem(errors)
+    //     );
+    // }
 
     [HttpGet("saved")]
     public async Task<IActionResult> GetMySavedJobs([FromQuery] PageRequest pageRequest, CancellationToken cancellationToken)
@@ -61,14 +59,14 @@ public class JobSeekerJobsController(ISender sender) : ApiController
         );
     }
 
-    [HttpDelete("saved/{id:guid}")]
-    public async Task<IActionResult> UnsaveJob(Guid id, CancellationToken cancellationToken)
-    {
-        var result = await sender.Send(new UnsaveJobCommand(id), cancellationToken);
+    // [HttpDelete("saved/{id:guid}")]
+    // public async Task<IActionResult> UnsaveJob(Guid id, CancellationToken cancellationToken)
+    // {
+    //     var result = await sender.Send(new UnsaveJobCommand(id), cancellationToken);
 
-        return result.Match(
-            () => Ok("Job removed from saved jobs"),
-            errors => Problem(errors)
-        );
-    }
+    //     return result.Match(
+    //         () => Ok("Job removed from saved jobs"),
+    //         errors => Problem(errors)
+    //     );
+    // }
 }

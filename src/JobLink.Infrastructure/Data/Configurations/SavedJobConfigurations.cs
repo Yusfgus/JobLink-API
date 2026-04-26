@@ -21,7 +21,7 @@ public class SavedJobConfiguration : EntityConfiguration<SavedJob>
             .IsRequired();
 
         builder.HasOne(x => x.Job)
-            .WithMany()
+            .WithMany(x => x.Saves)
             .HasForeignKey(x => x.JobId)
             .IsRequired();
 

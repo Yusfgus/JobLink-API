@@ -38,5 +38,13 @@ public class UpdateMyJobSeekerCommandValidator : AbstractValidator<UpdateMyJobSe
         RuleFor(x => x.Address)
             .SetValidator(new AddressValidator())
             .When(x => x.Address != null);
+
+        RuleFor(x => x.ProfilePictureUrl)
+            .MaximumLength(JobSeekerProfileConstraints.ProfilePictureUrlMaxLength)
+            .When(x => x.ProfilePictureUrl != null);
+
+        RuleFor(x => x.Summary)
+            .MaximumLength(JobSeekerProfileConstraints.SummaryMaxLength)
+            .When(x => x.Summary != null);
     }
 }
