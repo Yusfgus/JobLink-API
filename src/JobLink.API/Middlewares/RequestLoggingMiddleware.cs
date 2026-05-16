@@ -1,8 +1,10 @@
+namespace JobLink.API.Middlewares;
+
 public class RequestLoggingMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
-        await next(context); // execute endpoint
+        await next(context);
 
         // This runs AFTER the endpoint finishes
         Console.ForegroundColor = ConsoleColor.Green;

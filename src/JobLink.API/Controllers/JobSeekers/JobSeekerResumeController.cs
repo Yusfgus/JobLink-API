@@ -1,6 +1,6 @@
+using JobLink.Application.Features.JobSeekers.DTOs;
 using JobLink.Application.Features.JobSeekers.Resumes.Commands.DeleteMyResume;
 using JobLink.Application.Features.JobSeekers.Resumes.Commands.UploadMyResume;
-using JobLink.Application.Features.JobSeekers.Resumes.Queries.DownloadMyResume;
 using JobLink.Application.Features.JobSeekers.Resumes.Queries.GetMyResume;
 using JobLink.Domain.Common.Enums;
 using MediatR;
@@ -20,36 +20,33 @@ public class JobSeekerResumeController(ISender sender) : ApiController
         var result = await sender.Send(new GetMyResumeQuery(), cancellationToken);
 
         return result.Match(
-            resume => Ok(resume),
-            errors => Problem(errors)
-        );
-    }
-
-    [HttpGet("download")]
-    public async Task<IActionResult> DownloadMyResume(CancellationToken cancellationToken)
-    {
-        var result = await sender.Send(new DownloadMyResumeQuery(), cancellationToken);
-
-        return result.Match(
-            stream => File(stream, "application/pdf", "resume.pdf"),
+            resume =>
+            {
+                resume.ResumeUrl = $"{Request.Scheme}://{Request.Host}/{resume.ResumeUrl}";
+                return Ok(resume);
+            },
             errors => Problem(errors)
         );
     }
 
     [HttpPost]
-    public async Task<IActionResult> UploadMyResume(IFormFile file, CancellationToken cancellationToken)
+    public async Task<IActionResult> UploadMyResume(IFormFile resume, CancellationToken cancellationToken)
     {
-        using Stream stream = file.OpenReadStream();
+        using Stream stream = resume.OpenReadStream();
 
         var command = new UploadMyResumeCommand(
             stream,
-            file.FileName,
-            file.ContentType);
+            resume.FileName,
+            resume.ContentType);
 
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match(
-            resumeId => Ok(resumeId),
+            resume =>
+            {
+                resume.ResumeUrl = $"{Request.Scheme}://{Request.Host}/{resume.ResumeUrl}";
+                return Ok(resume);
+            },
             errors => Problem(errors)
         );
     }

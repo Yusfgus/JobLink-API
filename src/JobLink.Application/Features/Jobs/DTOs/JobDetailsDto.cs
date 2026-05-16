@@ -21,5 +21,7 @@ public sealed record JobDetailsDto(
     int MaxSalary,
     List<JobSkillDto> Skills,
     string Description,
-    string? Requirements
+    string? Requirements,
+    bool IsApplied,
+    bool IsSaved
 );

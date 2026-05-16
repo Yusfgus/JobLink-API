@@ -13,7 +13,7 @@ namespace JobLink.API.Controllers.JobSeekers;
 [Authorize(Roles = nameof(UserRole.JobSeeker))]
 public class JobSeekerJobsController(ISender sender) : ApiController
 {
-    [HttpGet("applications")]
+    [HttpGet("applied")]
     public async Task<IActionResult> GetMyApplications([FromQuery] PageRequest pageRequest, CancellationToken cancellationToken)
     {
         var result = await sender.Send(new GetMyApplicationsQuery(pageRequest.Page, pageRequest.PageSize), cancellationToken);

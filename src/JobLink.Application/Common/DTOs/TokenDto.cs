@@ -6,6 +6,6 @@ public sealed record TokenDto
 (
     string AccessToken,
     string RefreshToken,
-    DateTime Expires,
+    DateTime ExpiresUtc,
     UserRole Role
 );

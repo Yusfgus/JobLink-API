@@ -3,12 +3,13 @@ using JobLink.Domain.Common.Results;
 using JobLink.Domain.JobSeekers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using JobLink.Application.Features.JobSeekers.DTOs;
 
 namespace JobLink.Application.Features.JobSeekers.Resumes.Commands.UploadMyResume;
 
-public class UploadResumeCommandHandler(IAppDbContext dbContext, IAppUser appUser, IFileStorageService fileStorageService): IRequestHandler<UploadMyResumeCommand, Result<Guid>>
+public class UploadResumeCommandHandler(IAppDbContext dbContext, IAppUser appUser, IFileStorageService fileStorageService): IRequestHandler<UploadMyResumeCommand, Result<ResumeDto>>
 {
-    public async Task<Result<Guid>> Handle(UploadMyResumeCommand request, CancellationToken ct)
+    public async Task<Result<ResumeDto>> Handle(UploadMyResumeCommand request, CancellationToken ct)
     {
         var allowedExtensions = new[] { ".pdf", ".doc", ".docx" };
         var extension = Path.GetExtension(request.FileName);
@@ -44,9 +45,9 @@ public class UploadResumeCommandHandler(IAppDbContext dbContext, IAppUser appUse
         }
 
         Resume resume = resumeResult.Value!;
-        string fileName = $"{jobSeekerProfile.Id}{extension}";
+        string fileName = $"{resume.Id}{extension}";
 
-        var filePathResult = await fileStorageService.UploadAsync(request.FileStream, fileName, ct);
+        var filePathResult = await fileStorageService.UploadResumeAsync(request.FileStream, fileName, ct);
         if (filePathResult.IsFailure)
         {
             return filePathResult.Errors;
@@ -61,7 +62,11 @@ public class UploadResumeCommandHandler(IAppDbContext dbContext, IAppUser appUse
         dbContext.Resumes.Add(resume);
         await dbContext.SaveChangesAsync(ct);
 
-        return resume.Id;
+        return new ResumeDto
+        {
+            Id = resume.Id.ToString(),
+            ResumeUrl = resume.FileUrl
+        };
     }
 }
 

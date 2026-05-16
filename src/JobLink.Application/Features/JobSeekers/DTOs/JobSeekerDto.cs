@@ -14,5 +14,6 @@ public sealed record JobSeekerProfileDto(
     string? MaritalStatus,
     string? Country,
     string? City,
-    string? Area
+    string? Area,
+    string? Summary
 );

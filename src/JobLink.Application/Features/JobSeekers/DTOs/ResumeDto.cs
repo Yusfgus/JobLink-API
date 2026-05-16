@@ -1,3 +1,7 @@
 namespace JobLink.Application.Features.JobSeekers.DTOs;
 
-public record ResumeDto(string Id, string FileUrl);
+public class ResumeDto
+{
+    public string Id { get; set; } = null!;
+    public string ResumeUrl { get; set; } = null!;
+}

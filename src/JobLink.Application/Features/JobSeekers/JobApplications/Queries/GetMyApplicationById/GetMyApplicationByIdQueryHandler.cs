@@ -18,17 +18,17 @@ public sealed class GetMyApplicationByIdQueryHandler(IAppDbContext dbContext, IA
         }
 
         var job = await dbContext.JobApplications
-            .Where(ja => 
+            .Where(ja =>
                 ja.JobSeekerProfile!.UserId == userId &&
-                ja.Id == request.Id
+                ja.JobId == request.Id
             )
             .Select(ja => new JobApplicationDetailsDto(
-                ja.Id,
                 ja.Job!.Id,
                 ja.Job!.Title,
                 ja.Job.CompanyProfileId,
                 ja.Job.CompanyProfile!.Name,
-                $"{ja.Job.Location.Country} - {ja.Job.Location.City}",
+                ja.Job.Location.Country,
+                ja.Job.Location.City,
                 ja.Status,
                 ja.AppliedAtUtc
             ))

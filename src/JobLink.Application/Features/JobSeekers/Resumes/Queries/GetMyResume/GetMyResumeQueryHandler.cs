@@ -18,11 +18,10 @@ public class GetMyResumeQueryHandler(ISqlConnectionFactory sqlConnectionFactory,
         }
 
         const string sql = @"
-            SELECT r.Id, r.FileUrl 
+            SELECT r.Id, r.FileUrl as ResumeUrl
             FROM Resumes r
             JOIN JobSeekerProfiles jsp ON r.JobSeekerProfileId = jsp.Id
-            JOIN Users u ON jsp.UserId = u.Id
-            WHERE u.Id = @UserId";
+            WHERE jsp.UserId = @UserId";
 
         var connection = sqlConnectionFactory.CreateConnection();
 
@@ -33,6 +32,9 @@ public class GetMyResumeQueryHandler(ISqlConnectionFactory sqlConnectionFactory,
         {
             return Error.NotFound("Resume not found");
         }
+
+        Console.WriteLine("Resume: " + resume.Id);
+        Console.WriteLine("Resume URL: " + resume.ResumeUrl);
 
         return resume;
     }

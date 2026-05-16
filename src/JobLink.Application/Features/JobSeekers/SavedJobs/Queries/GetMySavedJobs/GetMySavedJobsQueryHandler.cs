@@ -1,6 +1,7 @@
 using JobLink.Application.Common.Interfaces;
 using JobLink.Application.Common.Models;
 using JobLink.Application.Features.Identity;
+using JobLink.Application.Features.Jobs.DTOs;
 using JobLink.Application.Features.JobSeekers.DTOs;
 using JobLink.Domain.Common.Results;
 using MediatR;
@@ -23,22 +24,23 @@ public sealed class GetMySavedJobsQueryHandler(IAppDbContext dbContext, IAppUser
         int totalCount = await query.CountAsync(cancellationToken);
 
         return await query
-            .LeftJoin(
-                dbContext.JobApplications.Where(ja => ja.JobSeekerProfile!.UserId == userId),
-                sj => sj.JobId,
-                ja => ja.JobId,
-                (sj, ja) => new SavedJobDto(
-                    sj.Id,
-                    sj.Job!.Id,
-                    sj.Job!.Title,
-                    sj.Job.CompanyProfileId,
-                    sj.Job.CompanyProfile!.Name,
-                    sj.Job.CompanyProfile!.LogoUrl,
-                    $"{sj.Job.Location.Country} - {sj.Job.Location.City}",
-                    sj.SavedAtUtc,
-                    ja != null
-                )
-            )
+            .Select(sj => new SavedJobDto(
+                sj.Job!.Id,
+                sj.Job!.Title,
+                sj.Job!.JobType,
+                sj.Job.LocationType,
+                sj.Job.CompanyProfileId,
+                sj.Job.CompanyProfile!.Name,
+                sj.Job.CompanyProfile!.LogoUrl,
+                sj.Job.Location.Country,
+                sj.Job.Location.City,
+                sj.Job.Description,
+                sj.Job.ExperienceLevel,
+                sj.Job.Skills.Select(s => new JobSkillDto(s.Skill!.Id, s.Skill.Name, s.IsRequired)).ToList(),
+                sj.Job.PostedAtUtc,
+                sj.Job.Applications.Any(a => a.JobSeekerProfile!.UserId == userId),
+                sj.SavedAtUtc
+            ))
             .ToPaginatedListAsync(request.Page, request.PageSize, totalCount, cancellationToken);
     }
 }

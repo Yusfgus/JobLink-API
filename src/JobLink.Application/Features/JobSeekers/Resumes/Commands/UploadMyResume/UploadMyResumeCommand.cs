@@ -1,3 +1,4 @@
+using JobLink.Application.Features.JobSeekers.DTOs;
 using JobLink.Domain.Common.Results;
 using MediatR;
 
@@ -7,4 +8,4 @@ public record UploadMyResumeCommand(
     Stream FileStream,
     string FileName,
     string ContentType
-) : IRequest<Result<Guid>>;
+) : IRequest<Result<ResumeDto>>;

@@ -51,7 +51,7 @@ public class JobController(ISender sender) : ApiController
         );
     }
 
-    [HttpDelete("applications/{id:guid}")]
+    [HttpDelete("{id:guid}/withdraw")]
     [Authorize(Roles = nameof(UserRole.JobSeeker))]
     public async Task<IActionResult> WithdrawApplication(Guid id, CancellationToken cancellationToken)
     {

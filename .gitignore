@@ -5,6 +5,7 @@
 
 # custom
 *.db
+wwwroot/
 
 # dotenv files
 .env

@@ -37,7 +37,8 @@ public class GetMyJobSeekerQueryHandler(ISqlConnectionFactory sqlConnectionFacto
                 JP.MaritalStatus,
                 JP.Country,
                 JP.City,
-                JP.Area
+                JP.Area,
+                JP.Summary
             FROM JobSeekerProfiles JP
             INNER JOIN Users U ON JP.UserId = U.Id
             WHERE JP.UserId = @UserId

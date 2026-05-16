@@ -146,6 +146,25 @@ public sealed class JobSeekerProfile : Entity
 
         return Result.Success();
     }
+
+    public Result SetProfilePicture(string profilePictureUrl)
+    {
+        if (string.IsNullOrWhiteSpace(profilePictureUrl))
+        {
+            return Result.Failure(Error.Validation("JobSeekerProfile.ProfilePictureUrl", "Profile picture url is required"));
+        }
+
+        ProfilePictureUrl = profilePictureUrl;
+
+        return Result.Success();
+    }
+
+    public Result RemoveProfilePicture()
+    {
+        ProfilePictureUrl = null;
+
+        return Result.Success();
+    }
 }
 
 internal static class JobSeekerProfileError

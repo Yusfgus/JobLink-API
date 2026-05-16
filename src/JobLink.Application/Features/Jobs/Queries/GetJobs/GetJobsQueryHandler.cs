@@ -23,20 +23,19 @@ public sealed class GetJobsQueryHandler(IAppDbContext dbContext, IAppUser appUse
         int totalCount = await query.CountAsync(cancellationToken);
 
         return await query
-            .Skip((request.Page - 1) * request.PageSize)
-            .Take(request.PageSize)
             .Select(j => new JobSummaryDto(
                 j.Id,
                 j.Title,
                 j.JobType,
                 j.LocationType,
+                j.CompanyProfileId,
                 j.CompanyProfile!.Name,
                 j.CompanyProfile!.LogoUrl,
-                j.Location!.Country,
-                j.Location!.City,
+                j.Location.Country,
+                j.Location.City,
                 j.Description,
                 j.ExperienceLevel,
-                j.Skills.Select(js => js.Skill!.Name).ToList(),
+                j.Skills.Select(js => new JobSkillDto(js.Skill!.Id, js.Skill.Name, js.IsRequired)).ToList(),
                 j.PostedAtUtc,
                 j.Applications.Any(a => a.JobSeekerProfile!.UserId == userId),
                 j.Saves.Any(s => s.JobSeekerProfile!.UserId == userId)

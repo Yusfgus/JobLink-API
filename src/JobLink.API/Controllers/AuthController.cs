@@ -65,11 +65,11 @@ public class AuthController(ISender sender) : ApiController
         );
     }
 
-    [HttpPost("refresh-token")]
+    [HttpPost("refresh")]
     [AllowAnonymous]
-    public async Task<IActionResult> RefreshToken([FromBody] string refreshToken, CancellationToken ct)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request, CancellationToken ct)
     {
-        var result = await sender.Send(new RefreshTokenCommand(refreshToken), ct);
+        var result = await sender.Send(new RefreshTokenCommand(request.RefreshToken), ct);
 
         return result.Match(
             tokenDto => Ok(tokenDto),

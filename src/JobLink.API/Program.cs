@@ -1,3 +1,5 @@
+using JobLink.API.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
@@ -8,6 +10,8 @@ builder.Services
 var app = builder.Build();
 
 app.UseMiddleware<RequestLoggingMiddleware>();
+
+app.UseStaticFiles();
 
 app.UseCors("AllowAngularApp");
 
